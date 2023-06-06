@@ -1,11 +1,51 @@
 
+import os, pickle
 import numpy as np 
+from biopandas.pdb import PandasPdb
 from scipy.spatial.distance import cdist
 
 def calculate_strain(ref_coords, def_coords, min_dist=6, max_dist=8, err_threshold=10): 
     '''
-    Calculate the strain on protein with respect to a reference 
-    Of course, heavily inspired by Ian White's `delta_r_analysis.py`
+    Calculate the positional shear energy, positional shear tensor, and positional 
+    shear tensor for the provided atoms by comparing the perturbed/deformed 
+    structure (def_coords) to the reference structure (ref_coords). The atomic 
+    neighborhood of each atom is defined by a spherical shell with radius 8 
+    Angstroms. 
+
+    Returns a shear energy, shear tensor, and strain tensor for each atom in the
+    supplied coordinates. 
+
+    This code was heavily inspired by K. Ian White's implementation of strain 
+    calculations in delta_r_analysis.py.
+    
+    Parameters: 
+    -----------
+    ref_coords : array_like, (N x 3)
+    N xyz coordinates of atoms in the reference structure 
+
+    def_coords : array_like, (N x 3)
+    N xyz coordinates of atoms in the deformed structure
+
+    min_dist : int 
+    minimum distance to apply atomic neighborhood weighting scheme
+    
+    max_dist : int
+    maximum distance to apply atomic neighborhood weighting scheme
+
+    err_threshold : int 
+    threshold to ensure that the shear energies are not too large and potentially 
+    reflecting errors in calculation (e.g. due to non-invertible matrices)
+
+    Returns: 
+    --------
+    pos_shear_energy : array_like, (N,)
+    array of shear energies associated with each atom 
+
+    pos_shear_tensor : array_like, (N x 3 x 3)
+    array of shear tensors associated with each atom 
+
+    pos_strain_tensor : array_like, (N x 3 x 3)
+    array of strain tensors associated with each atom 
     '''
     
     # ensure that length of arrays are the same (proxy for checking individual atoms)
@@ -13,9 +53,9 @@ def calculate_strain(ref_coords, def_coords, min_dist=6, max_dist=8, err_thresho
     
     # initialize arrays for storage
     n_atoms = ref_coords.shape[0]
-    pos_shear_energy = np.empty(n_atoms) * np.nan
-    pos_shear_tensor = np.empty([n_atoms,3,3]) * np.nan
-    pos_strain_tensor = np.empty([n_atoms,3,3]) * np.nan
+    pos_shear_energy = np.empty(n_atoms) 
+    pos_shear_tensor = np.empty([n_atoms,3,3])
+    pos_strain_tensor = np.empty([n_atoms,3,3])
     
     # calculate distance matrices for protein models from coordinates
     ref_dist = cdist(ref_coords, ref_coords)
@@ -69,3 +109,299 @@ def calculate_strain(ref_coords, def_coords, min_dist=6, max_dist=8, err_thresho
                 err_num += 1
         
     return pos_shear_energy, pos_shear_tensor, pos_strain_tensor
+
+def determine_shared_atoms(structure_list, reference_ppdb, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], save=False, verbose=False): 
+    '''
+    Determines the shared atoms for all structures in a list and a given 
+    reference structure between given residue numbers and only for 
+    explicitly desired atoms. 
+
+    Returns the shared set of atoms for all given structures. 
+
+    Parameters: 
+    -----------
+    structure_list : array_like
+    array containing the file paths to PDB structures 
+
+    reference_ppdb : BioPandas DataFrame 
+    dataframe containing the reference protein structure; this structure 
+    can be contained in structure_list
+
+    resnum_bounds : tuple 
+    tuple containing the minimum and maximum (inclusive) residue number values 
+
+    atoms : array_like, optional 
+    array containing atom names to be used in analysis 
+
+    save : boolean, optional 
+    indicator to save the shared atom set once it is determined
+
+    verbose : boolean, optional 
+    indicator for verbose output 
+
+    Returns: 
+    --------
+    ref_atom_set : set 
+    set containing shared atom information for all structures in structure_list 
+    and reference_ppdb
+
+    filtered_strucs : list 
+    array containing the file paths to PDB structures that contain all shared 
+    atoms for downstream analysis 
+    '''
+
+    # determine the shared atom set for all the structures 
+    if verbose: 
+        print("Determining shared atom set...")
+
+    # initialize set to find all shared atoms based on reference structure
+    atom_set = set([tuple(x) for x in reference_ppdb[['residue_number', 'atom_name']].values.tolist()])
+
+    # initialize array to store structures that are amenable to strain analysis
+    filtered_strucs = list()
+    failed_list = list()
+
+    # iterate through all the structural models 
+    for i,struc in enumerate(structure_list): 
+
+        if verbose: 
+            print(f"Working through structure {struc} for shared atom set")
+        # parse and filter the structural data
+        ppdb = PandasPdb().read_pdb(struc)
+        use_atoms = np.zeros(ppdb.df['ATOM'].shape[0])
+        for i,atom in enumerate(atoms): 
+            use_atoms = np.logical_or(use_atoms, (ppdb.df['ATOM']['atom_name'] == atom))
+        df = ppdb.df['ATOM'][(use_atoms) & 
+                             (ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) &
+                             (ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1])]
+
+        # compare the atom set to the current model 
+        current_atom_set = set([tuple(x) for x in df[['residue_number', 'atom_name']].values.tolist()])
+
+        # check if the sequence is completely intact and consecutive 
+        if sorted(current_atom_set)[0][0] + len(np.unique(np.array(sorted(current_atom_set))[:,0])) - 1 == sorted(current_atom_set)[-1][0]: 
+
+            # append the amenable structure to the filtered list
+            filtered_strucs.append(struc)
+            atom_set = atom_set.intersection(current_atom_set)
+        
+        else: 
+
+            # append the failed structure to the failed list 
+            failed_list.append(struc)
+
+    # save the atom set information if requested
+    if save: 
+        if verbose: 
+            print("Saving the atom_set data!")
+        pickle.dump(atom_set, open("atom_set.pkl", "wb"))
+    
+    # report the structures that are not amenable to strain analysis
+    for struc in failed_list: 
+
+        if verbose: 
+            print(f"{struc} is not amenable to strain analysis!")
+
+    # get the reference atom set 
+    ref_atom_set = atom_set.intersection(set([tuple(x) for x in reference_ppdb[['residue_number', 'atom_name']].values.tolist()]))
+
+    return ref_atom_set, filtered_strucs
+
+def coords_from_atoms(struc_df, sorted_atom_list): 
+    '''
+    Retrieves and returns the xyz coordinates of the supplied strucure for 
+    the given atoms. 
+
+    Parameters: 
+    -----------
+    struc_df : BioPandas DataFrame (ATOM headers only)
+    dataframe containing ATOM information of protein structure; 
+    e.g., ppdb.df['ATOM'] 
+
+    sorted_atom_list : array_like
+    sorted list containing atoms (residue number and atom name) for which
+    to retrieve the desired coordinate information
+
+    Returns: 
+    --------
+    xyz_coords : array_like, (N x 3)
+    array of xyz coordinates for the given atoms in the given structure
+    '''
+
+    # initialize array for the coordinates 
+    xyz_coords = list()
+
+    # enumerate through all atoms 
+    for i,atom in enumerate(sorted_atom_list): 
+        xyz_coords.append(struc_df.loc[np.logical_and(struc_df.residue_number == atom[0], 
+                                                    struc_df.atom_name == atom[1])]\
+                                      [['x_coord', 'y_coord', 'z_coord']].to_numpy())
+    
+    return np.array(xyz_coords).reshape(-1,3)
+
+def bfacs_from_atoms(struc_df, sorted_atom_list): 
+    '''
+    Retrieves and returns the B factors of the supplied strucure for 
+    the given atoms. 
+
+    Parameters: 
+    -----------
+    struc_df : BioPandas DataFrame (ATOM headers only)
+    dataframe containing ATOM information of protein structure; 
+    e.g., ppdb.df['ATOM'] 
+
+    sorted_atom_list : array_like
+    sorted list containing atoms (residue number and atom name) for which
+    to retrieve the desired coordinate information
+
+    Returns: 
+    --------
+    bfacs : array_like 
+    array of B factors for the given atoms in the given structure
+    '''
+
+    # initialize array for the coordinates 
+    bfacs = list()
+
+    # enumerate through all atoms 
+    for i,atom in enumerate(sorted_atom_list): 
+        bfacs.append(struc_df.loc[np.logical_and(struc_df.residue_number == atom[0], 
+                                                    struc_df.atom_name == atom[1])].b_factor.to_numpy())
+    
+    return np.array(bfacs).reshape(-1)
+
+def calculate_strain_dict(structure_list, reference, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], save=True, verbose=False): 
+    '''
+    Constructs a dictionary object containing strain and shear information for all given 
+    structures compared to the given reference structure within the given residue numbers 
+    and using only the explicitly desired atoms. 
+
+    Assumes that the numbering of residues in each of the structures is consistent across the
+    entire data set
+
+    Parameters:
+    -----------
+    structure_list : array_like
+    array containing the file paths to PDB structures 
+
+    reference : string 
+    file path to the reference PDB structure; this structure can be contained in structure_list
+
+    resnum_bounds : tuple 
+    tuple containing the minimum and maximum (inclusive) residue number values 
+    for strain calculations
+
+    atoms : array_like, optional 
+    array containing atoms (residue number and atom name) to be used in analysis 
+
+    save : boolean, optional 
+    indicator to save results once determined
+
+    verbose : boolean, optional 
+    indicator for verbose output 
+
+    Returns: 
+    --------
+    strain_dict : dictionary
+    dictionary containing results of strain calculations for each of the shared atoms in the 
+    given structures compared to the reference 
+    
+    shared_atom_set : set 
+    set of shared atoms used in the analysis 
+    '''
+
+    # load the reference structure 
+    if verbose: 
+        print('Loading the reference structure...')
+    ppdb = PandasPdb().read_pdb(reference)
+    use_atoms = np.zeros(ppdb.df['ATOM'].shape[0])
+    for i,atom in enumerate(atoms): 
+        use_atoms = use_atoms | (ppdb.df['ATOM']['atom_name'] == atom)
+    ref_ppdb = ppdb.df['ATOM'][(use_atoms) | 
+                               (ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) |
+                               (ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1])]
+
+    shared_atom_set, filtered_strucs = determine_shared_atoms(
+        structure_list=structure_list, 
+        reference_ppdb=ref_ppdb,
+        resnum_bounds=resnum_bounds, 
+        atoms=atoms, 
+        save=save, 
+        verbose=verbose
+    )
+
+    # determine the relevant coordinates for the reference structure
+    ref_strain_coords = coords_from_atoms(ref_ppdb, sorted(shared_atom_set))
+
+    # create a dictionary to store the strain analysis data
+    strain_dict = dict()
+
+    print(f"Calculating strain against reference {reference}...")
+    # calculate and store the strain information for the filtered structures 
+    for i,struc in enumerate(sorted(filtered_strucs)): 
+
+        # skip if the reference structure 
+        if reference == struc: 
+
+            continue
+
+        # report current structure
+        if verbose: 
+            print(f"Working through {struc} for strain calculations")
+
+        # parse and then clean up the data 
+        ppdb = PandasPdb().read_pdb(struc)
+        use_atoms = np.zeros(ppdb.df['ATOM'].shape[0])
+        for i,atom in enumerate(atoms): 
+            use_atoms = use_atoms | (ppdb.df['ATOM']['atom_name'] == atom)
+        df = ppdb.df['ATOM'][(use_atoms) | 
+                             (ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) |
+                             (ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1])]
+
+        # determine coordinates for strain calculations 
+        current_atom_set = set([tuple(x) for x in df[['residue_number', 'atom_name']].values.tolist()])
+        comp_atom_set = shared_atom_set.intersection(current_atom_set)
+        current_strain_coords = coords_from_atoms(df, sorted(comp_atom_set))
+
+        sheare, sheart, straint = calculate_strain(ref_strain_coords, current_strain_coords)
+
+        # find the idxs of the full atom set for the comparison atom set
+        atom_idxs = list()
+        comp_atom_list = sorted(comp_atom_set)
+        comp_idx = 0
+        
+        # sort out the B-factors 
+        bfacs = bfacs_from_atoms(df, sorted(comp_atom_set))
+        if np.any(bfacs == 0): 
+            print(f"Skipping {struc} because B factor of 0!")
+            continue
+
+        # iterate through the list and append the relevant atom indices to atom_idxs
+        for i,atom in enumerate(sorted(shared_atom_set)): 
+
+            # compare the current comp atom to the atom in atom set 
+            while comp_atom_list[comp_idx] < atom:
+
+                # if the atom is less than atom in atom set, then increase the current atom
+                comp_idx += 1
+                
+            # when the current comp atom is equivalent to the atom in atom set, add to idx
+            atom_idxs.append(comp_idx)
+
+        strain_dict[struc] = {
+            "straint": straint, 
+            "sheart": sheart, 
+            "sheare": sheare, 
+            "bfacs": bfacs,
+            "atom_list": sorted(comp_atom_set),
+            "atom_idxs": atom_idxs
+        }
+    
+    # save the strain dictionary information if requested
+    if save: 
+
+        if verbose: 
+            print("Saving the strain_dict data!")
+        pickle.dump(strain_dict, open("strain_dict.pkl", "wb"))
+
+    return strain_dict, shared_atom_set
