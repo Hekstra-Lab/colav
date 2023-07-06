@@ -7,8 +7,9 @@ from colav.strain_analysis import *
 from colav.internal_coordinates import * 
 from scipy.spatial.distance import pdist
 
-def calculate_dihedral_transformed_loadings(raw_dihedral_loading): 
-    '''
+def calculate_dh_tl(raw_dihedral_loading): 
+    '''Adjusts raw dihedral loading for interpretability. 
+
     Calculates a transformed loading from a raw loading of dihedral angle features to account 
     for the application of sine and cosine functions. 
 
@@ -17,57 +18,58 @@ def calculate_dihedral_transformed_loadings(raw_dihedral_loading):
     Parameters: 
     -----------
     raw_dihedral_loading : array_like, (N,)
-    array of raw loading from PCA
+        Array of raw loading from PCA. 
 
     Returns: 
     --------
-    transformed_loading : array_like, (N/2,)
-    array of transformed loading akin to sin^2 + cos^2 = 1 to determine relative angle influence
-    for each principal component
+    tl : array_like, (N/2,)
+        Array of transformed loading to determine relative angle influence in the given 
+        loading. 
     '''
     
-    transformed_loading = np.sqrt(np.power(raw_dihedral_loading[:raw_dihedral_loading.shape[0]//2],2) + \
+    tl = np.sqrt(np.power(raw_dihedral_loading[:raw_dihedral_loading.shape[0]//2],2) + \
                           np.power(raw_dihedral_loading[raw_dihedral_loading.shape[0]//2:],2))
-    return transformed_loading
+    return tl
 
 def generate_dihedral_matrix(structure_list, resnum_bounds, no_psi=False, no_omega=False, no_phi=False, save=False, verbose=False): 
-    '''
+    '''Extracts dihedrals angles from given structures. 
+
     Extracts and returns a data matrix of (observations x features) with the given structures as observations
-    and the linearized dihedral angles (by applying sine and cosine functions)  as features. 
+    and the linearized dihedral angles (by applying sine and cosine functions) as features. 
     Cannot handle missing coordinates and skips structures with missing backbone atoms within the 
     given residue numbers. 
 
     Parameters: 
     -----------
-    structure_list : array_like 
-    array containing the file paths to PDB structures
+    structure_list : list of str
+        Array containing the file paths to PDB structures. 
 
     resnum_bounds : tuple
-    tuple containing the minimum and maximum (inclusive) residue number values
+        Tuple containing the minimum and maximum (inclusive) residue number values. 
 
-    no_psi : boolean, optional 
-    indicator to exclude psi dihedral angle from returned dihedral angles 
+    no_psi : bool, optional 
+        Indicator to exclude psi dihedral angle from returned dihedral angles. 
 
-    no_omega : boolean, optional 
-    indicator to exclude omega dihedral angle from returned dihedral angles
+    no_omega : bool, optional 
+        Indicator to exclude omega dihedral angle from returned dihedral angles. 
 
-    no_phi : boolean, optional 
-    indicator to exclude phi dihedral angle from returne dihedral angles
+    no_phi : bool, optional 
+        Indicator to exclude phi dihedral angle from returne dihedral angles. 
 
-    save : boolean, optional 
-    indicator to save results once determined
+    save : bool, optional 
+        Indicator to save results. 
 
-    verbose : boolean, optional 
-    indicator for verbose output
+    verbose : bool, optional 
+        Indicator for verbose output. 
 
     Returns: 
     --------
     dh_data_matrix : array_like 
-    array containing dihedral angles between desired atoms for all given structures, excluding 
-    structures missing desired atoms 
+        Array containing dihedral angles within `resnum_bounds` for structures in `structure_list`,  
+        excluding structures missing desired atoms. 
     
-    dh_strucs : list 
-    list of structures ordered as stored in the pw_data_matrix
+    dh_strucs : list of str
+        List of structures ordered as stored in `dh_data_matrix`. 
     '''
 
     # set of shared dihedral angles for each structure 
@@ -109,8 +111,9 @@ def generate_dihedral_matrix(structure_list, resnum_bounds, no_psi=False, no_ome
 
     return raw_dihedrals, dihedral_strucs
 
-def calculate_pw_transformed_loadings(raw_pw_loading, resnum_bounds): 
-    '''
+def calculate_pw_tl(raw_pw_loading, resnum_bounds): 
+    '''Adjusts raw pairwise distance loading for interpretability. 
+
     Calculates a transformed loading from a raw loading of pairwise distance features to account 
     for all pairings of residues. 
 
@@ -118,18 +121,17 @@ def calculate_pw_transformed_loadings(raw_pw_loading, resnum_bounds):
 
     Parameters: 
     -----------
-    raw_pw_loading : array_like
-    array of raw loading from PCA
+    raw_pw_loading : array_like, (N,)
+        Array of raw loading from PCA. 
 
     Returns: 
     --------
-    transformed_loading : array_like, (N/2,)
-    array of transformed loading summing absolute value contributions involving each residue for 
-    each principal component 
+    tl : array_like, (N/2,)
+        Array of transformed loading to determine relative residue influence in the given loading. 
     '''
     
     # initialize array to store the contributions 
-    transformed_loading = np.zeros(resnum_bounds[1]-resnum_bounds[0]+1)
+    tl = np.zeros(resnum_bounds[1]-resnum_bounds[0]+1)
     
     # create array of residue combos 
     pw_combos = np.array(list(combinations(np.arange(resnum_bounds[0], resnum_bounds[1]+1), 2)))
@@ -138,39 +140,40 @@ def calculate_pw_transformed_loadings(raw_pw_loading, resnum_bounds):
     for i,combo in enumerate(pw_combos): 
         
         # access the residues and add contributions for both contributors 
-        transformed_loading[combo[0]-resnum_bounds[0]] += np.abs(raw_pw_loading[i])
-        transformed_loading[combo[1]-resnum_bounds[0]] += np.abs(raw_pw_loading[i])
+        tl[combo[0]-resnum_bounds[0]] += np.abs(raw_pw_loading[i])
+        tl[combo[1]-resnum_bounds[0]] += np.abs(raw_pw_loading[i])
         
-    return transformed_loading
+    return tl
 
 def generate_pw_matrix(structure_list, resnum_bounds, save=False, verbose=False): 
-    '''
+    '''Extracts pairwise distances from given structures. 
+
     Extracts and returns a data matrix of (observations x features) with the given structures as observations
     and the pairwise distances between alpha carbon (CA) atoms as features. Cannot handle missing
     coordinates and skips structures with missing CA atoms within the given residue numbers. 
     
     Parameters:
     -----------
-    structure_list : array_like 
-    array containing the file paths to PDB structures
+    structure_list : list of str
+        Array containing the file paths to PDB structures. 
 
     resnum_bounds : tuple
-    tuple containing the minimum and maximum (inclusive) residue number values
+        Tuple containing the minimum and maximum (inclusive) residue number values. 
 
-    save : boolean, optional 
-    indicator to save results once determined
+    save : bool, optional 
+        Indicator to save results. 
 
-    verbose : boolean, optional 
-    indicator for verbose output
+    verbose : bool, optional 
+        Indicator for verbose output. 
 
     Returns: 
     --------
     pw_data_matrix : array_like 
-    array containing pairwise distances between desired CA atoms for all given structures, 
-    excluding structures missing desired atoms 
+        array containing pairwise distances between desired CA atoms for structures 
+        in `structure_list`, excluding structures missing desired atoms. 
 
-    pw_strucs : list 
-    list of structures ordered as stored in the pw_data_matrix
+    pw_strucs : list of str
+        List of structures ordered as stored in `pw_data_matrix`. 
     '''
 
     # initialize an array to store the pairwise distances and structures 
@@ -209,25 +212,25 @@ def generate_pw_matrix(structure_list, resnum_bounds, save=False, verbose=False)
 
     return pw_data_matrix, pw_strucs
 
-def calculate_sa_transformed_loadings(raw_sa_loading, shared_atom_list): 
-    '''
-    Calculates a transformed loading from a raw loading of shear tensor features. 
+def calculate_sa_tl(raw_sa_loading, shared_atom_list): 
+    '''Adjusts raw strain or shear loading for interpretability. 
+
+    Calculates a transformed loading from a raw loading of strain or shear tensor features. 
 
     Returns a transformed loading. 
 
     Parameters: 
     -----------
     raw_sa_loading : array_like
-    array of raw loading from PCA
+        Array of raw loading from PCA. 
 
     shared_atom_list : array_like 
-    sorted list of shared atoms between all structures used for strain analysis 
+        Sorted list of shared atoms between all structures used for strain analysis. 
 
     Returns: 
     --------
-    transformed_loading : array_like 
-    array of transformed loading summing absolute value contributions involving each residue for 
-    each principal component
+    tl : array_like 
+        Array of transformed loading to determine relative residue influence in the given loading. 
     '''
     
     # first find atomic contributions 
@@ -244,18 +247,19 @@ def calculate_sa_transformed_loadings(raw_sa_loading, shared_atom_list):
     unq_resnums = np.unique(resnum_list)
     
     # initialize array to store the contributions
-    transformed_loading = np.zeros(unq_resnums.shape)
+    tl = np.zeros(unq_resnums.shape)
     
     # iterate through residue numbers 
     for i,resnum in enumerate(unq_resnums): 
         
         # access the contributions and sum 
-        transformed_loading[i] += np.sum(atomic_contributions[resnum_list == resnum])
+        tl[i] += np.sum(atomic_contributions[resnum_list == resnum])
         
-    return transformed_loading
+    return tl
 
 def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], save=True, verbose=False): 
-    '''
+    '''Extracts strain tensors, shear tensors, or shear energies from given structures. 
+
     Extracts and returns a data matrix of (observations x features) with the given structures as observations
     and strain tensors, shear tensors, or shear energies. For tensor features, only the off-diagonal 
     elements are included. Cannot handle missing coordinates and skips structures with missing 
@@ -263,35 +267,35 @@ def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_boun
     
     Parameters:
     -----------
-    structure_list : array_like 
-    array containing the file paths to PDB structures
+    structure_list : list of str 
+        Array containing the file paths to PDB structures. 
 
-    reference_pdb : string
-    file path to the reference PDB structure; this structure can be contained in structure_list
+    reference_pdb : str
+        File path to the reference PDB structure; this structure can be contained in `structure_list`. 
 
-    data_type : string 
-    indicator for type of data to build data matrix
+    data_type : {'straint', 'sheart', 'sheare'}
+        Indicator for type of data to build data matrix. 
 
     resnum_bounds : tuple
-    tuple containing the minimum and maximum (inclusive) residue number values
+        Tuple containing the minimum and maximum (inclusive) residue number values. 
 
     atoms : array_like, optional 
-    array containing atoms (residue number and atom name) to be used in analysis 
+        Array containing atom names. 
 
-    save : boolean, optional 
-    indicator to save results once determined
+    save : bool, optional 
+        Indicator to save results. 
 
-    verbose : boolean, optional 
-    indicator for verbose output
+    verbose : bool, optional 
+        Indicator for verbose output. 
 
     Returns: 
     --------
     sa_data_matrix : array_like 
-    array containing strain or tensor information for all given structures, excluding structures 
-    missing desired atoms 
+        Array containing strain or shear tensor information structures in `structure_list`, 
+        excluding structures missing desired atoms. 
 
-    sa_strucs : list 
-    list of structures ordered as stored in the sa_data_matrix
+    sa_strucs : list of str
+        List of structures ordered as stored in the `sa_data_matrix`. 
     '''
 
     # check if there's already existing pkl files 
@@ -350,27 +354,24 @@ def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_boun
     return np.array(sa_data_matrix), sa_strucs
 
 def load_strain_matrix(strain_pkl, data_type): 
-    '''
-    Loads the strain analysis data matrix using an existing strain_dict (pickle file) and atom_set
-    (pickle file) for the supplied data type. 
+    '''Loads a strain analysis data matrix using an existing strain dictionary. 
 
     Parameters: 
     -----------
+    strain_pkl : str
+        File path to the strain dictionary pickle file. 
 
-    strain_pkl : pathToDataBase
-    file path to the desired strain_dict pickle file 
-
-    data_type : string 
-    indicator for type of data to build data matrix
+    data_type : {'straint', 'sheart', 'sheare'}
+        Indicator for type of data to build data matrix. 
 
     Returns: 
     --------
     sa_data_matrix : array_like 
-    array containing strain or tensor information for all given structures, excluding structures 
-    missing desired atoms 
+        Array containing strain or shear tensor information structures in `structure_list`, 
+        excluding structures missing desired atoms.
 
-    sa_strucs : list 
-    list of structures ordered as stored in the sa_data_matrix
+    sa_strucs : list of str
+        List of structures ordered as stored in the `sa_data_matrix`. 
     '''
         
     strain_dict = pickle.load(open(f"{strain_pkl}", "rb"))

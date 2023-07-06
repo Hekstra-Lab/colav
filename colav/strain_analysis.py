@@ -1,51 +1,52 @@
 
-import os, pickle
+import pickle
 import numpy as np 
 from biopandas.pdb import PandasPdb
 from scipy.spatial.distance import cdist
 
 def calculate_strain(ref_coords, def_coords, min_dist=6, max_dist=8, err_threshold=10): 
-    '''
-    Calculate the positional shear energy, positional shear tensor, and positional 
-    shear tensor for the provided atoms by comparing the perturbed/deformed 
-    structure (def_coords) to the reference structure (ref_coords). The atomic 
-    neighborhood of each atom is defined by a spherical shell with radius 8 
-    Angstroms. 
+    '''Calculates strain quantities for a perturbed structure with respect to a reference. 
 
-    Returns a shear energy, shear tensor, and strain tensor for each atom in the
-    supplied coordinates. 
+    Calculates the positional shear energy, positional shear tensor, and positional 
+    shear tensor for the provided atoms by comparing the perturbed/deformed 
+    structure (`def_coords`) to the reference structure (`ref_coords`). Note, 
+    the atomic neighborhood of each atom is defined by a spherical shell 
+    with radius 8 Angstroms. 
+
+    Returns a shear energy, shear tensor, and strain tensor for each coordinate (i.e., 
+    atom) in `def_coords`. 
 
     This code was heavily inspired by K. Ian White's implementation of strain 
-    calculations in delta_r_analysis.py.
+    calculations in `delta_r_analysis.py` (not published).
     
     Parameters: 
     -----------
     ref_coords : array_like, (N x 3)
-    N xyz coordinates of atoms in the reference structure 
+        Cartesian coordinates (x, y, z) of atoms in the reference structure. 
 
     def_coords : array_like, (N x 3)
-    N xyz coordinates of atoms in the deformed structure
+        Cartesian coordinates (x, y, z) of atoms in the deformed structure. 
 
     min_dist : int 
-    minimum distance to apply atomic neighborhood weighting scheme
+        Minimum distance to apply atomic neighborhood weighting scheme. 
     
     max_dist : int
-    maximum distance to apply atomic neighborhood weighting scheme
+        Maximum distance to apply atomic neighborhood weighting scheme. 
 
     err_threshold : int 
-    threshold to ensure that the shear energies are not too large and potentially 
-    reflecting errors in calculation (e.g. due to non-invertible matrices)
+        Threshold to ensure that the shear energies are not too large and potentially 
+        reflecting errors in calculation (e.g., due to non-invertible matrices). 
 
     Returns: 
     --------
     pos_shear_energy : array_like, (N,)
-    array of shear energies associated with each atom 
+        Array of shear energies for each atom. 
 
     pos_shear_tensor : array_like, (N x 3 x 3)
-    array of shear tensors associated with each atom 
+        Array of shear tensors for each atom. 
 
     pos_strain_tensor : array_like, (N x 3 x 3)
-    array of strain tensors associated with each atom 
+        Array of strain tensors for each atom. 
     '''
     
     # ensure that length of arrays are the same (proxy for checking individual atoms)
@@ -111,43 +112,44 @@ def calculate_strain(ref_coords, def_coords, min_dist=6, max_dist=8, err_thresho
     return pos_shear_energy, pos_shear_tensor, pos_strain_tensor
 
 def determine_shared_atoms(structure_list, reference_ppdb, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], save=False, verbose=False): 
-    '''
+    '''Determines shared atoms across structures. 
+    
     Determines the shared atoms for all structures in a list and a given 
-    reference structure between given residue numbers and only for 
-    explicitly desired atoms. 
+    reference structure between given residue numbers (`resnum_bounds`) and for 
+    explicitly desired atoms (`atoms`). 
 
     Returns the shared set of atoms for all given structures. 
 
     Parameters: 
     -----------
-    structure_list : array_like
-    array containing the file paths to PDB structures 
+    structure_list : list of str
+        Array containing the file paths to PDB structures. 
 
-    reference_ppdb : BioPandas DataFrame 
-    dataframe containing the reference protein structure; this structure 
-    can be contained in structure_list
+    reference_ppdb : PandasPdb
+        Dataframe containing the reference protein structure; this structure 
+        can be contained in `structure_list`. 
 
     resnum_bounds : tuple 
-    tuple containing the minimum and maximum (inclusive) residue number values 
+        Tuple containing the minimum and maximum (inclusive) residue number values. 
 
     atoms : array_like, optional 
-    array containing atom names to be used in analysis 
+        Array containing atom names. 
 
-    save : boolean, optional 
-    indicator to save the shared atom set once it is determined
+    save : bool, optional 
+        Indicator to save the shared atom set. 
 
-    verbose : boolean, optional 
-    indicator for verbose output 
+    verbose : bool, optional 
+        Indicator for verbose output. 
 
     Returns: 
     --------
     ref_atom_set : set 
-    set containing shared atom information for all structures in structure_list 
-    and reference_ppdb
+        Set containing shared atoms for all structures in `structure_list` 
+        and `reference_ppdb`.
 
     filtered_strucs : list 
-    array containing the file paths to PDB structures that contain all shared 
-    atoms for downstream analysis 
+        Array containing the file paths to PDB structures that contain all shared 
+        atoms. 
     '''
 
     # determine the shared atom set for all the structures 
@@ -165,7 +167,7 @@ def determine_shared_atoms(structure_list, reference_ppdb, resnum_bounds, atoms=
     for i,struc in enumerate(structure_list): 
 
         if verbose: 
-            print(f"Working through structure {struc} for shared atom set")
+            print(f"Working through structure {struc}")
         # parse and filter the structural data
         ppdb = PandasPdb().read_pdb(struc)
         use_atoms = np.zeros(ppdb.df['ATOM'].shape[0])
@@ -200,7 +202,7 @@ def determine_shared_atoms(structure_list, reference_ppdb, resnum_bounds, atoms=
     for struc in failed_list: 
 
         if verbose: 
-            print(f"{struc} is not amenable to strain analysis!")
+            print(f"{struc} does not share the necessary atoms!")
 
     # get the reference atom set 
     ref_atom_set = atom_set.intersection(set([tuple(x) for x in reference_ppdb[['residue_number', 'atom_name']].values.tolist()]))
@@ -208,24 +210,23 @@ def determine_shared_atoms(structure_list, reference_ppdb, resnum_bounds, atoms=
     return ref_atom_set, filtered_strucs
 
 def coords_from_atoms(struc_df, sorted_atom_list): 
-    '''
-    Retrieves and returns the xyz coordinates of the supplied strucure for 
+    '''Retrieves and returns the Cartesian coordinates of the supplied strucure for 
     the given atoms. 
 
     Parameters: 
     -----------
-    struc_df : BioPandas DataFrame (ATOM headers only)
-    dataframe containing ATOM information of protein structure; 
-    e.g., ppdb.df['ATOM'] 
+    struc_df : PandasPdb (ATOM header only)
+        Dataframe containing ATOM information of protein structure; 
+        e.g., ppdb.df['ATOM']. 
 
     sorted_atom_list : array_like
-    sorted list containing atoms (residue number and atom name) for which
-    to retrieve the desired coordinate information
+        Sorted list containing atoms (residue number and atom name) for which
+        to retrieve the desired coordinate information. 
 
     Returns: 
     --------
     xyz_coords : array_like, (N x 3)
-    array of xyz coordinates for the given atoms in the given structure
+        Array of Cartesian coordinates for the atoms of the given structure. 
     '''
 
     # initialize array for the coordinates 
@@ -240,24 +241,23 @@ def coords_from_atoms(struc_df, sorted_atom_list):
     return np.array(xyz_coords).reshape(-1,3)
 
 def bfacs_from_atoms(struc_df, sorted_atom_list): 
-    '''
-    Retrieves and returns the B factors of the supplied strucure for 
+    '''Retrieves and returns the B factors of the supplied strucure for 
     the given atoms. 
 
     Parameters: 
     -----------
-    struc_df : BioPandas DataFrame (ATOM headers only)
-    dataframe containing ATOM information of protein structure; 
-    e.g., ppdb.df['ATOM'] 
+    struc_df : PandasPdb (ATOM headers only)
+        Dataframe containing ATOM information of protein structure; 
+        e.g., ppdb.df['ATOM']. 
 
     sorted_atom_list : array_like
-    sorted list containing atoms (residue number and atom name) for which
-    to retrieve the desired coordinate information
+        Sorted list containing atoms (residue number and atom name) for which
+        to retrieve the desired coordinate information. 
 
     Returns: 
     --------
     bfacs : array_like 
-    array of B factors for the given atoms in the given structure
+        Array of B factors for the atoms of the given structure. 
     '''
 
     # initialize array for the coordinates 
@@ -271,43 +271,44 @@ def bfacs_from_atoms(struc_df, sorted_atom_list):
     return np.array(bfacs).reshape(-1)
 
 def calculate_strain_dict(structure_list, reference, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], save=True, verbose=False): 
-    '''
-    Constructs a dictionary object containing strain and shear information for all given 
-    structures compared to the given reference structure within the given residue numbers 
-    and using only the explicitly desired atoms. 
+    '''Stores strain information in a dictionary for later ease of use. 
 
-    Assumes that the numbering of residues in each of the structures is consistent across the
-    entire data set
+    Constructs a dictionary object containing strain and shear information for all given 
+    structures in `structure_list` compared to the given reference structure within 
+    the given residue numbers (`resnum_bounds`) and using only the explicitly desired 
+    atoms (`atoms`). Note, ssumes that the numbering of residues in each of the structures 
+    is consistent across the entire data set. 
 
     Parameters:
     -----------
-    structure_list : array_like
-    array containing the file paths to PDB structures 
+    structure_list : list of str
+        Array containing the file paths to PDB structures. 
 
     reference : string 
-    file path to the reference PDB structure; this structure can be contained in structure_list
+        File path to the reference PDB structure; this structure can be contained 
+        in `structure_list`. 
 
     resnum_bounds : tuple 
-    tuple containing the minimum and maximum (inclusive) residue number values 
-    for strain calculations
+        Tuple containing the minimum and maximum (inclusive) residue number values 
+        for strain calculations. 
 
     atoms : array_like, optional 
-    array containing atoms (residue number and atom name) to be used in analysis 
+        Array containing atom names. 
 
-    save : boolean, optional 
-    indicator to save results once determined
+    save : bool, optional 
+        Indicator to save results. 
 
-    verbose : boolean, optional 
-    indicator for verbose output 
+    verbose : bool, optional 
+        Indicator for verbose output. 
 
     Returns: 
     --------
     strain_dict : dictionary
-    dictionary containing results of strain calculations for each of the shared atoms in the 
-    given structures compared to the reference 
+        Dictionary containing results of strain calculations for the shared atoms of all 
+        structures in `structure_list` compared to `reference`. 
     
     shared_atom_set : set 
-    set of shared atoms used in the analysis 
+        Set of shared atoms (determined by `determine_shared_atoms`). 
     '''
 
     # load the reference structure 

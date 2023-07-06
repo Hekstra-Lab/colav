@@ -1,32 +1,31 @@
 
 import numpy as np 
 from scipy.spatial.distance import cdist
-from Bio.SeqUtils import seq1
 
 def calculate_dihedral(p0, p1, p2, p3): 
-    '''
-    Calculate the dihedral angle between four points in three dimensions. 
+    '''Calculates the dihedral angle between four points in three dimensions. 
 
     Returns the dihedral angle. 
 
     Parameters: 
     -----------
     p0 : array_like
-    first coordinate 
+        First coordinate defining the plane. 
     
     p1 : array_like
-    second coordinate 
+        Second coordinate defining the plane.
     
     p2 : array_like
-    third coordinate 
+        Third coordinate defining the plane.
     
     p3 : array_like
-    fourth coordinate
+        Fourth coordinate defining the plane.
     
     Returns: 
     --------
     dihedral_angle : float
-    computed dihedral angle between the supplied points
+        Computed dihedral angle between given points. 
+
     '''
 
     # calculate vectors between points 
@@ -48,38 +47,38 @@ def calculate_dihedral(p0, p1, p2, p3):
     return np.arctan2(y, x)
 
 def calculate_backbone_dihedrals(ppdb, resnum_bounds, no_psi=False, no_omega=False, no_phi=False, verbose=False): 
-    '''
-    Calculate backbone dihedral angles psi, omega, and phi (returned in that
+    '''Calculates backbone dihedral angles psi, omega, and phi (returned in that
     order) of consecutive residues. 
 
-    Returns the desired dihedral angles in sequence order between resnum_bounds
-    as a np.array 
+    Returns the desired dihedral angles in order between `resnum_bounds`
+    as an array. 
 
     Parameters: 
     -----------
-    ppdb : BioPandas DataFrame  
-    dataframe containing the target protein structure (preferably one chain)
+    ppdb : PandasPdb
+        Dataframe containing the target protein structure (preferably one chain). 
 
     resnum_bounds : tuple
-    tuple containing the minimum and maximum (inclusive) residue number values 
-    for calculating the desired dihedral angles 
+        Tuple containing the minimum and maximum (inclusive) residue number values 
+        for calculating the desired dihedral angles. 
 
-    no_psi : boolean, optional 
-    indicator to exclude psi dihedral angle from returned dihedral angles 
+    no_psi : bool, optional 
+        Indicator to exclude psi dihedral angle from returned dihedral angles.
 
-    no_omega : boolean, optional 
-    indicator to exclude omega dihedral angle from returned dihedral angles
+    no_omega : bool, optional 
+        Indicator to exclude omega dihedral angle from returned dihedral angles. 
 
-    no_phi : boolean, optional 
-    indicator to exclude phi dihedral angle from returne dihedral angles
+    no_phi : bool, optional 
+        Indicator to exclude phi dihedral angle from returne dihedral angles. 
 
-    verbose : boolean, optional 
-    indicator for verbose output
+    verbose : bool, optional 
+        Indicator for verbose output. 
 
     Returns: 
     --------
     dihedrals : array_like
-    desired dihedral angles of phi, omega, and psi
+        Desired dihedral angles in order between `resnum_bounds`. 
+
     '''
 
     # initialize storage
@@ -127,25 +126,24 @@ def calculate_backbone_dihedrals(ppdb, resnum_bounds, no_psi=False, no_omega=Fal
     return np.array(dihedrals).astype('float64')
 
 def calculate_bond_angles(ppdb, resnum_bounds): 
-    '''
-    Calculate the bond angles of consecutive residues. 
+    '''Calculates the bond angles between consecutive residues. 
 
-    Returns the bond angles in sequence order between resnum_bounds in 
-    sequence order.
+    Returns the bond angles in order between `resnum_bounds`. 
     
     Parameters: 
     -----------
-    ppdb : BioPandas DataFrame
-    dataframe containing the target protein structure (preferably one chain)
+    ppdb : PandasPdb
+        Dataframe containing the target protein structure (preferably one chain). 
 
     resnum_bounds : tuple
-    tuple containing the minimum and maximum (inclusive) residue number values 
-    for calculating the desired dihedral angles
+        Tuple containing the minimum and maximum (inclusive) residue number values 
+        for calculating the desired dihedral angles
 
     Returns: 
     --------
     bond_angles : array_like
-    desired bond angles 
+        Desired bond angles in order between `resnum_bounds`. 
+
     '''
 
     # get the desired coordinates for the current structure 
@@ -171,25 +169,24 @@ def calculate_bond_angles(ppdb, resnum_bounds):
     return np.array(bond_angles).astype("float64")
 
 def calculate_bond_distances(ppdb, resnum_bounds): 
-    '''
-    Calculate the bond distances of consecutive residues. 
+    '''Calculate the bond distances between consecutive residues. 
 
-    Returns the bond distances in sequence order between resnum_bounds in 
-    sequence order.
+    Returns the bond distances in order between `resnum_bounds`. 
     
     Parameters: 
     -----------
     ppdb : BioPandas DataFrame
-    dataframe containing the target protein structure (preferably one chain)
+        Dataframe containing the target protein structure (preferably one chain). 
 
     resnum_bounds : tuple
-    tuple containing the minimum and maximum (inclusive) residue number values 
-    for calculating the desired dihedral angles
+        Tuple containing the minimum and maximum (inclusive) residue number values 
+        for calculating the desired dihedral angles
 
     Returns: 
     --------
-    bond_angles : array_like
-    desired bond distances 
+    bond_distances : array_like
+        Desired bond distances in order between `resnum_bounds`. 
+
     '''
 
     # get the desired coordinates for the current structure 
@@ -206,38 +203,42 @@ def calculate_bond_distances(ppdb, resnum_bounds):
     return np.array(bond_distances).astype("float64")
 
 def reconstruction(initial_coords, bond_angles, bond_distances, dihedral_angles): 
-    '''
-    Compute the Cartesian coordinates of a polymer using an internal coordinate set 
+    '''Computes Cartesian coordinates of a protein using internal coordinates. 
+    
+    Computes the Cartesian coordinates of a polymer using an internal coordinate set 
     of bond angles, bond distances, and dihedral angles. The algorithm is an 
     implementation of the natural-extension reference frame (NeRF) algorithm for protein backbone 
-    atom reconstruction using N, CA, and C. See Parsons et al. (2005) in the Journal 
-    of Computational Chemistry for more information. 
+    atom reconstruction using N, CA, and C. 
+    
+    See Parsons et al. (2005) in the Journal of Computational Chemistry for more information. 
 
-    Returns Cartesian coordinates for the protein backbone. 
+    Returns Cartesian coordinates (N x 3) for the protein backbone. 
 
     Parameters:
     -----------
     initial_coords : array_like
-    initial coordinates of the first three atoms to initiate backbone reconstruction
+        Initial coordinates of the first three atoms to initiate backbone reconstruction. 
 
     bond_angles : array_like
-    bond angles of consecutive residues 
+        Bond angles between consecutive residues. 
 
     bond_distances : array_like
-    bond distances of consecutive residues 
+        Bond distances bewteen consecutive residues. 
 
     dihedral_angles : array_like
-    dihedral angles of consecutive residues 
+        Dihedral angles between consecutive residues. 
 
     Usage: 
     ------
-    All arguments are required, and the size of the internal coordinate arrays must match
-    AKA they must all be of size N. 
+    All internal coordinate arguments (e.g., `bond_angles`, `bond_distances`, and `dihedral_angles`) 
+    are required, and the size of the internal coordinate arrays must match AKA they must all 
+    be of size N. 
     
     Returns: 
     --------
     mainchain_coords : array_like
-    cartesian coordinates determined by the supplied internal coordinates 
+        Cartesian coordinates determined by the supplied internal coordinates. 
+
     '''
 
     # initialize a list for collecting coordinates and dealing with coordinates 
