@@ -111,7 +111,7 @@ def calculate_strain(ref_coords, def_coords, min_dist=6, max_dist=8, err_thresho
         
     return pos_shear_energy, pos_shear_tensor, pos_strain_tensor
 
-def determine_shared_atoms(structure_list, reference_ppdb, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], save=False, verbose=False): 
+def determine_shared_atoms(structure_list, reference_ppdb, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], alt_locs=["", "A"], save=False, save_prefix=None, verbose=False): 
     '''Determines shared atoms across structures. 
     
     Determines the shared atoms for all structures in a list and a given 
@@ -135,8 +135,14 @@ def determine_shared_atoms(structure_list, reference_ppdb, resnum_bounds, atoms=
     atoms : array_like, optional 
         Array containing atom names. 
 
+    alt_locs : array_like, optional 
+        Array containing alternate location names. 
+
     save : bool, optional 
         Indicator to save the shared atom set. 
+
+    save_prefix : str 
+        If saving results, prefix for pickle save file. 
 
     verbose : bool, optional 
         Indicator for verbose output. 
@@ -171,9 +177,13 @@ def determine_shared_atoms(structure_list, reference_ppdb, resnum_bounds, atoms=
         # parse and filter the structural data
         ppdb = PandasPdb().read_pdb(struc)
         use_atoms = np.zeros(ppdb.df['ATOM'].shape[0])
+        use_locs = np.zeros(ppdb.df['ATOM'].shape[0])
         for i,atom in enumerate(atoms): 
-            use_atoms = np.logical_or(use_atoms, (ppdb.df['ATOM']['atom_name'] == atom))
+            use_atoms = use_atoms | (ppdb.df['ATOM']['atom_name'] == atom)
+        for i,loc in enumerate(alt_locs): 
+            use_locs = use_locs | (ppdb.df['ATOM']['alt_loc'] == loc)
         df = ppdb.df['ATOM'][(use_atoms) & 
+                             (use_locs) & 
                              (ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) &
                              (ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1])]
 
@@ -196,7 +206,13 @@ def determine_shared_atoms(structure_list, reference_ppdb, resnum_bounds, atoms=
     if save: 
         if verbose: 
             print("Saving the atom_set data!")
-        pickle.dump(atom_set, open("atom_set.pkl", "wb"))
+        
+        if save_prefix is None: 
+            with open(f'atom_set.pkl', 'wb') as f: 
+                pickle.dump(atom_set, f)
+        else: 
+            with open(f'{save_prefix}_atom_set.pkl', 'wb') as f: 
+                pickle.dump(atom_set, f)
     
     # report the structures that are not amenable to strain analysis
     for struc in failed_list: 
@@ -235,7 +251,7 @@ def coords_from_atoms(struc_df, sorted_atom_list):
     # enumerate through all atoms 
     for i,atom in enumerate(sorted_atom_list): 
         xyz_coords.append(struc_df.loc[np.logical_and(struc_df.residue_number == atom[0], 
-                                                    struc_df.atom_name == atom[1])]\
+                                                    struc_df.atom_name == atom[1])] \
                                       [['x_coord', 'y_coord', 'z_coord']].to_numpy())
     
     return np.array(xyz_coords).reshape(-1,3)
@@ -270,7 +286,7 @@ def bfacs_from_atoms(struc_df, sorted_atom_list):
     
     return np.array(bfacs).reshape(-1)
 
-def calculate_strain_dict(structure_list, reference, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], save=True, verbose=False): 
+def calculate_strain_dict(structure_list, reference, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], alt_locs=["", "A"], save=True, save_prefix=None, verbose=False): 
     '''Stores strain information in a dictionary for later ease of use. 
 
     Constructs a dictionary object containing strain and shear information for all given 
@@ -295,8 +311,14 @@ def calculate_strain_dict(structure_list, reference, resnum_bounds, atoms=["N", 
     atoms : array_like, optional 
         Array containing atom names. 
 
+    alt_locs : array_like, optional 
+        Array containing alternate location names. 
+
     save : bool, optional 
         Indicator to save results. 
+    
+    save_prefix : str 
+        If saving results, prefix for pickle save file. 
 
     verbose : bool, optional 
         Indicator for verbose output. 
@@ -316,10 +338,14 @@ def calculate_strain_dict(structure_list, reference, resnum_bounds, atoms=["N", 
         print('Loading the reference structure...')
     ppdb = PandasPdb().read_pdb(reference)
     use_atoms = np.zeros(ppdb.df['ATOM'].shape[0])
+    use_locs = np.zeros(ppdb.df['ATOM'].shape[0])
     for i,atom in enumerate(atoms): 
         use_atoms = use_atoms | (ppdb.df['ATOM']['atom_name'] == atom)
-    ref_ppdb = ppdb.df['ATOM'][(use_atoms) | 
-                               (ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) |
+    for i,loc in enumerate(alt_locs): 
+        use_locs = use_locs | (ppdb.df['ATOM']['alt_loc'] == loc)
+    ref_ppdb = ppdb.df['ATOM'][(use_atoms) & 
+                               (use_locs) & 
+                               (ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) &
                                (ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1])]
 
     shared_atom_set, filtered_strucs = determine_shared_atoms(
@@ -327,6 +353,7 @@ def calculate_strain_dict(structure_list, reference, resnum_bounds, atoms=["N", 
         reference_ppdb=ref_ppdb,
         resnum_bounds=resnum_bounds, 
         atoms=atoms, 
+        alt_locs=alt_locs,
         save=save, 
         verbose=verbose
     )
@@ -353,11 +380,16 @@ def calculate_strain_dict(structure_list, reference, resnum_bounds, atoms=["N", 
         # parse and then clean up the data 
         ppdb = PandasPdb().read_pdb(struc)
         use_atoms = np.zeros(ppdb.df['ATOM'].shape[0])
+        use_locs = np.zeros(ppdb.df['ATOM'].shape[0])
         for i,atom in enumerate(atoms): 
             use_atoms = use_atoms | (ppdb.df['ATOM']['atom_name'] == atom)
-        df = ppdb.df['ATOM'][(use_atoms) | 
-                             (ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) |
+        for i,loc in enumerate(alt_locs): 
+            use_locs = use_locs | (ppdb.df['ATOM']['alt_loc'] == loc)
+        df = ppdb.df['ATOM'][(use_atoms) & 
+                             (use_locs) & 
+                             (ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) &
                              (ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1])]
+        
 
         # determine coordinates for strain calculations 
         current_atom_set = set([tuple(x) for x in df[['residue_number', 'atom_name']].values.tolist()])
@@ -403,6 +435,12 @@ def calculate_strain_dict(structure_list, reference, resnum_bounds, atoms=["N", 
 
         if verbose: 
             print("Saving the strain_dict data!")
-        pickle.dump(strain_dict, open("strain_dict.pkl", "wb"))
+
+        if save_prefix is None: 
+            with open(f'strain_dict.pkl', 'wb') as f: 
+                pickle.dump(strain_dict, f)
+        else: 
+            with open(f'{save_prefix}_strain_dict.pkl', 'wb') as f: 
+                pickle.dump(strain_dict, f)
 
     return strain_dict, shared_atom_set

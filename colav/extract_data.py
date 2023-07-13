@@ -1,11 +1,13 @@
 
-import os, pickle
+import os, pickle, warnings 
 import numpy as np 
 from biopandas.pdb import PandasPdb
 from itertools import combinations
 from colav.strain_analysis import *
 from colav.internal_coordinates import * 
 from scipy.spatial.distance import pdist
+
+warnings.filterwarnings('ignore')
 
 def calculate_dh_tl(raw_dihedral_loading): 
     '''Adjusts raw dihedral loading for interpretability. 
@@ -22,16 +24,16 @@ def calculate_dh_tl(raw_dihedral_loading):
 
     Returns: 
     --------
-    tl : array_like, (N/2,)
+    tranformed_dihedral_loading : array_like, (N/2,)
         Array of transformed loading to determine relative angle influence in the given 
         loading. 
     '''
     
-    tl = np.sqrt(np.power(raw_dihedral_loading[:raw_dihedral_loading.shape[0]//2],2) + \
+    tranformed_dihedral_loading = np.sqrt(np.power(raw_dihedral_loading[:raw_dihedral_loading.shape[0]//2],2) + \
                           np.power(raw_dihedral_loading[raw_dihedral_loading.shape[0]//2:],2))
-    return tl
+    return tranformed_dihedral_loading
 
-def generate_dihedral_matrix(structure_list, resnum_bounds, no_psi=False, no_omega=False, no_phi=False, save=False, verbose=False): 
+def generate_dihedral_matrix(structure_list, resnum_bounds, no_psi=False, no_omega=False, no_phi=False, save=False, save_prefix=None, verbose=False): 
     '''Extracts dihedrals angles from given structures. 
 
     Extracts and returns a data matrix of (observations x features) with the given structures as observations
@@ -54,10 +56,13 @@ def generate_dihedral_matrix(structure_list, resnum_bounds, no_psi=False, no_ome
         Indicator to exclude omega dihedral angle from returned dihedral angles. 
 
     no_phi : bool, optional 
-        Indicator to exclude phi dihedral angle from returne dihedral angles. 
+        Indicator to exclude phi dihedral angle from returned dihedral angles. 
 
     save : bool, optional 
         Indicator to save results. 
+
+    save_prefix : str 
+        If saving results, prefix for pickle save file. 
 
     verbose : bool, optional 
         Indicator for verbose output. 
@@ -85,31 +90,80 @@ def generate_dihedral_matrix(structure_list, resnum_bounds, no_psi=False, no_ome
         if verbose: 
             print(f"Attempting to calculate for {struc}")
         ppdb = PandasPdb().read_pdb(struc)
-        ppdb.df['ATOM'] = ppdb.df['ATOM'].loc[(ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) & 
-                                              (ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1])]
-        if np.unique(ppdb.df['ATOM']['residue_number'].values).shape[0] != (resnum_bounds[1] - resnum_bounds[0] + 1): 
+        mainchain = ppdb.df['ATOM'].loc[(ppdb.df['ATOM']['atom_name'] == 'N') | # choose the correct atoms 
+                                        (ppdb.df['ATOM']['atom_name'] == 'CA')|
+                                        (ppdb.df['ATOM']['atom_name'] == 'C')]
+        mainchain = mainchain.loc[(mainchain['residue_number'] >= resnum_bounds[0]) & # choose the correct residue numbers 
+                                  (mainchain['residue_number'] <= resnum_bounds[1])]
+        mainchain = mainchain.loc[(mainchain['alt_loc'] == '') |  # choose the A alt_loc if there are any 
+                                  (mainchain['alt_loc'] == 'A')]
+        if np.unique(mainchain.residue_number.values).shape[0] != (resnum_bounds[1] - resnum_bounds[0] + 1): 
             if verbose: 
                 print(f"Skipping {struc}; insufficient atoms!")
             continue
         
-        raw_dihedrals.append(calculate_backbone_dihedrals(ppdb=ppdb, 
-                                                 resnum_bounds=resnum_bounds, 
-                                                 no_psi=no_psi, 
-                                                 no_omega=no_omega, 
-                                                 no_phi=no_phi, 
-                                                 verbose=verbose
-                                                 )
-                    )
+        dihedrals = calculate_backbone_dihedrals(
+            ppdb=ppdb, 
+            resnum_bounds=resnum_bounds, 
+            no_psi=no_psi, 
+            no_omega=no_omega, 
+            no_phi=no_phi, 
+            verbose=verbose
+        )
+
+        raw_dihedrals.append(dihedrals)
         dihedral_strucs.append(struc)
 
     raw_dihedrals = np.array(raw_dihedrals).reshape(len(dihedral_strucs), -1)
     
     # save the results of the calculation as a np array if desired 
     if save: 
-        with open('dihedral_data_matrix.npy', 'wb') as f: 
-            np.save(f, raw_dihedrals)
+
+        if verbose: 
+            print('Saving dh_dict data!')
+        # create a dictionary to store the data matrix and structures 
+        dh_dict = {
+            'data_matrix': raw_dihedrals, 
+            'structures': dihedral_strucs
+        }
+
+        # save with prefix if it is given
+        if save_prefix is None: 
+            with open(f'dh_dict.pkl', 'wb') as f: 
+                pickle.dump(dh_dict, f)
+
+        else: 
+            with open(f'{save_prefix}_dh_dict.pkl', 'wb') as f: 
+                pickle.dump(dh_dict, f)
 
     return raw_dihedrals, dihedral_strucs
+
+def load_dihedral_matrix(dh_pkl): 
+    '''Loads the dihedral data matrix and corresponding structures 
+
+    Loads a dictionary containing the dihedral data matrix as `data_matrix` key 
+    and the corresponding structures as `structures` key
+
+    Parameters: 
+    -----------
+    dh_pkl : str
+        File path to the dihedral dictionary pickle file.
+    
+    Returns: 
+    --------
+    dh_data_matrix : array_like 
+        Array containing dihedral angles as calculated by `generated_dihedral_matrix`. 
+    
+    dh_strucs : list of str
+        List of structures ordered as stored in `dh_data_matrix`.
+    '''
+
+    # load the dictionary information 
+    db = pickle.load(open(f'{dh_pkl}', 'rb'))
+    dh_data_matrix = db['data_matrix']
+    dh_strucs = db['structures']
+
+    return dh_data_matrix, dh_strucs
 
 def calculate_pw_tl(raw_pw_loading, resnum_bounds): 
     '''Adjusts raw pairwise distance loading for interpretability. 
@@ -126,12 +180,12 @@ def calculate_pw_tl(raw_pw_loading, resnum_bounds):
 
     Returns: 
     --------
-    tl : array_like, (N/2,)
+    tranformed_pw_loading : array_like, (N/2,)
         Array of transformed loading to determine relative residue influence in the given loading. 
     '''
     
     # initialize array to store the contributions 
-    tl = np.zeros(resnum_bounds[1]-resnum_bounds[0]+1)
+    tranformed_pw_loading = np.zeros(resnum_bounds[1]-resnum_bounds[0]+1)
     
     # create array of residue combos 
     pw_combos = np.array(list(combinations(np.arange(resnum_bounds[0], resnum_bounds[1]+1), 2)))
@@ -140,12 +194,12 @@ def calculate_pw_tl(raw_pw_loading, resnum_bounds):
     for i,combo in enumerate(pw_combos): 
         
         # access the residues and add contributions for both contributors 
-        tl[combo[0]-resnum_bounds[0]] += np.abs(raw_pw_loading[i])
-        tl[combo[1]-resnum_bounds[0]] += np.abs(raw_pw_loading[i])
+        tranformed_pw_loading[combo[0]-resnum_bounds[0]] += np.abs(raw_pw_loading[i])
+        tranformed_pw_loading[combo[1]-resnum_bounds[0]] += np.abs(raw_pw_loading[i])
         
-    return tl
+    return tranformed_pw_loading
 
-def generate_pw_matrix(structure_list, resnum_bounds, save=False, verbose=False): 
+def generate_pw_matrix(structure_list, resnum_bounds, save=False, save_prefix=None, verbose=False): 
     '''Extracts pairwise distances from given structures. 
 
     Extracts and returns a data matrix of (observations x features) with the given structures as observations
@@ -162,6 +216,9 @@ def generate_pw_matrix(structure_list, resnum_bounds, save=False, verbose=False)
 
     save : bool, optional 
         Indicator to save results. 
+
+    save_prefix : str
+        If saving results, prefix for pickle save file. 
 
     verbose : bool, optional 
         Indicator for verbose output. 
@@ -189,9 +246,12 @@ def generate_pw_matrix(structure_list, resnum_bounds, save=False, verbose=False)
         if verbose: 
             print(f'Attempting to calculate for {struc}')
         ppdb = PandasPdb().read_pdb(struc)
-        cas = ppdb.df['ATOM'][(ppdb.df['ATOM']['atom_name'] == 'CA') & 
-                              (ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) & 
-                              (ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1])]
+        cas = ppdb.df['ATOM'][(ppdb.df['ATOM']['atom_name'] == 'CA')] # choose the correct atoms 
+        cas.loc[(ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) & # choose the correct residue numbers 
+                (ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1])]
+        cas.loc[(ppdb.df['ATOM']['alt_loc'] == '') |  # choose the A alt_loc if there are any 
+                (ppdb.df['ATOM']['alt_loc'] == 'A')]
+        cas = cas.reset_index()
 
         # check that all pairs of CA atoms are present 
         if cas.shape[0] != (resnum_bounds[1] - resnum_bounds[0] + 1): 
@@ -200,15 +260,58 @@ def generate_pw_matrix(structure_list, resnum_bounds, save=False, verbose=False)
             continue
         
         # retrieve the CA coordinate information and calculate pairwise distances
-        pw_dist.append(pdist(cas[['x_coord', 'y_coord', 'z_coord']].to_numpy()))
         pw_strucs.append(struc)
+        pw_dist.append(pdist(cas[['x_coord', 'y_coord', 'z_coord']].to_numpy()))
 
     pw_data_matrix = np.array(pw_dist).reshape(len(pw_strucs), -1)
 
     # save the results of the calculation as a np array if desired 
     if save: 
-        with open('pw_data_matrix.npy', 'wb') as f: 
-            np.save(f, pw_data_matrix)
+
+        if verbose: 
+            print('Saving the pw_dict data!')
+
+        # create a dictionary to store the data matrix and structures 
+        pw_dict = {
+            'data_matrix': pw_data_matrix, 
+            'structures': pw_strucs
+        }
+
+        # save with prefix if it is given
+        if save_prefix is None: 
+            with open(f'pw_dict.pkl', 'wb') as f: 
+                pickle.dump(pw_dict, f)
+
+        else: 
+            with open(f'{save_prefix}_pw_dict.pkl', 'wb') as f: 
+                pickle.dump(pw_dict, f)
+
+    return pw_data_matrix, pw_strucs
+
+def load_pw_matrix(pw_pkl): 
+    '''Loads the pairwise distance data matrix and corresponding structures 
+
+    Loads a dictionary containing the pairwise distance data matrix as `data_matrix` key 
+    and the corresponding structures as `structures` key
+
+    Parameters: 
+    -----------
+    pw_pkl : str
+        File path to the pairwise distance dictionary pickle file.
+    
+    Returns: 
+    --------
+    pw_data_matrix : array_like 
+        Array containing dihedral angles as calculated by `generated_pw_matrix`. 
+    
+    pw_strucs : list of str
+        List of structures ordered as stored in `pw_data_matrix`.
+    '''
+
+    # load the dictionary information 
+    db = pickle.load(open(f'{pw_pkl}', 'rb'))
+    pw_data_matrix = db['data_matrix']
+    pw_strucs = db['structures']
 
     return pw_data_matrix, pw_strucs
 
@@ -229,7 +332,7 @@ def calculate_sa_tl(raw_sa_loading, shared_atom_list):
 
     Returns: 
     --------
-    tl : array_like 
+    tranformed_sa_loading : array_like 
         Array of transformed loading to determine relative residue influence in the given loading. 
     '''
     
@@ -247,17 +350,17 @@ def calculate_sa_tl(raw_sa_loading, shared_atom_list):
     unq_resnums = np.unique(resnum_list)
     
     # initialize array to store the contributions
-    tl = np.zeros(unq_resnums.shape)
+    tranformed_sa_loading = np.zeros(unq_resnums.shape)
     
     # iterate through residue numbers 
     for i,resnum in enumerate(unq_resnums): 
         
         # access the contributions and sum 
-        tl[i] += np.sum(atomic_contributions[resnum_list == resnum])
+        tranformed_sa_loading[i] += np.sum(atomic_contributions[resnum_list == resnum])
         
-    return tl
+    return tranformed_sa_loading
 
-def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], save=True, verbose=False): 
+def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], save=True, save_prefix=None, verbose=False): 
     '''Extracts strain tensors, shear tensors, or shear energies from given structures. 
 
     Extracts and returns a data matrix of (observations x features) with the given structures as observations
@@ -284,6 +387,9 @@ def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_boun
 
     save : bool, optional 
         Indicator to save results. 
+
+    save_prefix : str 
+        If saving results, prefix for pickle save file. 
 
     verbose : bool, optional 
         Indicator for verbose output. 

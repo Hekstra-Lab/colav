@@ -85,11 +85,13 @@ def calculate_backbone_dihedrals(ppdb, resnum_bounds, no_psi=False, no_omega=Fal
     dihedrals = list()
 
     # get only atoms that are relevant for the calculation 
-    mainchain = ppdb.df['ATOM'].loc[(ppdb.df['ATOM']['atom_name'] == 'N') |
+    mainchain = ppdb.df['ATOM'].loc[(ppdb.df['ATOM']['atom_name'] == 'N') | # choose the correct atoms 
                                     (ppdb.df['ATOM']['atom_name'] == 'CA')|
                                     (ppdb.df['ATOM']['atom_name'] == 'C')]
-    mainchain = mainchain.loc[(ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) &
-                            (ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1])]
+    mainchain = mainchain.loc[(mainchain['residue_number'] >= resnum_bounds[0]) & # choose the correct residue numbers 
+                              (mainchain['residue_number'] <= resnum_bounds[1])]
+    mainchain = mainchain.loc[(mainchain['alt_loc'] == '') |  # choose the A alt_loc if there are any 
+                              (mainchain['alt_loc'] == 'A')]
     mainchain = mainchain.reset_index()
 
     # get indices of the "C" backbone atoms 
@@ -147,11 +149,16 @@ def calculate_bond_angles(ppdb, resnum_bounds):
     '''
 
     # get the desired coordinates for the current structure 
-    mainchain = ppdb.df['ATOM'][(ppdb.df['ATOM']['atom_name'] == 'N') |
-                                (ppdb.df['ATOM']['atom_name'] == 'CA')|
-                                (ppdb.df['ATOM']['atom_name'] == 'C') |
-                                (ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) |
-                                (ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1])]
+    mainchain = ppdb.df['ATOM'].loc[(ppdb.df['ATOM']['atom_name'] == 'N') | # choose the correct atoms 
+                                    (ppdb.df['ATOM']['atom_name'] == 'CA')|
+                                    (ppdb.df['ATOM']['atom_name'] == 'C')
+                                   ]
+    mainchain = mainchain.loc[(mainchain['residue_number'] >= resnum_bounds[0]) & # choose the correct residue numbers 
+                              (mainchain['residue_number'] <= resnum_bounds[1])
+                             ]
+    mainchain = mainchain.loc[(mainchain['alt_loc'] == '') |  # choose the A alt_loc if there are any 
+                              (mainchain['alt_loc'] == 'A')]
+    mainchain = mainchain.reset_index()
     mainchain_coords = mainchain[['x_coord', 'y_coord', 'z_coord']].to_numpy()
 
     # calculate and normalize the difference vectors between coordinates
@@ -190,11 +197,16 @@ def calculate_bond_distances(ppdb, resnum_bounds):
     '''
 
     # get the desired coordinates for the current structure 
-    mainchain = ppdb.df['ATOM'][(ppdb.df['ATOM']['atom_name'] == 'N') |
-                                (ppdb.df['ATOM']['atom_name'] == 'CA')|
-                                (ppdb.df['ATOM']['atom_name'] == 'C') |
-                                (ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) |
-                                (ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1])]
+    mainchain = ppdb.df['ATOM'].loc[(ppdb.df['ATOM']['atom_name'] == 'N') | # choose the correct atoms 
+                                    (ppdb.df['ATOM']['atom_name'] == 'CA')|
+                                    (ppdb.df['ATOM']['atom_name'] == 'C')
+                                   ]
+    mainchain = mainchain.loc[(mainchain['residue_number'] >= resnum_bounds[0]) & # choose the correct residue numbers 
+                              (mainchain['residue_number'] <= resnum_bounds[1])
+                             ]
+    mainchain = mainchain.loc[(mainchain['alt_loc'] == '') |  # choose the A alt_loc if there are any 
+                              (mainchain['alt_loc'] == 'A')]
+    mainchain = mainchain.reset_index()
     mainchain_coords = mainchain[['x_coord', 'y_coord', 'z_coord']].to_numpy()
 
     # calculate the consecutive bond distances 
@@ -202,7 +214,7 @@ def calculate_bond_distances(ppdb, resnum_bounds):
 
     return np.array(bond_distances).astype("float64")
 
-def reconstruction(initial_coords, bond_angles, bond_distances, dihedral_angles): 
+def nerf_reconstruction(initial_coords, bond_angles, bond_distances, dihedral_angles): 
     '''Computes Cartesian coordinates of a protein using internal coordinates. 
     
     Computes the Cartesian coordinates of a polymer using an internal coordinate set 
