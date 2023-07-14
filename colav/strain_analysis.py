@@ -355,6 +355,7 @@ def calculate_strain_dict(structure_list, reference, resnum_bounds, atoms=["N", 
         atoms=atoms, 
         alt_locs=alt_locs,
         save=save, 
+        save_prefix=save_prefix,
         verbose=verbose
     )
 

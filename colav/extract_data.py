@@ -360,7 +360,7 @@ def calculate_sa_tl(raw_sa_loading, shared_atom_list):
         
     return tranformed_sa_loading
 
-def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], save=True, save_prefix=None, verbose=False): 
+def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], alt_locs=["", "A"], save=True, save_prefix=None, verbose=False): 
     '''Extracts strain tensors, shear tensors, or shear energies from given structures. 
 
     Extracts and returns a data matrix of (observations x features) with the given structures as observations
@@ -384,6 +384,9 @@ def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_boun
 
     atoms : array_like, optional 
         Array containing atom names. 
+
+    alt_locs : array_like, optional 
+        Array containing alternate location names. 
 
     save : bool, optional 
         Indicator to save results. 
@@ -411,7 +414,7 @@ def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_boun
 
     # if not then calculate the strain dictionary 
     else: 
-
+        
         if verbose: 
             print("There is no existing strain dictionary. Calculating...")
         strain_dict, atom_set = calculate_strain_dict(
@@ -419,7 +422,9 @@ def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_boun
             reference=reference_pdb, 
             resnum_bounds=resnum_bounds, 
             atoms=atoms, 
-            save=save, 
+            alt_locs=alt_locs,
+            save=False, 
+            save_prefix=save_prefix, 
             verbose=verbose
         )
 
@@ -457,61 +462,52 @@ def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_boun
         sa_data_matrix.append(processed)
         sa_strucs.append(key)
 
+    # save the results of the calculation as a np array if desired 
+    if save: 
+
+        if verbose: 
+            print('Saving the sa_dict data!')
+
+        # create a dictionary to store the data matrix and structures 
+        sa_dict = {
+            'data_matrix': sa_data_matrix, 
+            'structures': sa_strucs
+        }
+
+        # save with prefix if it is given
+        if save_prefix is None: 
+            with open(f'sa_dict.pkl', 'wb') as f: 
+                pickle.dump(sa_dict, f)
+
+        else: 
+            with open(f'{save_prefix}_sa_{data_type}_dict.pkl', 'wb') as f: 
+                pickle.dump(sa_dict, f)
+
     return np.array(sa_data_matrix), sa_strucs
 
-def load_strain_matrix(strain_pkl, data_type): 
-    '''Loads a strain analysis data matrix using an existing strain dictionary. 
+def load_strain_matrix(strain_pkl): 
+    '''Loads the strain data matrix and corresponding structures 
+
+    Loads a dictionary containing the strain data matrix as `data_matrix` key 
+    and the corresponding structures as `structures` key
 
     Parameters: 
     -----------
     strain_pkl : str
-        File path to the strain dictionary pickle file. 
-
-    data_type : {'straint', 'sheart', 'sheare'}
-        Indicator for type of data to build data matrix. 
-
+        File path to the strain dictionary pickle file.
+    
     Returns: 
     --------
     sa_data_matrix : array_like 
-        Array containing strain or shear tensor information structures in `structure_list`, 
-        excluding structures missing desired atoms.
-
+        Array containing dihedral angles as calculated by `generated_sa_matrix`. 
+    
     sa_strucs : list of str
-        List of structures ordered as stored in the `sa_data_matrix`. 
+        List of structures ordered as stored in `sa_data_matrix`.
     '''
-        
-    strain_dict = pickle.load(open(f"{strain_pkl}", "rb"))
 
-    # generate the data matrix and structure list 
-    sa_data_matrix = list()
-    sa_strucs = list()
+    # load the dictionary information 
+    db = pickle.load(open(f'{strain_pkl}', 'rb'))
+    sa_data_matrix = db['data_matrix']
+    sa_strucs = db['structures']
 
-    print(f"Generating desired {data_type} data matrix...")
-    # iterate through the keys of the shear dictionary and filtered structures 
-    for key in strain_dict.keys():
-
-        # access the data
-        atom_data = strain_dict[key][data_type][strain_dict[key]["atom_idxs"]]
-
-        # get the B-factors and shape the correction scale
-        bfacs = np.sqrt(strain_dict[key]["bfacs"][strain_dict[key]["atom_idxs"]])
-
-        # choose the correction to match the strain/shear data selected for analysis
-        if data_type == "sheart" or data_type == "straint": 
-            correction = np.hstack([bfacs[:,None], bfacs[:,None], bfacs[:,None]]).flatten()
-            processed = np.array([tensor[np.triu_indices(3,1)] for tensor in atom_data]).flatten() # off diagonals
-
-        elif data_type == "sheare":
-            correction = bfacs
-            processed = np.array(atom_data)
-
-        else: 
-            ValueError
-
-        processed /= correction 
-
-        # store the data
-        sa_data_matrix.append(processed)
-        sa_strucs.append(key)
-
-    return np.array(sa_data_matrix), sa_strucs
+    return sa_data_matrix, sa_strucs
