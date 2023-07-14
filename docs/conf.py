@@ -3,6 +3,17 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+# -- Path setup --------------------------------------------------------------
+
+import inspect
+
+# If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here. If the directory is relative to the
+# documentation root, use os.path.abspath to make it absolute, like shown here.
+#
+import os
+import sys
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
@@ -15,7 +26,7 @@ release = '0.0.1'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'myst-parser', 
+    'myst_parser', 
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon', 
     'sphinx_rtd_theme'
