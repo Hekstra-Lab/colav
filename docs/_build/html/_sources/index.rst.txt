@@ -10,8 +10,9 @@ Welcome to colav's documentation!
    :maxdepth: 2
    :caption: Contents:
       
-   colav.md
-   modules.rst
+   extract_data.rst
+   internal_coordinates.rst
+   strain_analysis.rst
 
 
 Indices and tables
