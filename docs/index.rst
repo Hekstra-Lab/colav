@@ -11,7 +11,7 @@ Welcome to colav's documentation!
    :caption: Contents:
       
    colav.md
-   modules.rst
+   modules.md
 
 
 Indices and tables
