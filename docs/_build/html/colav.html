@@ -6,42 +6,28 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>colav package &#8212; colav 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
-    
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="colav" href="modules.html" />
-    <link rel="prev" title="Welcome to colav’s documentation!" href="../index.html" /> 
+    <title>colav package &#8212; colav 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="modules.html" title="colav"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="../index.html" title="Welcome to colav’s documentation!"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">colav 0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">colav package</a></li> 
-      </ul>
-    </div>  
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <section id="colav-package">
@@ -49,11 +35,11 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
-<section id="module-colav.extract_data_matrix">
-<span id="colav-extract-data-matrix-module"></span><h2>colav.extract_data_matrix module<a class="headerlink" href="#module-colav.extract_data_matrix" title="Permalink to this heading">¶</a></h2>
+<section id="module-colav.extract_data">
+<span id="colav-extract-data-module"></span><h2>colav.extract_data module<a class="headerlink" href="#module-colav.extract_data" title="Permalink to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="colav.extract_data_matrix.calculate_dh_tl">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data_matrix.</span></span><span class="sig-name descname"><span class="pre">calculate_dh_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_dihedral_loading</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data_matrix.calculate_dh_tl" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colav.extract_data.calculate_dh_tl">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_dh_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_dihedral_loading</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_dh_tl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adjusts raw dihedral loading for interpretability.</p>
 <p>Calculates a transformed loading from a raw loading of dihedral angle features to account
 for the application of sine and cosine functions.</p>
@@ -76,8 +62,8 @@ loading.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="colav.extract_data_matrix.calculate_pw_tl">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data_matrix.</span></span><span class="sig-name descname"><span class="pre">calculate_pw_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_pw_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data_matrix.calculate_pw_tl" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colav.extract_data.calculate_pw_tl">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_pw_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_pw_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_pw_tl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adjusts raw pairwise distance loading for interpretability.</p>
 <p>Calculates a transformed loading from a raw loading of pairwise distance features to account
 for all pairings of residues.</p>
@@ -99,8 +85,8 @@ for all pairings of residues.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="colav.extract_data_matrix.calculate_sa_tl">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data_matrix.</span></span><span class="sig-name descname"><span class="pre">calculate_sa_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_sa_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_atom_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data_matrix.calculate_sa_tl" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colav.extract_data.calculate_sa_tl">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_sa_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_sa_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_atom_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_sa_tl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adjusts raw strain or shear loading for interpretability.</p>
 <p>Calculates a transformed loading from a raw loading of strain or shear tensor features.</p>
 <p>Returns a transformed loading.</p>
@@ -123,8 +109,8 @@ for all pairings of residues.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="colav.extract_data_matrix.generate_dihedral_matrix">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data_matrix.</span></span><span class="sig-name descname"><span class="pre">generate_dihedral_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_psi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_omega</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data_matrix.generate_dihedral_matrix" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colav.extract_data.generate_dihedral_matrix">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">generate_dihedral_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_psi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_omega</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.generate_dihedral_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extracts dihedrals angles from given structures.</p>
 <p>Extracts and returns a data matrix of (observations x features) with the given structures as observations
 and the linearized dihedral angles (by applying sine and cosine functions) as features.
@@ -141,9 +127,11 @@ given residue numbers.</p>
 </dd>
 <dt>no_omega<span class="classifier">bool, optional</span></dt><dd><p>Indicator to exclude omega dihedral angle from returned dihedral angles.</p>
 </dd>
-<dt>no_phi<span class="classifier">bool, optional</span></dt><dd><p>Indicator to exclude phi dihedral angle from returne dihedral angles.</p>
+<dt>no_phi<span class="classifier">bool, optional</span></dt><dd><p>Indicator to exclude phi dihedral angle from returned dihedral angles.</p>
 </dd>
 <dt>save<span class="classifier">bool, optional</span></dt><dd><p>Indicator to save results.</p>
+</dd>
+<dt>save_prefix<span class="classifier">str</span></dt><dd><p>If saving results, prefix for pickle save file.</p>
 </dd>
 <dt>verbose<span class="classifier">bool, optional</span></dt><dd><p>Indicator for verbose output.</p>
 </dd>
@@ -162,8 +150,8 @@ excluding structures missing desired atoms.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="colav.extract_data_matrix.generate_pw_matrix">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data_matrix.</span></span><span class="sig-name descname"><span class="pre">generate_pw_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data_matrix.generate_pw_matrix" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colav.extract_data.generate_pw_matrix">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">generate_pw_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.generate_pw_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extracts pairwise distances from given structures.</p>
 <p>Extracts and returns a data matrix of (observations x features) with the given structures as observations
 and the pairwise distances between alpha carbon (CA) atoms as features. Cannot handle missing
@@ -176,6 +164,8 @@ coordinates and skips structures with missing CA atoms within the given residue 
 <dt>resnum_bounds<span class="classifier">tuple</span></dt><dd><p>Tuple containing the minimum and maximum (inclusive) residue number values.</p>
 </dd>
 <dt>save<span class="classifier">bool, optional</span></dt><dd><p>Indicator to save results.</p>
+</dd>
+<dt>save_prefix<span class="classifier">str</span></dt><dd><p>If saving results, prefix for pickle save file.</p>
 </dd>
 <dt>verbose<span class="classifier">bool, optional</span></dt><dd><p>Indicator for verbose output.</p>
 </dd>
@@ -194,8 +184,8 @@ in <cite>structure_list</cite>, excluding structures missing desired atoms.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="colav.extract_data_matrix.generate_strain_matrix">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data_matrix.</span></span><span class="sig-name descname"><span class="pre">generate_strain_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_pdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['N',</span> <span class="pre">'C',</span> <span class="pre">'CA',</span> <span class="pre">'CB',</span> <span class="pre">'O']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data_matrix.generate_strain_matrix" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colav.extract_data.generate_strain_matrix">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">generate_strain_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_pdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['N',</span> <span class="pre">'C',</span> <span class="pre">'CA',</span> <span class="pre">'CB',</span> <span class="pre">'O']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_locs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['',</span> <span class="pre">'A']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.generate_strain_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extracts strain tensors, shear tensors, or shear energies from given structures.</p>
 <p>Extracts and returns a data matrix of (observations x features) with the given structures as observations
 and strain tensors, shear tensors, or shear energies. For tensor features, only the off-diagonal
@@ -214,7 +204,11 @@ backbone atoms within the given residue numbers.</p>
 </dd>
 <dt>atoms<span class="classifier">array_like, optional</span></dt><dd><p>Array containing atom names.</p>
 </dd>
+<dt>alt_locs<span class="classifier">array_like, optional</span></dt><dd><p>Array containing alternate location names.</p>
+</dd>
 <dt>save<span class="classifier">bool, optional</span></dt><dd><p>Indicator to save results.</p>
+</dd>
+<dt>save_prefix<span class="classifier">str</span></dt><dd><p>If saving results, prefix for pickle save file.</p>
 </dd>
 <dt>verbose<span class="classifier">bool, optional</span></dt><dd><p>Indicator for verbose output.</p>
 </dd>
@@ -233,25 +227,72 @@ excluding structures missing desired atoms.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="colav.extract_data_matrix.load_strain_matrix">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data_matrix.</span></span><span class="sig-name descname"><span class="pre">load_strain_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strain_pkl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data_matrix.load_strain_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads a strain analysis data matrix using an existing strain dictionary.</p>
+<dt class="sig sig-object py" id="colav.extract_data.load_dihedral_matrix">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">load_dihedral_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dh_pkl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.load_dihedral_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the dihedral data matrix and corresponding structures</p>
+<p>Loads a dictionary containing the dihedral data matrix as <cite>data_matrix</cite> key
+and the corresponding structures as <cite>structures</cite> key</p>
 <section id="id11">
 <h3>Parameters:<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
-<dt>strain_pkl<span class="classifier">str</span></dt><dd><p>File path to the strain dictionary pickle file.</p>
-</dd>
-<dt>data_type<span class="classifier">{‘straint’, ‘sheart’, ‘sheare’}</span></dt><dd><p>Indicator for type of data to build data matrix.</p>
+<dt>dh_pkl<span class="classifier">str</span></dt><dd><p>File path to the dihedral dictionary pickle file.</p>
 </dd>
 </dl>
 </section>
 <section id="id12">
 <h3>Returns:<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
-<dt>sa_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing strain or shear tensor information structures in <cite>structure_list</cite>,
-excluding structures missing desired atoms.</p>
+<dt>dh_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing dihedral angles as calculated by <cite>generated_dihedral_matrix</cite>.</p>
 </dd>
-<dt>sa_strucs<span class="classifier">list of str</span></dt><dd><p>List of structures ordered as stored in the <cite>sa_data_matrix</cite>.</p>
+<dt>dh_strucs<span class="classifier">list of str</span></dt><dd><p>List of structures ordered as stored in <cite>dh_data_matrix</cite>.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colav.extract_data.load_pw_matrix">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">load_pw_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pw_pkl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.load_pw_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the pairwise distance data matrix and corresponding structures</p>
+<p>Loads a dictionary containing the pairwise distance data matrix as <cite>data_matrix</cite> key
+and the corresponding structures as <cite>structures</cite> key</p>
+<section id="id13">
+<h3>Parameters:<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h3>
+<dl class="simple">
+<dt>pw_pkl<span class="classifier">str</span></dt><dd><p>File path to the pairwise distance dictionary pickle file.</p>
+</dd>
+</dl>
+</section>
+<section id="id14">
+<h3>Returns:<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h3>
+<dl class="simple">
+<dt>pw_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing dihedral angles as calculated by <cite>generated_pw_matrix</cite>.</p>
+</dd>
+<dt>pw_strucs<span class="classifier">list of str</span></dt><dd><p>List of structures ordered as stored in <cite>pw_data_matrix</cite>.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colav.extract_data.load_strain_matrix">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">load_strain_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strain_pkl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.load_strain_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the strain data matrix and corresponding structures</p>
+<p>Loads a dictionary containing the strain data matrix as <cite>data_matrix</cite> key
+and the corresponding structures as <cite>structures</cite> key</p>
+<section id="id15">
+<h3>Parameters:<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h3>
+<dl class="simple">
+<dt>strain_pkl<span class="classifier">str</span></dt><dd><p>File path to the strain dictionary pickle file.</p>
+</dd>
+</dl>
+</section>
+<section id="id16">
+<h3>Returns:<a class="headerlink" href="#id16" title="Permalink to this heading">¶</a></h3>
+<dl class="simple">
+<dt>sa_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing dihedral angles as calculated by <cite>generated_sa_matrix</cite>.</p>
+</dd>
+<dt>sa_strucs<span class="classifier">list of str</span></dt><dd><p>List of structures ordered as stored in <cite>sa_data_matrix</cite>.</p>
 </dd>
 </dl>
 </section>
@@ -267,8 +308,8 @@ excluding structures missing desired atoms.</p>
 order) of consecutive residues.</p>
 <p>Returns the desired dihedral angles in order between <cite>resnum_bounds</cite>
 as an array.</p>
-<section id="id13">
-<h3>Parameters:<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h3>
+<section id="id17">
+<h3>Parameters:<a class="headerlink" href="#id17" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>ppdb<span class="classifier">PandasPdb</span></dt><dd><p>Dataframe containing the target protein structure (preferably one chain).</p>
 </dd>
@@ -285,8 +326,8 @@ for calculating the desired dihedral angles.</p>
 </dd>
 </dl>
 </section>
-<section id="id14">
-<h3>Returns:<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h3>
+<section id="id18">
+<h3>Returns:<a class="headerlink" href="#id18" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>dihedrals<span class="classifier">array_like</span></dt><dd><p>Desired dihedral angles in order between <cite>resnum_bounds</cite>.</p>
 </dd>
@@ -299,8 +340,8 @@ for calculating the desired dihedral angles.</p>
 <span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">calculate_bond_angles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ppdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.internal_coordinates.calculate_bond_angles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the bond angles between consecutive residues.</p>
 <p>Returns the bond angles in order between <cite>resnum_bounds</cite>.</p>
-<section id="id15">
-<h3>Parameters:<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h3>
+<section id="id19">
+<h3>Parameters:<a class="headerlink" href="#id19" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>ppdb<span class="classifier">PandasPdb</span></dt><dd><p>Dataframe containing the target protein structure (preferably one chain).</p>
 </dd>
@@ -309,8 +350,8 @@ for calculating the desired dihedral angles</p>
 </dd>
 </dl>
 </section>
-<section id="id16">
-<h3>Returns:<a class="headerlink" href="#id16" title="Permalink to this heading">¶</a></h3>
+<section id="id20">
+<h3>Returns:<a class="headerlink" href="#id20" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>bond_angles<span class="classifier">array_like</span></dt><dd><p>Desired bond angles in order between <cite>resnum_bounds</cite>.</p>
 </dd>
@@ -323,8 +364,8 @@ for calculating the desired dihedral angles</p>
 <span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">calculate_bond_distances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ppdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.internal_coordinates.calculate_bond_distances" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the bond distances between consecutive residues.</p>
 <p>Returns the bond distances in order between <cite>resnum_bounds</cite>.</p>
-<section id="id17">
-<h3>Parameters:<a class="headerlink" href="#id17" title="Permalink to this heading">¶</a></h3>
+<section id="id21">
+<h3>Parameters:<a class="headerlink" href="#id21" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>ppdb<span class="classifier">BioPandas DataFrame</span></dt><dd><p>Dataframe containing the target protein structure (preferably one chain).</p>
 </dd>
@@ -333,8 +374,8 @@ for calculating the desired dihedral angles</p>
 </dd>
 </dl>
 </section>
-<section id="id18">
-<h3>Returns:<a class="headerlink" href="#id18" title="Permalink to this heading">¶</a></h3>
+<section id="id22">
+<h3>Returns:<a class="headerlink" href="#id22" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>bond_distances<span class="classifier">array_like</span></dt><dd><p>Desired bond distances in order between <cite>resnum_bounds</cite>.</p>
 </dd>
@@ -347,8 +388,8 @@ for calculating the desired dihedral angles</p>
 <span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">calculate_dihedral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.internal_coordinates.calculate_dihedral" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the dihedral angle between four points in three dimensions.</p>
 <p>Returns the dihedral angle.</p>
-<section id="id19">
-<h3>Parameters:<a class="headerlink" href="#id19" title="Permalink to this heading">¶</a></h3>
+<section id="id23">
+<h3>Parameters:<a class="headerlink" href="#id23" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>p0<span class="classifier">array_like</span></dt><dd><p>First coordinate defining the plane.</p>
 </dd>
@@ -360,8 +401,8 @@ for calculating the desired dihedral angles</p>
 </dd>
 </dl>
 </section>
-<section id="id20">
-<h3>Returns:<a class="headerlink" href="#id20" title="Permalink to this heading">¶</a></h3>
+<section id="id24">
+<h3>Returns:<a class="headerlink" href="#id24" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>dihedral_angle<span class="classifier">float</span></dt><dd><p>Computed dihedral angle between given points.</p>
 </dd>
@@ -370,8 +411,8 @@ for calculating the desired dihedral angles</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="colav.internal_coordinates.reconstruction">
-<span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">reconstruction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond_angles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond_distances</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dihedral_angles</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.internal_coordinates.reconstruction" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colav.internal_coordinates.nerf_reconstruction">
+<span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">nerf_reconstruction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond_angles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond_distances</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dihedral_angles</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.internal_coordinates.nerf_reconstruction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes Cartesian coordinates of a protein using internal coordinates.</p>
 <p>Computes the Cartesian coordinates of a polymer using an internal coordinate set
 of bond angles, bond distances, and dihedral angles. The algorithm is an
@@ -379,8 +420,8 @@ implementation of the natural-extension reference frame (NeRF) algorithm for pro
 atom reconstruction using N, CA, and C.</p>
 <p>See Parsons et al. (2005) in the Journal of Computational Chemistry for more information.</p>
 <p>Returns Cartesian coordinates (N x 3) for the protein backbone.</p>
-<section id="id21">
-<h3>Parameters:<a class="headerlink" href="#id21" title="Permalink to this heading">¶</a></h3>
+<section id="id25">
+<h3>Parameters:<a class="headerlink" href="#id25" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>initial_coords<span class="classifier">array_like</span></dt><dd><p>Initial coordinates of the first three atoms to initiate backbone reconstruction.</p>
 </dd>
@@ -398,8 +439,8 @@ atom reconstruction using N, CA, and C.</p>
 are required, and the size of the internal coordinate arrays must match AKA they must all
 be of size N.</p>
 </section>
-<section id="id22">
-<h3>Returns:<a class="headerlink" href="#id22" title="Permalink to this heading">¶</a></h3>
+<section id="id26">
+<h3>Returns:<a class="headerlink" href="#id26" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>mainchain_coords<span class="classifier">array_like</span></dt><dd><p>Cartesian coordinates determined by the supplied internal coordinates.</p>
 </dd>
@@ -415,8 +456,8 @@ be of size N.</p>
 <span class="sig-prename descclassname"><span class="pre">colav.strain_analysis.</span></span><span class="sig-name descname"><span class="pre">bfacs_from_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">struc_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sorted_atom_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.strain_analysis.bfacs_from_atoms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves and returns the B factors of the supplied strucure for
 the given atoms.</p>
-<section id="id23">
-<h3>Parameters:<a class="headerlink" href="#id23" title="Permalink to this heading">¶</a></h3>
+<section id="id27">
+<h3>Parameters:<a class="headerlink" href="#id27" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>struc_df<span class="classifier">PandasPdb (ATOM headers only)</span></dt><dd><p>Dataframe containing ATOM information of protein structure;
 e.g., ppdb.df[‘ATOM’].</p>
@@ -426,8 +467,8 @@ to retrieve the desired coordinate information.</p>
 </dd>
 </dl>
 </section>
-<section id="id24">
-<h3>Returns:<a class="headerlink" href="#id24" title="Permalink to this heading">¶</a></h3>
+<section id="id28">
+<h3>Returns:<a class="headerlink" href="#id28" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>bfacs<span class="classifier">array_like</span></dt><dd><p>Array of B factors for the atoms of the given structure.</p>
 </dd>
@@ -448,8 +489,8 @@ with radius 8 Angstroms.</p>
 atom) in <cite>def_coords</cite>.</p>
 <p>This code was heavily inspired by K. Ian White’s implementation of strain
 calculations in <cite>delta_r_analysis.py</cite> (not published).</p>
-<section id="id25">
-<h3>Parameters:<a class="headerlink" href="#id25" title="Permalink to this heading">¶</a></h3>
+<section id="id29">
+<h3>Parameters:<a class="headerlink" href="#id29" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>ref_coords<span class="classifier">array_like, (N x 3)</span></dt><dd><p>Cartesian coordinates (x, y, z) of atoms in the reference structure.</p>
 </dd>
@@ -464,8 +505,8 @@ reflecting errors in calculation (e.g., due to non-invertible matrices).</p>
 </dd>
 </dl>
 </section>
-<section id="id26">
-<h3>Returns:<a class="headerlink" href="#id26" title="Permalink to this heading">¶</a></h3>
+<section id="id30">
+<h3>Returns:<a class="headerlink" href="#id30" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>pos_shear_energy<span class="classifier">array_like, (N,)</span></dt><dd><p>Array of shear energies for each atom.</p>
 </dd>
@@ -479,15 +520,15 @@ reflecting errors in calculation (e.g., due to non-invertible matrices).</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.strain_analysis.calculate_strain_dict">
-<span class="sig-prename descclassname"><span class="pre">colav.strain_analysis.</span></span><span class="sig-name descname"><span class="pre">calculate_strain_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['N',</span> <span class="pre">'C',</span> <span class="pre">'CA',</span> <span class="pre">'CB',</span> <span class="pre">'O']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.strain_analysis.calculate_strain_dict" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.strain_analysis.</span></span><span class="sig-name descname"><span class="pre">calculate_strain_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['N',</span> <span class="pre">'C',</span> <span class="pre">'CA',</span> <span class="pre">'CB',</span> <span class="pre">'O']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_locs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['',</span> <span class="pre">'A']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.strain_analysis.calculate_strain_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores strain information in a dictionary for later ease of use.</p>
 <p>Constructs a dictionary object containing strain and shear information for all given
 structures in <cite>structure_list</cite> compared to the given reference structure within
 the given residue numbers (<cite>resnum_bounds</cite>) and using only the explicitly desired
 atoms (<cite>atoms</cite>). Note, ssumes that the numbering of residues in each of the structures
 is consistent across the entire data set.</p>
-<section id="id27">
-<h3>Parameters:<a class="headerlink" href="#id27" title="Permalink to this heading">¶</a></h3>
+<section id="id31">
+<h3>Parameters:<a class="headerlink" href="#id31" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>structure_list<span class="classifier">list of str</span></dt><dd><p>Array containing the file paths to PDB structures.</p>
 </dd>
@@ -499,14 +540,18 @@ for strain calculations.</p>
 </dd>
 <dt>atoms<span class="classifier">array_like, optional</span></dt><dd><p>Array containing atom names.</p>
 </dd>
+<dt>alt_locs<span class="classifier">array_like, optional</span></dt><dd><p>Array containing alternate location names.</p>
+</dd>
 <dt>save<span class="classifier">bool, optional</span></dt><dd><p>Indicator to save results.</p>
+</dd>
+<dt>save_prefix<span class="classifier">str</span></dt><dd><p>If saving results, prefix for pickle save file.</p>
 </dd>
 <dt>verbose<span class="classifier">bool, optional</span></dt><dd><p>Indicator for verbose output.</p>
 </dd>
 </dl>
 </section>
-<section id="id28">
-<h3>Returns:<a class="headerlink" href="#id28" title="Permalink to this heading">¶</a></h3>
+<section id="id32">
+<h3>Returns:<a class="headerlink" href="#id32" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>strain_dict<span class="classifier">dictionary</span></dt><dd><p>Dictionary containing results of strain calculations for the shared atoms of all
 structures in <cite>structure_list</cite> compared to <cite>reference</cite>.</p>
@@ -522,8 +567,8 @@ structures in <cite>structure_list</cite> compared to <cite>reference</cite>.</p
 <span class="sig-prename descclassname"><span class="pre">colav.strain_analysis.</span></span><span class="sig-name descname"><span class="pre">coords_from_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">struc_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sorted_atom_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.strain_analysis.coords_from_atoms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves and returns the Cartesian coordinates of the supplied strucure for
 the given atoms.</p>
-<section id="id29">
-<h3>Parameters:<a class="headerlink" href="#id29" title="Permalink to this heading">¶</a></h3>
+<section id="id33">
+<h3>Parameters:<a class="headerlink" href="#id33" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>struc_df<span class="classifier">PandasPdb (ATOM header only)</span></dt><dd><p>Dataframe containing ATOM information of protein structure;
 e.g., ppdb.df[‘ATOM’].</p>
@@ -533,8 +578,8 @@ to retrieve the desired coordinate information.</p>
 </dd>
 </dl>
 </section>
-<section id="id30">
-<h3>Returns:<a class="headerlink" href="#id30" title="Permalink to this heading">¶</a></h3>
+<section id="id34">
+<h3>Returns:<a class="headerlink" href="#id34" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>xyz_coords<span class="classifier">array_like, (N x 3)</span></dt><dd><p>Array of Cartesian coordinates for the atoms of the given structure.</p>
 </dd>
@@ -544,14 +589,14 @@ to retrieve the desired coordinate information.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.strain_analysis.determine_shared_atoms">
-<span class="sig-prename descclassname"><span class="pre">colav.strain_analysis.</span></span><span class="sig-name descname"><span class="pre">determine_shared_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_ppdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['N',</span> <span class="pre">'C',</span> <span class="pre">'CA',</span> <span class="pre">'CB',</span> <span class="pre">'O']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.strain_analysis.determine_shared_atoms" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.strain_analysis.</span></span><span class="sig-name descname"><span class="pre">determine_shared_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_ppdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['N',</span> <span class="pre">'C',</span> <span class="pre">'CA',</span> <span class="pre">'CB',</span> <span class="pre">'O']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_locs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['',</span> <span class="pre">'A']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.strain_analysis.determine_shared_atoms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines shared atoms across structures.</p>
 <p>Determines the shared atoms for all structures in a list and a given
 reference structure between given residue numbers (<cite>resnum_bounds</cite>) and for
 explicitly desired atoms (<cite>atoms</cite>).</p>
 <p>Returns the shared set of atoms for all given structures.</p>
-<section id="id31">
-<h3>Parameters:<a class="headerlink" href="#id31" title="Permalink to this heading">¶</a></h3>
+<section id="id35">
+<h3>Parameters:<a class="headerlink" href="#id35" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>structure_list<span class="classifier">list of str</span></dt><dd><p>Array containing the file paths to PDB structures.</p>
 </dd>
@@ -562,14 +607,18 @@ can be contained in <cite>structure_list</cite>.</p>
 </dd>
 <dt>atoms<span class="classifier">array_like, optional</span></dt><dd><p>Array containing atom names.</p>
 </dd>
+<dt>alt_locs<span class="classifier">array_like, optional</span></dt><dd><p>Array containing alternate location names.</p>
+</dd>
 <dt>save<span class="classifier">bool, optional</span></dt><dd><p>Indicator to save the shared atom set.</p>
+</dd>
+<dt>save_prefix<span class="classifier">str</span></dt><dd><p>If saving results, prefix for pickle save file.</p>
 </dd>
 <dt>verbose<span class="classifier">bool, optional</span></dt><dd><p>Indicator for verbose output.</p>
 </dd>
 </dl>
 </section>
-<section id="id32">
-<h3>Returns:<a class="headerlink" href="#id32" title="Permalink to this heading">¶</a></h3>
+<section id="id36">
+<h3>Returns:<a class="headerlink" href="#id36" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>ref_atom_set<span class="classifier">set</span></dt><dd><p>Set containing shared atoms for all structures in <cite>structure_list</cite>
 and <cite>reference_ppdb</cite>.</p>
@@ -588,102 +637,66 @@ atoms.</p>
 </section>
 
 
-            <div class="clearer"></div>
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">colav package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-colav.extract_data_matrix">colav.extract_data_matrix module</a><ul>
-<li><a class="reference internal" href="#colav.extract_data_matrix.calculate_dh_tl"><code class="docutils literal notranslate"><span class="pre">calculate_dh_tl()</span></code></a></li>
-<li><a class="reference internal" href="#colav.extract_data_matrix.calculate_pw_tl"><code class="docutils literal notranslate"><span class="pre">calculate_pw_tl()</span></code></a></li>
-<li><a class="reference internal" href="#colav.extract_data_matrix.calculate_sa_tl"><code class="docutils literal notranslate"><span class="pre">calculate_sa_tl()</span></code></a></li>
-<li><a class="reference internal" href="#colav.extract_data_matrix.generate_dihedral_matrix"><code class="docutils literal notranslate"><span class="pre">generate_dihedral_matrix()</span></code></a></li>
-<li><a class="reference internal" href="#colav.extract_data_matrix.generate_pw_matrix"><code class="docutils literal notranslate"><span class="pre">generate_pw_matrix()</span></code></a></li>
-<li><a class="reference internal" href="#colav.extract_data_matrix.generate_strain_matrix"><code class="docutils literal notranslate"><span class="pre">generate_strain_matrix()</span></code></a></li>
-<li><a class="reference internal" href="#colav.extract_data_matrix.load_strain_matrix"><code class="docutils literal notranslate"><span class="pre">load_strain_matrix()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-colav.internal_coordinates">colav.internal_coordinates module</a><ul>
-<li><a class="reference internal" href="#colav.internal_coordinates.calculate_backbone_dihedrals"><code class="docutils literal notranslate"><span class="pre">calculate_backbone_dihedrals()</span></code></a></li>
-<li><a class="reference internal" href="#colav.internal_coordinates.calculate_bond_angles"><code class="docutils literal notranslate"><span class="pre">calculate_bond_angles()</span></code></a></li>
-<li><a class="reference internal" href="#colav.internal_coordinates.calculate_bond_distances"><code class="docutils literal notranslate"><span class="pre">calculate_bond_distances()</span></code></a></li>
-<li><a class="reference internal" href="#colav.internal_coordinates.calculate_dihedral"><code class="docutils literal notranslate"><span class="pre">calculate_dihedral()</span></code></a></li>
-<li><a class="reference internal" href="#colav.internal_coordinates.reconstruction"><code class="docutils literal notranslate"><span class="pre">reconstruction()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-colav.strain_analysis">colav.strain_analysis module</a><ul>
-<li><a class="reference internal" href="#colav.strain_analysis.bfacs_from_atoms"><code class="docutils literal notranslate"><span class="pre">bfacs_from_atoms()</span></code></a></li>
-<li><a class="reference internal" href="#colav.strain_analysis.calculate_strain"><code class="docutils literal notranslate"><span class="pre">calculate_strain()</span></code></a></li>
-<li><a class="reference internal" href="#colav.strain_analysis.calculate_strain_dict"><code class="docutils literal notranslate"><span class="pre">calculate_strain_dict()</span></code></a></li>
-<li><a class="reference internal" href="#colav.strain_analysis.coords_from_atoms"><code class="docutils literal notranslate"><span class="pre">coords_from_atoms()</span></code></a></li>
-<li><a class="reference internal" href="#colav.strain_analysis.determine_shared_atoms"><code class="docutils literal notranslate"><span class="pre">determine_shared_atoms()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-colav">Module contents</a></li>
-</ul>
-</li>
-</ul>
+<h1 class="logo"><a href="index.html">colav</a></h1>
 
-  </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="../index.html"
-                          title="previous chapter">Welcome to colav’s documentation!</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="modules.html"
-                          title="next chapter">colav</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/source/colav.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
+    <form class="search" action="search.html" method="get">
       <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
 <script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="modules.html" title="colav"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="../index.html" title="Welcome to colav’s documentation!"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">colav 0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">colav package</a></li> 
-      </ul>
+    <div class="footer">
+      &copy;2023, Ammaar Saeed.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/colav.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Ammaar Saeed.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
-    </div>
+
+    
+
+    
   </body>
 </html>
