@@ -10,8 +10,8 @@ Welcome to colav's documentation!
    :maxdepth: 2
    :caption: Contents:
       
-   colav.md
-   modules.md
+   colav.rst
+   modules.rst
 
 
 Indices and tables
