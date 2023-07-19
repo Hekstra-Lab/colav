@@ -1,8 +1,0 @@
-LICENSE
-README.md
-setup.py
-colav/__init__.py
-colav.egg-info/PKG-INFO
-colav.egg-info/SOURCES.txt
-colav.egg-info/dependency_links.txt
-colav.egg-info/top_level.txt
