@@ -1,5 +1,27 @@
 
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
+name = "COLAV"
+version = "0.0.1"
+description = "Calculate structural representations (dihedral angles, CA pairwise distances, and strain analysis) for PCA"
+license = { text = "MIT License" } 
+authors = [
+  { name="Ammaar Saeed", email="aasaeed@college.harvard.edu" },
+]
+description = "A small example package"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
+]
 dependencies = [
     "numpy",
     "scipy",
@@ -8,11 +30,15 @@ dependencies = [
 ]
 
 # extras
-# https://peps.python.org/pep-0621/#dependencies-optional-dependencies
 [project.optional-dependencies]
-# test = ["pytest>=6.0", "pytest-cov"]
+test = ["pytest>=6.0", "pytest-cov"]
 docs = [
     "sphinx",
     "myst_parser",
     "sphinx_rtd_theme"
 ]
+
+[project.urls]
+homepage = "https://rs-station.github.io/colav/"
+repository = "https://github.com/rs-station/colav"
+
