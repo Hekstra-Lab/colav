@@ -11,7 +11,6 @@ license = { text = "MIT License" }
 authors = [
   { name="Ammaar Saeed", email="aasaeed@college.harvard.edu" },
 ]
-description = "A small example package"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
