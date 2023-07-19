@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>colav.strain_analysis module &mdash; colav 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="colav.internal_coordinates module" href="internal_coordinates.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            colav
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="extract_data.html">colav.extract_data module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internal_coordinates.html">colav.internal_coordinates module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">colav.strain_analysis module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#colav.strain_analysis.bfacs_from_atoms"><code class="docutils literal notranslate"><span class="pre">bfacs_from_atoms()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#colav.strain_analysis.calculate_strain"><code class="docutils literal notranslate"><span class="pre">calculate_strain()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#colav.strain_analysis.calculate_strain_dict"><code class="docutils literal notranslate"><span class="pre">calculate_strain_dict()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#colav.strain_analysis.coords_from_atoms"><code class="docutils literal notranslate"><span class="pre">coords_from_atoms()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#colav.strain_analysis.determine_shared_atoms"><code class="docutils literal notranslate"><span class="pre">determine_shared_atoms()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">colav</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">colav.strain_analysis module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/strain_analysis.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-colav.strain_analysis">
+<span id="colav-strain-analysis-module"></span><h1>colav.strain_analysis module<a class="headerlink" href="#module-colav.strain_analysis" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="colav.strain_analysis.bfacs_from_atoms">
+<span class="sig-prename descclassname"><span class="pre">colav.strain_analysis.</span></span><span class="sig-name descname"><span class="pre">bfacs_from_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">struc_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sorted_atom_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.strain_analysis.bfacs_from_atoms" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieves and returns the B factors of the supplied strucure for
+the given atoms.</p>
+<section id="parameters">
+<h2>Parameters:<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>struc_df<span class="classifier">PandasPdb (ATOM headers only)</span></dt><dd><p>Dataframe containing ATOM information of protein structure;
+e.g., ppdb.df[‘ATOM’].</p>
+</dd>
+<dt>sorted_atom_list<span class="classifier">array_like</span></dt><dd><p>Sorted list containing atoms (residue number and atom name) for which
+to retrieve the desired coordinate information.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h2>Returns:<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>bfacs<span class="classifier">array_like</span></dt><dd><p>Array of B factors for the atoms of the given structure.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colav.strain_analysis.calculate_strain">
+<span class="sig-prename descclassname"><span class="pre">colav.strain_analysis.</span></span><span class="sig-name descname"><span class="pre">calculate_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">def_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">err_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.strain_analysis.calculate_strain" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates strain quantities for a perturbed structure with respect to a reference.</p>
+<p>Calculates the positional shear energy, positional shear tensor, and positional
+shear tensor for the provided atoms by comparing the perturbed/deformed
+structure (<cite>def_coords</cite>) to the reference structure (<cite>ref_coords</cite>). Note,
+the atomic neighborhood of each atom is defined by a spherical shell
+with radius 8 Angstroms.</p>
+<p>Returns a shear energy, shear tensor, and strain tensor for each coordinate (i.e.,
+atom) in <cite>def_coords</cite>.</p>
+<p>This code was heavily inspired by K. Ian White’s implementation of strain
+calculations in <cite>delta_r_analysis.py</cite> (not published).</p>
+<section id="id1">
+<h2>Parameters:<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>ref_coords<span class="classifier">array_like, (N x 3)</span></dt><dd><p>Cartesian coordinates (x, y, z) of atoms in the reference structure.</p>
+</dd>
+<dt>def_coords<span class="classifier">array_like, (N x 3)</span></dt><dd><p>Cartesian coordinates (x, y, z) of atoms in the deformed structure.</p>
+</dd>
+<dt>min_dist<span class="classifier">int</span></dt><dd><p>Minimum distance to apply atomic neighborhood weighting scheme.</p>
+</dd>
+<dt>max_dist<span class="classifier">int</span></dt><dd><p>Maximum distance to apply atomic neighborhood weighting scheme.</p>
+</dd>
+<dt>err_threshold<span class="classifier">int</span></dt><dd><p>Threshold to ensure that the shear energies are not too large and potentially
+reflecting errors in calculation (e.g., due to non-invertible matrices).</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h2>Returns:<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>pos_shear_energy<span class="classifier">array_like, (N,)</span></dt><dd><p>Array of shear energies for each atom.</p>
+</dd>
+<dt>pos_shear_tensor<span class="classifier">array_like, (N x 3 x 3)</span></dt><dd><p>Array of shear tensors for each atom.</p>
+</dd>
+<dt>pos_strain_tensor<span class="classifier">array_like, (N x 3 x 3)</span></dt><dd><p>Array of strain tensors for each atom.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colav.strain_analysis.calculate_strain_dict">
+<span class="sig-prename descclassname"><span class="pre">colav.strain_analysis.</span></span><span class="sig-name descname"><span class="pre">calculate_strain_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['N',</span> <span class="pre">'C',</span> <span class="pre">'CA',</span> <span class="pre">'CB',</span> <span class="pre">'O']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_locs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['',</span> <span class="pre">'A']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.strain_analysis.calculate_strain_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Stores strain information in a dictionary for later ease of use.</p>
+<p>Constructs a dictionary object containing strain and shear information for all given
+structures in <cite>structure_list</cite> compared to the given reference structure within
+the given residue numbers (<cite>resnum_bounds</cite>) and using only the explicitly desired
+atoms (<cite>atoms</cite>). Note, ssumes that the numbering of residues in each of the structures
+is consistent across the entire data set.</p>
+<section id="id3">
+<h2>Parameters:<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>structure_list<span class="classifier">list of str</span></dt><dd><p>Array containing the file paths to PDB structures.</p>
+</dd>
+<dt>reference<span class="classifier">string</span></dt><dd><p>File path to the reference PDB structure; this structure can be contained
+in <cite>structure_list</cite>.</p>
+</dd>
+<dt>resnum_bounds<span class="classifier">tuple</span></dt><dd><p>Tuple containing the minimum and maximum (inclusive) residue number values
+for strain calculations.</p>
+</dd>
+<dt>atoms<span class="classifier">array_like, optional</span></dt><dd><p>Array containing atom names.</p>
+</dd>
+<dt>alt_locs<span class="classifier">array_like, optional</span></dt><dd><p>Array containing alternate location names.</p>
+</dd>
+<dt>save<span class="classifier">bool, optional</span></dt><dd><p>Indicator to save results.</p>
+</dd>
+<dt>save_prefix<span class="classifier">str</span></dt><dd><p>If saving results, prefix for pickle save file.</p>
+</dd>
+<dt>verbose<span class="classifier">bool, optional</span></dt><dd><p>Indicator for verbose output.</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h2>Returns:<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>strain_dict<span class="classifier">dictionary</span></dt><dd><p>Dictionary containing results of strain calculations for the shared atoms of all
+structures in <cite>structure_list</cite> compared to <cite>reference</cite>.</p>
+</dd>
+<dt>shared_atom_set<span class="classifier">set</span></dt><dd><p>Set of shared atoms (determined by <cite>determine_shared_atoms</cite>).</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colav.strain_analysis.coords_from_atoms">
+<span class="sig-prename descclassname"><span class="pre">colav.strain_analysis.</span></span><span class="sig-name descname"><span class="pre">coords_from_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">struc_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sorted_atom_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.strain_analysis.coords_from_atoms" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieves and returns the Cartesian coordinates of the supplied strucure for
+the given atoms.</p>
+<section id="id5">
+<h2>Parameters:<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>struc_df<span class="classifier">PandasPdb (ATOM header only)</span></dt><dd><p>Dataframe containing ATOM information of protein structure;
+e.g., ppdb.df[‘ATOM’].</p>
+</dd>
+<dt>sorted_atom_list<span class="classifier">array_like</span></dt><dd><p>Sorted list containing atoms (residue number and atom name) for which
+to retrieve the desired coordinate information.</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h2>Returns:<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>xyz_coords<span class="classifier">array_like, (N x 3)</span></dt><dd><p>Array of Cartesian coordinates for the atoms of the given structure.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colav.strain_analysis.determine_shared_atoms">
+<span class="sig-prename descclassname"><span class="pre">colav.strain_analysis.</span></span><span class="sig-name descname"><span class="pre">determine_shared_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_ppdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['N',</span> <span class="pre">'C',</span> <span class="pre">'CA',</span> <span class="pre">'CB',</span> <span class="pre">'O']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_locs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['',</span> <span class="pre">'A']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.strain_analysis.determine_shared_atoms" title="Permalink to this definition"></a></dt>
+<dd><p>Determines shared atoms across structures.</p>
+<p>Determines the shared atoms for all structures in a list and a given
+reference structure between given residue numbers (<cite>resnum_bounds</cite>) and for
+explicitly desired atoms (<cite>atoms</cite>).</p>
+<p>Returns the shared set of atoms for all given structures.</p>
+<section id="id7">
+<h2>Parameters:<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>structure_list<span class="classifier">list of str</span></dt><dd><p>Array containing the file paths to PDB structures.</p>
+</dd>
+<dt>reference_ppdb<span class="classifier">PandasPdb</span></dt><dd><p>Dataframe containing the reference protein structure; this structure
+can be contained in <cite>structure_list</cite>.</p>
+</dd>
+<dt>resnum_bounds<span class="classifier">tuple</span></dt><dd><p>Tuple containing the minimum and maximum (inclusive) residue number values.</p>
+</dd>
+<dt>atoms<span class="classifier">array_like, optional</span></dt><dd><p>Array containing atom names.</p>
+</dd>
+<dt>alt_locs<span class="classifier">array_like, optional</span></dt><dd><p>Array containing alternate location names.</p>
+</dd>
+<dt>save<span class="classifier">bool, optional</span></dt><dd><p>Indicator to save the shared atom set.</p>
+</dd>
+<dt>save_prefix<span class="classifier">str</span></dt><dd><p>If saving results, prefix for pickle save file.</p>
+</dd>
+<dt>verbose<span class="classifier">bool, optional</span></dt><dd><p>Indicator for verbose output.</p>
+</dd>
+</dl>
+</section>
+<section id="id8">
+<h2>Returns:<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>ref_atom_set<span class="classifier">set</span></dt><dd><p>Set containing shared atoms for all structures in <cite>structure_list</cite>
+and <cite>reference_ppdb</cite>.</p>
+</dd>
+<dt>filtered_strucs<span class="classifier">list</span></dt><dd><p>Array containing the file paths to PDB structures that contain all shared
+atoms.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="internal_coordinates.html" class="btn btn-neutral float-left" title="colav.internal_coordinates module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ammaar Saeed.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
