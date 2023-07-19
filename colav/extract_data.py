@@ -247,10 +247,10 @@ def generate_pw_matrix(structure_list, resnum_bounds, save=False, save_prefix=No
             print(f'Attempting to calculate for {struc}')
         ppdb = PandasPdb().read_pdb(struc)
         cas = ppdb.df['ATOM'][(ppdb.df['ATOM']['atom_name'] == 'CA')] # choose the correct atoms 
-        cas.loc[(ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) & # choose the correct residue numbers 
-                (ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1])]
-        cas.loc[(ppdb.df['ATOM']['alt_loc'] == '') |  # choose the A alt_loc if there are any 
-                (ppdb.df['ATOM']['alt_loc'] == 'A')]
+        cas = cas.loc[(ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) & # choose the correct residue numbers 
+                      (ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1])]
+        cas = cas.loc[(ppdb.df['ATOM']['alt_loc'] == '') |  # choose the A alt_loc if there are any 
+                      (ppdb.df['ATOM']['alt_loc'] == 'A')]
         cas = cas.reset_index()
 
         # check that all pairs of CA atoms are present 
@@ -470,7 +470,7 @@ def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_boun
 
         # create a dictionary to store the data matrix and structures 
         sa_dict = {
-            'data_matrix': sa_data_matrix, 
+            'data_matrix': np.array(sa_data_matrix), 
             'structures': sa_strucs
         }
 
@@ -510,4 +510,4 @@ def load_strain_matrix(strain_pkl):
     sa_data_matrix = db['data_matrix']
     sa_strucs = db['structures']
 
-    return sa_data_matrix, sa_strucs
+    return np.array(sa_data_matrix), sa_strucs
