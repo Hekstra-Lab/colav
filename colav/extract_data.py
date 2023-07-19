@@ -1,5 +1,5 @@
 
-import os, pickle, warnings 
+import os, pickle
 import numpy as np 
 from biopandas.pdb import PandasPdb
 from itertools import combinations
@@ -7,9 +7,7 @@ from colav.strain_analysis import *
 from colav.internal_coordinates import * 
 from scipy.spatial.distance import pdist
 
-warnings.filterwarnings('ignore')
-
-def calculate_dh_tl(raw_dihedral_loading): 
+def calculate_dh_tl(raw_dh_loading): 
     '''Adjusts raw dihedral loading for interpretability. 
 
     Calculates a transformed loading from a raw loading of dihedral angle features to account 
@@ -19,19 +17,18 @@ def calculate_dh_tl(raw_dihedral_loading):
 
     Parameters: 
     -----------
-    raw_dihedral_loading : array_like, (N,)
+    raw_dh_loading : array_like, (N,)
         Array of raw loading from PCA. 
 
     Returns: 
     --------
-    tranformed_dihedral_loading : array_like, (N/2,)
+    tranformed_dh_loading : array_like, (N/2,)
         Array of transformed loading to determine relative angle influence in the given 
         loading. 
     '''
     
-    tranformed_dihedral_loading = np.sqrt(np.power(raw_dihedral_loading[:raw_dihedral_loading.shape[0]//2],2) + \
-                          np.power(raw_dihedral_loading[raw_dihedral_loading.shape[0]//2:],2))
-    return tranformed_dihedral_loading
+    tranformed_dh_loading = np.abs(raw_dh_loading[:raw_dh_loading.shape[0]//2]) + np.abs(raw_dh_loading[raw_dh_loading.shape[0]//2:])
+    return tranformed_dh_loading
 
 def generate_dihedral_matrix(structure_list, resnum_bounds, no_psi=False, no_omega=False, no_phi=False, save=False, save_prefix=None, verbose=False): 
     '''Extracts dihedrals angles from given structures. 

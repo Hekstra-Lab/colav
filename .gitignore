@@ -107,6 +107,10 @@ ENV/
 # custom
 colav/_version.py
 *.pdb
+scripts/old_testing/
+scripts/least_squares_data/
+scripts/theseus_data/
+scripts/rope_data/
 
 .DS_Store
 .cruft.json

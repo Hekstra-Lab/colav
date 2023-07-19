@@ -1,8 +1,9 @@
 
 import numpy as np 
 from scipy.spatial.distance import cdist
+from sklearn.preprocessing import normalize
 
-def calculate_dihedral(p0, p1, p2, p3): 
+def calculate_dihedral(p0, p1, p2, p3) -> float: 
     '''Calculates the dihedral angle between four points in three dimensions. 
 
     Returns the dihedral angle. 
@@ -24,9 +25,12 @@ def calculate_dihedral(p0, p1, p2, p3):
     Returns: 
     --------
     dihedral_angle : float
-        Computed dihedral angle between given points. 
+        Computed dihedral angle (radians) between given points. 
 
     '''
+
+    # convert the input points to np arrays 
+    p0, p1, p2, p3 = np.array(p0), np.array(p1), np.array(p2), np.array(p3)
 
     # calculate vectors between points 
     b0 = p0 - p1
@@ -34,7 +38,7 @@ def calculate_dihedral(p0, p1, p2, p3):
     b2 = p3 - p2
     
     # normalize b1
-    b1 /= np.linalg.norm(b1)
+    b1 = b1 / np.linalg.norm(b1)
     
     # calculate vector projections
     v = b0 - np.dot(b0, b1)*b1
@@ -46,7 +50,7 @@ def calculate_dihedral(p0, p1, p2, p3):
     
     return np.arctan2(y, x)
 
-def calculate_backbone_dihedrals(ppdb, resnum_bounds, no_psi=False, no_omega=False, no_phi=False, verbose=False): 
+def calculate_backbone_dihedrals(ppdb, resnum_bounds, no_psi=False, no_omega=False, no_phi=False, verbose=False) -> np.array: 
     '''Calculates backbone dihedral angles psi, omega, and phi (returned in that
     order) of consecutive residues. 
 
@@ -127,7 +131,7 @@ def calculate_backbone_dihedrals(ppdb, resnum_bounds, no_psi=False, no_omega=Fal
 
     return np.array(dihedrals).astype('float64')
 
-def calculate_bond_angles(ppdb, resnum_bounds): 
+def calculate_bond_angles(ppdb, resnum_bounds) -> np.array: 
     '''Calculates the bond angles between consecutive residues. 
 
     Returns the bond angles in order between `resnum_bounds`. 
@@ -162,8 +166,8 @@ def calculate_bond_angles(ppdb, resnum_bounds):
     mainchain_coords = mainchain[['x_coord', 'y_coord', 'z_coord']].to_numpy()
 
     # calculate and normalize the difference vectors between coordinates
-    firsts = np.linalg.norm(mainchain_coords[1:-2] - mainchain_coords[2:-1], axis=1)
-    seconds = np.linalg.norm(mainchain_coords[3:] - mainchain_coords[2:-1], axis=1)
+    firsts = normalize(mainchain_coords[:-2] - mainchain_coords[1:-1], axis=1)
+    seconds = normalize(mainchain_coords[2:] - mainchain_coords[1:-1], axis=1)
 
     # initialize storage array for calculation 
     bond_angles = list()
@@ -175,7 +179,7 @@ def calculate_bond_angles(ppdb, resnum_bounds):
 
     return np.array(bond_angles).astype("float64")
 
-def calculate_bond_distances(ppdb, resnum_bounds): 
+def calculate_bond_distances(ppdb, resnum_bounds) -> np.array: 
     '''Calculate the bond distances between consecutive residues. 
 
     Returns the bond distances in order between `resnum_bounds`. 
@@ -187,7 +191,7 @@ def calculate_bond_distances(ppdb, resnum_bounds):
 
     resnum_bounds : tuple
         Tuple containing the minimum and maximum (inclusive) residue number values 
-        for calculating the desired dihedral angles
+        for calculating the desired bond distances. 
 
     Returns: 
     --------
@@ -210,11 +214,11 @@ def calculate_bond_distances(ppdb, resnum_bounds):
     mainchain_coords = mainchain[['x_coord', 'y_coord', 'z_coord']].to_numpy()
 
     # calculate the consecutive bond distances 
-    bond_distances = np.diag(cdist(mainchain_coords, mainchain_coords), k=1)[2:]
+    bond_distances = np.diag(cdist(mainchain_coords, mainchain_coords), k=1)
 
     return np.array(bond_distances).astype("float64")
 
-def nerf_reconstruction(initial_coords, bond_angles, bond_distances, dihedral_angles): 
+def nerf_reconstruction(initial_coords, bond_angles, bond_distances, dihedral_angles) -> np.array: 
     '''Computes Cartesian coordinates of a protein using internal coordinates. 
     
     Computes the Cartesian coordinates of a polymer using an internal coordinate set 
