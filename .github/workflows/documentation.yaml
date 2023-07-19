@@ -37,7 +37,7 @@ jobs:
     - name: Commit documentation changes to gh-pages
       run: |
         cd docs
-        git clone https://github.com/dennisbrookner/matchmaps.git --branch gh-pages --single-branch gh-pages
+        git clone https://github.com/ammsa23/colav.git --branch gh-pages --single-branch gh-pages
         cd gh-pages
         cp -r ../_build/html/* .
         git config --local user.email "action@github.com"
