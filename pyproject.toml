@@ -4,7 +4,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "COLAV"
+name = "colav"
 version = "0.0.1"
 description = "Calculate structural representations (dihedral angles, CA pairwise distances, and strain analysis) for PCA"
 license = { text = "MIT License" } 
