@@ -104,8 +104,9 @@ ENV/
 # IDE settings
 .vscode/
 
-matchmaps/_version.py
-src/matchmaps/_version.py
+# custom
+colav/_version.py
+.pdb
 
 .DS_Store
 .cruft.json
