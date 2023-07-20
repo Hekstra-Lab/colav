@@ -4,7 +4,7 @@ import numpy as np
 from biopandas.pdb import PandasPdb
 from scipy.spatial.distance import cdist
 
-def calculate_strain(ref_coords, def_coords, min_dist=6, max_dist=8, err_threshold=10): 
+def calculate_strain(ref_coords, def_coords, min_dist=6, max_dist=8, err_threshold=10, verbose=False): 
     '''Calculates strain quantities for a perturbed structure with respect to a reference. 
 
     Calculates the positional shear energy, positional shear tensor, and positional 
@@ -37,6 +37,9 @@ def calculate_strain(ref_coords, def_coords, min_dist=6, max_dist=8, err_thresho
         Threshold to ensure that the shear energies are not too large and potentially 
         reflecting errors in calculation (e.g., due to non-invertible matrices). 
 
+    verbose : bool, optional 
+        Indicator for verbose output. 
+
     Returns: 
     --------
     pos_shear_energy : array_like, (N,)
@@ -65,10 +68,16 @@ def calculate_strain(ref_coords, def_coords, min_dist=6, max_dist=8, err_thresho
     # iterate through the atoms being considered 
     for atom_idx in range(n_atoms): 
 
+        if verbose: 
+            print(f'Working through atom number: {atom_idx+1}!')
+
         # use counters 
         it_num = -1
         err_num = 0
         while err_num != it_num: 
+
+            if verbose: 
+                print(f'Iteration number: {it_num}\tError number: {err_num}')
 
             # set atomic weight contributions by distance; nearest atoms are weighted 1
             wn = (ref_dist[:,atom_idx] < min_dist).astype('float64')
@@ -104,6 +113,9 @@ def calculate_strain(ref_coords, def_coords, min_dist=6, max_dist=8, err_thresho
             pos_shear_tensor[atom_idx,:,:] = gamma
             pos_shear_energy[atom_idx] = np.sum(np.square(gamma))
 
+            if verbose: 
+                print(f'pos_strain_tensor: {Em}\tpos_shear_tensor: {gamma}\tpos_shear_energy: {np.sum(np.square(gamma))}')
+
             # update the counters 
             it_num += 1
             if pos_shear_energy[atom_idx] > err_threshold: 
@@ -125,9 +137,9 @@ def determine_shared_atoms(structure_list, reference_ppdb, resnum_bounds, atoms=
     structure_list : list of str
         Array containing the file paths to PDB structures. 
 
-    reference_ppdb : PandasPdb
-        Dataframe containing the reference protein structure; this structure 
-        can be contained in `structure_list`. 
+    reference_ppdb : PandasPdb (ATOM header only)
+        Dataframe containing ATOM information of protein structure; 
+        e.g., ppdb.df['ATOM']; this structure can be contained in `structure_list`. 
 
     resnum_bounds : tuple 
         Tuple containing the minimum and maximum (inclusive) residue number values. 
@@ -155,7 +167,8 @@ def determine_shared_atoms(structure_list, reference_ppdb, resnum_bounds, atoms=
 
     filtered_strucs : list 
         Array containing the file paths to PDB structures that contain all shared 
-        atoms. 
+        atoms. If the original `structure_list` contains the reference protein structure, 
+        then it will be included here. 
     '''
 
     # determine the shared atom set for all the structures 
@@ -262,7 +275,7 @@ def bfacs_from_atoms(struc_df, sorted_atom_list):
 
     Parameters: 
     -----------
-    struc_df : PandasPdb (ATOM headers only)
+    struc_df : PandasPdb (ATOM header only)
         Dataframe containing ATOM information of protein structure; 
         e.g., ppdb.df['ATOM']. 
 

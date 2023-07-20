@@ -1,7 +1,6 @@
 
 import numpy as np 
 from scipy.spatial.distance import cdist
-from sklearn.preprocessing import normalize
 
 def calculate_dihedral(p0, p1, p2, p3) -> float: 
     '''Calculates the dihedral angle between four points in three dimensions. 
@@ -166,8 +165,18 @@ def calculate_bond_angles(ppdb, resnum_bounds) -> np.array:
     mainchain_coords = mainchain[['x_coord', 'y_coord', 'z_coord']].to_numpy()
 
     # calculate and normalize the difference vectors between coordinates
-    firsts = normalize(mainchain_coords[:-2] - mainchain_coords[1:-1], axis=1)
-    seconds = normalize(mainchain_coords[2:] - mainchain_coords[1:-1], axis=1)
+    firsts = (mainchain_coords[1:] - mainchain_coords[2:]) / \
+        np.hstack([
+            np.linalg.norm(mainchain_coords[1:-1] - mainchain_coords[2:], axis=1)[:,None],
+            np.linalg.norm(mainchain_coords[1:-1] - mainchain_coords[2:], axis=1)[:,None],
+            np.linalg.norm(mainchain_coords[1:-1] - mainchain_coords[2:], axis=1)[:,None]
+        ])
+    seconds = (mainchain_coords[3:] - mainchain_coords[2:-1]) / \
+        np.hstack([
+            np.linalg.norm(mainchain_coords[3:] - mainchain_coords[2:-1], axis=1)[:,None],
+            np.linalg.norm(mainchain_coords[3:] - mainchain_coords[2:-1], axis=1)[:,None],
+            np.linalg.norm(mainchain_coords[3:] - mainchain_coords[2:-1], axis=1)[:,None]
+        ])
 
     # initialize storage array for calculation 
     bond_angles = list()

@@ -81,6 +81,7 @@ def generate_dihedral_matrix(structure_list, resnum_bounds, no_psi=False, no_ome
     # iterate through the structural models
     if verbose: 
         print("Calculating the dihedral angles...")
+        
     for i,struc in enumerate(structure_list): 
 
         # parse the pdb files
