@@ -123,6 +123,8 @@ for all pairings of residues.</p>
 <dl class="simple">
 <dt>raw_pw_loading<span class="classifier">array_like, (N,)</span></dt><dd><p>Array of raw loading from PCA.</p>
 </dd>
+<dt>resnum_bounds<span class="classifier">tuple</span></dt><dd><p>Tuple containing the minimum and maximum (inclusive) residue number values.</p>
+</dd>
 </dl>
 </section>
 <section id="id2">
@@ -292,7 +294,7 @@ and the corresponding structures as <cite>structures</cite> key</p>
 <section id="id12">
 <h2>Returns:<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h2>
 <dl class="simple">
-<dt>dh_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing dihedral angles as calculated by <cite>generated_dihedral_matrix</cite>.</p>
+<dt>dh_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing dihedral angles as calculated by <cite>generate_dihedral_matrix</cite>.</p>
 </dd>
 <dt>dh_strucs<span class="classifier">list of str</span></dt><dd><p>List of structures ordered as stored in <cite>dh_data_matrix</cite>.</p>
 </dd>
@@ -316,7 +318,7 @@ and the corresponding structures as <cite>structures</cite> key</p>
 <section id="id14">
 <h2>Returns:<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h2>
 <dl class="simple">
-<dt>pw_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing dihedral angles as calculated by <cite>generated_pw_matrix</cite>.</p>
+<dt>pw_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing dihedral angles as calculated by <cite>generate_pw_matrix</cite>.</p>
 </dd>
 <dt>pw_strucs<span class="classifier">list of str</span></dt><dd><p>List of structures ordered as stored in <cite>pw_data_matrix</cite>.</p>
 </dd>
@@ -340,7 +342,7 @@ and the corresponding structures as <cite>structures</cite> key</p>
 <section id="id16">
 <h2>Returns:<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h2>
 <dl class="simple">
-<dt>sa_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing dihedral angles as calculated by <cite>generated_sa_matrix</cite>.</p>
+<dt>sa_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing dihedral angles as calculated by <cite>generate_sa_matrix</cite>.</p>
 </dd>
 <dt>sa_strucs<span class="classifier">list of str</span></dt><dd><p>List of structures ordered as stored in <cite>sa_data_matrix</cite>.</p>
 </dd>

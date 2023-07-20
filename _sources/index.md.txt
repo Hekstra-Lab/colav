@@ -7,7 +7,7 @@
 
 # Welcome to `colav`'s documentation!
 
-Welcome to `colav`, an open-source Python package that implements three feature extraction methods (dihedral angles, C\alpha pairwise distances, and strain analysis) for representing protein structures in the PDB format. This package was primarily built to analyze medium to large (>100 & <10,000) datasets composed of individual protein structures. In particular, `colav` may be useful to analyze datasets from a crystallographic drug fragment screen (stay tuned for our forthcoming paper!). 
+Welcome to `colav`, an open-source Python package that implements three feature extraction methods (dihedral angles, C$\alpha$ pairwise distances, and strain analysis) for representing protein structures in the PDB format. This package was primarily built to analyze medium to large (>100 & <10,000) datasets composed of individual protein structures. In particular, `colav` may be useful to analyze datasets from a crystallographic drug fragment screen (stay tuned for our forthcoming paper!). 
 
 The [quickstart](quickstart.md) provides installation instructions and introduces the feature extraction methods in more detail with examples using protein tyrosine phosphatase 1B (PTP-1B). 
 
