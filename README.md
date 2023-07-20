@@ -26,7 +26,7 @@ If you are having issues, please let us know. You can contact Ammaar at aasaeed@
 
 ## License 
 
-This code is provided under the MIT license. 
+This code is provided under the [MIT license](LICENSE). 
 
 ## Reference 
 

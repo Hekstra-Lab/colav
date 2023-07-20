@@ -63,7 +63,6 @@ def calculate_strain(ref_coords, def_coords, min_dist=6, max_dist=8, err_thresho
     
     # calculate distance matrices for protein models from coordinates
     ref_dist = cdist(ref_coords, ref_coords)
-    # def_dist = cdist(def_coords, def_coords)
     
     # iterate through the atoms being considered 
     for atom_idx in range(n_atoms): 

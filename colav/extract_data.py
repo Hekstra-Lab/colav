@@ -27,6 +27,7 @@ def calculate_dh_tl(raw_dh_loading):
         loading. 
     '''
     
+    raw_dh_loading = np.array(raw_dh_loading)
     tranformed_dh_loading = np.abs(raw_dh_loading[:raw_dh_loading.shape[0]//2]) + np.abs(raw_dh_loading[raw_dh_loading.shape[0]//2:])
     return tranformed_dh_loading
 
@@ -81,7 +82,7 @@ def generate_dihedral_matrix(structure_list, resnum_bounds, no_psi=False, no_ome
     # iterate through the structural models
     if verbose: 
         print("Calculating the dihedral angles...")
-        
+
     for i,struc in enumerate(structure_list): 
 
         # parse the pdb files
@@ -150,7 +151,7 @@ def load_dihedral_matrix(dh_pkl):
     Returns: 
     --------
     dh_data_matrix : array_like 
-        Array containing dihedral angles as calculated by `generated_dihedral_matrix`. 
+        Array containing dihedral angles as calculated by `generate_dihedral_matrix`. 
     
     dh_strucs : list of str
         List of structures ordered as stored in `dh_data_matrix`.
@@ -176,12 +177,16 @@ def calculate_pw_tl(raw_pw_loading, resnum_bounds):
     raw_pw_loading : array_like, (N,)
         Array of raw loading from PCA. 
 
+    resnum_bounds : tuple
+        Tuple containing the minimum and maximum (inclusive) residue number values. 
+
     Returns: 
     --------
     tranformed_pw_loading : array_like, (N/2,)
         Array of transformed loading to determine relative residue influence in the given loading. 
     '''
     
+    raw_pw_loading = np.array(raw_pw_loading)
     # initialize array to store the contributions 
     tranformed_pw_loading = np.zeros(resnum_bounds[1]-resnum_bounds[0]+1)
     
@@ -300,7 +305,7 @@ def load_pw_matrix(pw_pkl):
     Returns: 
     --------
     pw_data_matrix : array_like 
-        Array containing dihedral angles as calculated by `generated_pw_matrix`. 
+        Array containing dihedral angles as calculated by `generate_pw_matrix`. 
     
     pw_strucs : list of str
         List of structures ordered as stored in `pw_data_matrix`.
@@ -334,6 +339,7 @@ def calculate_sa_tl(raw_sa_loading, shared_atom_list):
         Array of transformed loading to determine relative residue influence in the given loading. 
     '''
     
+    raw_sa_loading = np.array(raw_sa_loading)
     # first find atomic contributions 
     atomic_contributions = np.sum(np.abs(raw_sa_loading.reshape(-1,3)), axis=1)
     
@@ -497,7 +503,7 @@ def load_strain_matrix(strain_pkl):
     Returns: 
     --------
     sa_data_matrix : array_like 
-        Array containing dihedral angles as calculated by `generated_sa_matrix`. 
+        Array containing dihedral angles as calculated by `generate_sa_matrix`. 
     
     sa_strucs : list of str
         List of structures ordered as stored in `sa_data_matrix`.

@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "colav"
 version = "0.0.1"
-description = "Calculate structural representations (dihedral angles, CA pairwise distances, and strain analysis) for PCA"
+description = "Calculate structural representations (dihedral angles, CA pairwise distances, and strain analysis) for downstream analysis (e.g., PCA, t-SNE, or UMAP)"
 license = { text = "MIT License" } 
 authors = [
   { name="Ammaar Saeed", email="aasaeed@college.harvard.edu" },
@@ -25,6 +25,7 @@ dependencies = [
     "numpy",
     "scipy",
     "pandas",
+    "scikit-learn",
     "biopandas"
 ]
 
