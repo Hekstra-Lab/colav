@@ -91,7 +91,7 @@ the given atoms.</p>
 <section id="parameters">
 <h2>Parameters:<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
 <dl class="simple">
-<dt>struc_df<span class="classifier">PandasPdb (ATOM headers only)</span></dt><dd><p>Dataframe containing ATOM information of protein structure;
+<dt>struc_df<span class="classifier">PandasPdb (ATOM header only)</span></dt><dd><p>Dataframe containing ATOM information of protein structure;
 e.g., ppdb.df[‘ATOM’].</p>
 </dd>
 <dt>sorted_atom_list<span class="classifier">array_like</span></dt><dd><p>Sorted list containing atoms (residue number and atom name) for which
@@ -110,7 +110,7 @@ to retrieve the desired coordinate information.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.strain_analysis.calculate_strain">
-<span class="sig-prename descclassname"><span class="pre">colav.strain_analysis.</span></span><span class="sig-name descname"><span class="pre">calculate_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">def_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">err_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.strain_analysis.calculate_strain" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.strain_analysis.</span></span><span class="sig-name descname"><span class="pre">calculate_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">def_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">err_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.strain_analysis.calculate_strain" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates strain quantities for a perturbed structure with respect to a reference.</p>
 <p>Calculates the positional shear energy, positional shear tensor, and positional
 shear tensor for the provided atoms by comparing the perturbed/deformed
@@ -134,6 +134,8 @@ calculations in <cite>delta_r_analysis.py</cite> (not published).</p>
 </dd>
 <dt>err_threshold<span class="classifier">int</span></dt><dd><p>Threshold to ensure that the shear energies are not too large and potentially
 reflecting errors in calculation (e.g., due to non-invertible matrices).</p>
+</dd>
+<dt>verbose<span class="classifier">bool, optional</span></dt><dd><p>Indicator for verbose output.</p>
 </dd>
 </dl>
 </section>
@@ -232,8 +234,8 @@ explicitly desired atoms (<cite>atoms</cite>).</p>
 <dl class="simple">
 <dt>structure_list<span class="classifier">list of str</span></dt><dd><p>Array containing the file paths to PDB structures.</p>
 </dd>
-<dt>reference_ppdb<span class="classifier">PandasPdb</span></dt><dd><p>Dataframe containing the reference protein structure; this structure
-can be contained in <cite>structure_list</cite>.</p>
+<dt>reference_ppdb<span class="classifier">PandasPdb (ATOM header only)</span></dt><dd><p>Dataframe containing ATOM information of protein structure;
+e.g., ppdb.df[‘ATOM’]; this structure can be contained in <cite>structure_list</cite>.</p>
 </dd>
 <dt>resnum_bounds<span class="classifier">tuple</span></dt><dd><p>Tuple containing the minimum and maximum (inclusive) residue number values.</p>
 </dd>
@@ -256,7 +258,8 @@ can be contained in <cite>structure_list</cite>.</p>
 and <cite>reference_ppdb</cite>.</p>
 </dd>
 <dt>filtered_strucs<span class="classifier">list</span></dt><dd><p>Array containing the file paths to PDB structures that contain all shared
-atoms.</p>
+atoms. If the original <cite>structure_list</cite> contains the reference protein structure,
+then it will be included here.</p>
 </dd>
 </dl>
 </section>
