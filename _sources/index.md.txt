@@ -13,7 +13,6 @@ The [quickstart](quickstart.md) provides installation instructions and introduce
 
 We are adding command-line options for ease of use! Check back soon for more information. 
 
-## Table of Contents
 ```{eval-rst}
 .. toctree::
    :maxdepth: 2
@@ -22,6 +21,7 @@ We are adding command-line options for ease of use! Check back soon for more inf
    extract_data.md
    internal_coordinates.md
    strain_analysis.md
+   quickstart.md
 ```
 
 ## Indices
