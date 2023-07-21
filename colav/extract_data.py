@@ -364,7 +364,7 @@ def calculate_sa_tl(raw_sa_loading, shared_atom_list):
         
     return tranformed_sa_loading
 
-def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], alt_locs=["", "A"], save=True, save_prefix=None, verbose=False): 
+def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_bounds, atoms=["N", "C", "CA", "CB", "O"], alt_locs=["", "A"], save=True, save_prefix=None, save_additional=False, verbose=False): 
     '''Extracts strain tensors, shear tensors, or shear energies from given structures. 
 
     Extracts and returns a data matrix of (observations x features) with the given structures as observations
@@ -398,6 +398,9 @@ def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_boun
     save_prefix : str 
         If saving results, prefix for pickle save file. 
 
+    save_additional : bool, optional 
+        Indicator to save results of nested calculations. 
+
     verbose : bool, optional 
         Indicator for verbose output. 
 
@@ -420,7 +423,7 @@ def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_boun
         resnum_bounds=resnum_bounds, 
         atoms=atoms, 
         alt_locs=alt_locs,
-        save=False, 
+        save=save_additional, 
         save_prefix=save_prefix, 
         verbose=verbose
     )
