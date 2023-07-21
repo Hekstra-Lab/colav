@@ -411,26 +411,19 @@ def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_boun
         List of structures ordered as stored in the `sa_data_matrix`. 
     '''
 
-    # check if there's already existing pkl files 
-    if "strain_dict.pkl" in os.listdir() and "atom_set.pkl" in os.listdir(): 
-
-        strain_dict = pickle.load(open("strain_dict.pkl", "rb"))
-
-    # if not then calculate the strain dictionary 
-    else: 
-        
-        if verbose: 
-            print("There is no existing strain dictionary. Calculating...")
-        strain_dict, atom_set = calculate_strain_dict(
-            structure_list=structure_list, 
-            reference=reference_pdb, 
-            resnum_bounds=resnum_bounds, 
-            atoms=atoms, 
-            alt_locs=alt_locs,
-            save=False, 
-            save_prefix=save_prefix, 
-            verbose=verbose
-        )
+    # calculate a strain dictionary 
+    if verbose: 
+        print("Creating a strain dictionary. Calculating...")
+    strain_dict, atom_set = calculate_strain_dict(
+        structure_list=structure_list, 
+        reference=reference_pdb, 
+        resnum_bounds=resnum_bounds, 
+        atoms=atoms, 
+        alt_locs=alt_locs,
+        save=False, 
+        save_prefix=save_prefix, 
+        verbose=verbose
+    )
 
     # generate the data matrix 
     sa_data_matrix = list()
@@ -462,7 +455,7 @@ def generate_strain_matrix(structure_list, reference_pdb, data_type, resnum_boun
             ValueError("Must be sheare, sheart, or straint")
 
         # apply the coorection and store the data
-        processed /= correction 
+        processed = processed / correction 
         sa_data_matrix.append(processed)
         sa_strucs.append(key)
 

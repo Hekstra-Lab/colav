@@ -3,6 +3,7 @@ from colav.extract_data import *
 from colav.internal_coordinates import * 
 from colav.strain_analysis import * 
 from biopandas.pdb import PandasPdb
+from scipy.spatial.distance import pdist
 from numpy.testing import assert_allclose, assert_array_equal
 import pytest
 
@@ -164,10 +165,69 @@ def test_calculate_tl():
 
 def test_load_matrix(): 
 
-    # load matrices and check that 
-    pass
+    resnum_bounds = (1,5)
+    # load matrices and check that the loaded dictionaries have the correct structure
+    ############### DIHEDRAL ANGLES ###############
+    dh_data_matrix, dh_strucs = load_dihedral_matrix('tests/test_dh_dict.pkl')
+    assert_allclose(np.abs(np.round(np.rad2deg(dh_data_matrix),0)), np.abs(np.vstack([4*[-47.,-180.,-57.], 4*[120.,180.,-120.]])))
+    assert dh_strucs == ['tests/TEST1.pdb', 'tests/TEST2.pdb']
+    ############### PAIRWISE DISTANCES ###############
+    pw_data_matrix, pw_strucs = load_pw_matrix('tests/test_pw_dict.pkl')
+    test1_ppdb = PandasPdb().read_pdb('tests/TEST1.pdb')
+    test1_cas = test1_ppdb.df['ATOM'][(test1_ppdb.df['ATOM']['atom_name'] == 'CA') & 
+                                      (test1_ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) & 
+                                      (test1_ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1]) & 
+                                      (test1_ppdb.df['ATOM']['alt_loc'] == '')]
+    test2_ppdb = PandasPdb().read_pdb('tests/TEST2.pdb')
+    test2_cas = test2_ppdb.df['ATOM'][(test2_ppdb.df['ATOM']['atom_name'] == 'CA') & 
+                                      (test2_ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) & 
+                                      (test2_ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1]) & 
+                                      (test2_ppdb.df['ATOM']['alt_loc'] == '')]
+    assert_allclose(pw_data_matrix, np.vstack([pdist(test1_cas[['x_coord','y_coord','z_coord']].to_numpy()), pdist(test2_cas[['x_coord','y_coord','z_coord']].to_numpy())]))
+    assert pw_strucs == ['tests/TEST1.pdb', 'tests/TEST2.pdb']
+    ############### STRAIN ANALYSIS ###############
+    sa_data_matrix, sa_strucs = load_strain_matrix('tests/test_sa_sheart_dict.pkl')
+    correction = np.sqrt(np.array(12*[40.00]))
+    test3_coords = PandasPdb().read_pdb('tests/TEST3.pdb').df['ATOM'][['x_coord','y_coord','z_coord']].to_numpy()
+    test4_coords = PandasPdb().read_pdb('tests/TEST4.pdb').df['ATOM'][['x_coord','y_coord','z_coord']].to_numpy()
+    shear_energy, shear_tensor, strain_tensor = calculate_strain(test3_coords, test4_coords)
+    shear_data = np.array([tensor[np.triu_indices(3,1)] for tensor in shear_tensor]).flatten()
+    processed = shear_data / correction
+    assert_allclose(sa_data_matrix, processed[None,:], atol=1e-9)
+    assert sa_strucs == ['tests/TEST4.pdb']
+
 
 def test_generate_matrix(): 
 
-    # generate matrices and check that 
-    pass
+    resnum_bounds = (1,5)
+    # testing using TEST1.pdb and TEST2.pdb; see header of TEST1.pdb for more information 
+    ############### DIHEDRAL ANGLES ###############
+    dh_data_matrix, dh_strucs = generate_dihedral_matrix(['tests/TEST1.pdb', 'tests/TEST2.pdb'], resnum_bounds, save=False, save_prefix='tests/test')
+    # used an abs because the only sign flip occurs with 180 or -180
+    assert_allclose(np.abs(np.round(np.rad2deg(dh_data_matrix),0)), np.abs(np.vstack([4*[-47.,-180.,-57.], 4*[120.,180.,-120.]])))
+    assert dh_strucs == ['tests/TEST1.pdb', 'tests/TEST2.pdb']
+    ############### PAIRWISE DISTANCES ###############
+    pw_data_matrix, pw_strucs = generate_pw_matrix(['tests/TEST1.pdb', 'tests/TEST2.pdb'], resnum_bounds, save=False, save_prefix='tests/test')
+    test1_ppdb = PandasPdb().read_pdb('tests/TEST1.pdb')
+    test1_cas = test1_ppdb.df['ATOM'][(test1_ppdb.df['ATOM']['atom_name'] == 'CA') & 
+                                      (test1_ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) & 
+                                      (test1_ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1]) & 
+                                      (test1_ppdb.df['ATOM']['alt_loc'] == '')]
+    test2_ppdb = PandasPdb().read_pdb('tests/TEST2.pdb')
+    test2_cas = test2_ppdb.df['ATOM'][(test2_ppdb.df['ATOM']['atom_name'] == 'CA') & 
+                                      (test2_ppdb.df['ATOM']['residue_number'] >= resnum_bounds[0]) & 
+                                      (test2_ppdb.df['ATOM']['residue_number'] <= resnum_bounds[1]) & 
+                                      (test2_ppdb.df['ATOM']['alt_loc'] == '')]
+    assert_allclose(pw_data_matrix, np.vstack([pdist(test1_cas[['x_coord','y_coord','z_coord']].to_numpy()), pdist(test2_cas[['x_coord','y_coord','z_coord']].to_numpy())]))
+    assert pw_strucs == ['tests/TEST1.pdb', 'tests/TEST2.pdb']
+    # testing using TEST3.pdb and TEST4.pdb; see header of TEST1.pdb for more information 
+    ############### STRAIN ANALYSIS ###############
+    sa_data_matrix, sa_strucs = generate_strain_matrix(['tests/TEST3.pdb', 'tests/TEST4.pdb'], 'tests/TEST3.pdb', 'sheart', (1,2), atoms=["N", "CA", "C"], alt_locs=[""], save=False, save_prefix='tests/test')
+    correction = np.sqrt(np.array(12*[40.00]))
+    test3_coords = PandasPdb().read_pdb('tests/TEST3.pdb').df['ATOM'][['x_coord','y_coord','z_coord']].to_numpy()
+    test4_coords = PandasPdb().read_pdb('tests/TEST4.pdb').df['ATOM'][['x_coord','y_coord','z_coord']].to_numpy()
+    shear_energy, shear_tensor, strain_tensor = calculate_strain(test3_coords, test4_coords)
+    shear_data = np.array([tensor[np.triu_indices(3,1)] for tensor in shear_tensor]).flatten()
+    processed = shear_data / correction
+    assert_allclose(sa_data_matrix, processed[None,:], atol=1e-9)
+    assert sa_strucs == ['tests/TEST4.pdb']
