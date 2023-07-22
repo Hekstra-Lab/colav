@@ -106,7 +106,6 @@ ENV/
 
 # custom
 colav/_version.py
-*.pdb
 *.pkl
 *.fcz
 scripts/old_testing/

@@ -1,0 +1,7 @@
+REMARK TEST3.pdb                                                                 
+REMARK This file was generated for testing the internal_coordinates module of colav.
+REMARK This file uses ideal bond angles and bond distances as per the standard_geometry.cif distributed by CCP4.                                   
+ATOM      1  N   GLU A   1       0.000   0.000   0.000  1.00 40.00           N  
+ATOM      2  CA  GLU A   1       1.459   0.000   0.000  1.00 40.00           C  
+ATOM      3  C   GLU A   1       2.006   0.000   1.424  1.00 40.00           C  
+ATOM      5  N   GLU A   2       1.468   0.869   2.285  1.00 40.00           N  
