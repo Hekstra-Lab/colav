@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "colav"
-version = "0.0.1"
+version = "0.0.2"
 description = "Calculate structural representations (dihedral angles, CA pairwise distances, and strain analysis) for downstream analysis (e.g., PCA, t-SNE, or UMAP)"
 license = { text = "MIT License" } 
 authors = [
