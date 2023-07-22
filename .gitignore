@@ -108,6 +108,7 @@ ENV/
 colav/_version.py
 *.pdb
 *.pkl
+*.fcz
 scripts/old_testing/
 scripts/least_squares_data/
 scripts/theseus_data/
