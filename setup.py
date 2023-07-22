@@ -1,4 +1,3 @@
-
 import sys
 
 sys.stderr.write(
@@ -12,24 +11,28 @@ Please use `python -m pip install .` or `pip install .` instead.
 )
 sys.exit(1)
 
-# The below code does not execute, but Github is picky about where it finds Python packaging metadata. 
+# The below code does not execute, but Github is picky about where it finds Python packaging metadata.
 # See: https://github.com/github/feedback/discussions/6456
 # To be removed once GitHub catches up.
 import os
 from setuptools import find_packages, setup
+
+
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+
 setup(
-    name='colav',
-    version='0.1', 
-    author='Ammaar A. Saeed', 
-    author_email='aasaeed@college.harvard.edu',
+    name="colav",
+    version="0.1",
+    author="Ammaar A. Saeed",
+    author_email="aasaeed@college.harvard.edu",
     description=(
-    '''Package to explore the conformational landscape of a protein using existing
-    experimental structures'''), 
-    license='', 
-    url='',
-    long_description=read('README.md'),
+        """Package to explore the conformational landscape of a protein using existing
+    experimental structures"""
+    ),
+    license="",
+    url="",
+    long_description=read("README.md"),
     packages=find_packages(),
 )
