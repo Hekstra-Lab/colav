@@ -1,10 +1,13 @@
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [tool.hatch.metadata]
 allow-direct-references = true
+
+[tool.hatch.version]
+source = "vcs"
 
 [project]
 name = "colav"
@@ -29,18 +32,22 @@ dependencies = [
     "jupyter", 
     "numpy",
     "scipy",
-    "pandas",
     "scikit-learn",
-    "biopandas"
 ]
 
 # extras
 [project.optional-dependencies]
 test = ["pytest>=6.0", "pytest-cov"]
+dev = [
+    "black",
+    "pandas", 
+    "biopandas",
+    "pytest", 
+    "pytest-cov", 
 docs = [
     "sphinx",
     "myst_parser",
-    "sphinx_rtd_theme"
+    "sphinx_rtd_theme",
 ]
 
 [project.urls]
