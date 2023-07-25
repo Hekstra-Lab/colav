@@ -1,7 +1,7 @@
 import sys
 
 sys.stderr.write(
-    """
+"""
 ###############################################################
 ############### Unsupported installation method ###############
 ###############################################################
@@ -24,12 +24,10 @@ def read(fname):
 
 setup(
     name="colav",
-    version="0.1",
     author="Ammaar A. Saeed",
     author_email="aasaeed@college.harvard.edu",
     description=(
-        """Package to explore the conformational landscape of a protein using existing
-    experimental structures"""
+        """Calculate protein structural representations (dihedral angles, CA pairwise distances, and strain analysis) for downstream analysis (e.g., PCA, t-SNE, or UMAP)"""
     ),
     license="",
     url="",
