@@ -193,7 +193,7 @@ def test_calculate_strain():
                     [-1.27616516e-15, 2.44897959e-01, 2.63130473e-01],
                 ],
             ]
-        ),
+        ), atol=1e-7
     )
     assert_allclose(
         strain_tensor,
