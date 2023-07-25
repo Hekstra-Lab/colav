@@ -37,7 +37,13 @@ dependencies = [
 
 # extras
 [project.optional-dependencies]
-test = ["pytest>=6.0", "pytest-cov"]
+test = [
+    "pytest>=6.0", 
+    "pytest-cov", 
+    "biopandas", 
+    "numpy",
+    "scipy", 
+]
 dev = [
     "black",
     "pandas", 
