@@ -44,6 +44,7 @@ dev = [
     "biopandas",
     "pytest", 
     "pytest-cov", 
+]
 docs = [
     "sphinx",
     "myst_parser",
