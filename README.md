@@ -4,7 +4,7 @@
 [![PyPI](https://img.shields.io/pypi/v/colav.svg?color=green)](https://pypi.org/project/colav)
 [![Python Version](https://img.shields.io/pypi/pyversions/colav.svg?color=green)](https://python.org)
 [![CI](https://github.com/ammsa23/colav/actions/workflows/ci.yml/badge.svg)](https://github.com/ammsa23/colav/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/ammsa23/colav/branch/main/graph/badge.svg)](https://codecov.io/gh/ammsa23/colav)
+[![codecov](https://codecov.io/gh/ammsa23/colav/branch/main/graph/badge.svg?token=J69QAK9A20)](https://codecov.io/gh/ammsa23/colav)
 
 `colav` (Conformational Landscape Visualization) provides tools for representing protein structures and mapping conformational landscapes. 
 
