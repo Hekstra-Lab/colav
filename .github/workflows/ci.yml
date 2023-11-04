@@ -48,7 +48,7 @@ jobs:
   deploy:
     name: Deploy
     needs: test
-    if: "success() && startsWith(github.ref, 'refs/tags/')"
+    if: success() && contains(github.event.head_commit.message, 'bump version')
     runs-on: ubuntu-latest
 
     steps:
