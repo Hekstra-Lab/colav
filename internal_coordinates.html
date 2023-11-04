@@ -11,11 +11,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -82,16 +82,16 @@
            <div itemprop="articleBody">
              
   <section id="module-colav.internal_coordinates">
-<span id="internal-coordinates-module"></span><h1><code class="docutils literal notranslate"><span class="pre">internal_coordinates</span></code> module<a class="headerlink" href="#module-colav.internal_coordinates" title="Permalink to this heading"></a></h1>
+<span id="internal-coordinates-module"></span><h1><code class="docutils literal notranslate"><span class="pre">internal_coordinates</span></code> module<a class="headerlink" href="#module-colav.internal_coordinates" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.internal_coordinates.calculate_backbone_dihedrals">
-<span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">calculate_backbone_dihedrals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ppdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_psi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_omega</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#colav.internal_coordinates.calculate_backbone_dihedrals" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">calculate_backbone_dihedrals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ppdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_psi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_omega</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#colav.internal_coordinates.calculate_backbone_dihedrals" title="Link to this definition"></a></dt>
 <dd><p>Calculates backbone dihedral angles psi, omega, and phi (returned in that
 order) of consecutive residues.</p>
 <p>Returns the desired dihedral angles in order between <cite>resnum_bounds</cite>
 as an array.</p>
 <section id="parameters">
-<h2>Parameters:<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
+<h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>ppdb<span class="classifier">PandasPdb</span></dt><dd><p>Dataframe containing the target protein structure (preferably one chain).</p>
 </dd>
@@ -109,7 +109,7 @@ for calculating the desired dihedral angles.</p>
 </dl>
 </section>
 <section id="returns">
-<h2>Returns:<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h2>
+<h2>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>dihedrals<span class="classifier">array_like</span></dt><dd><p>Desired dihedral angles in order between <cite>resnum_bounds</cite>.</p>
 </dd>
@@ -119,11 +119,11 @@ for calculating the desired dihedral angles.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.internal_coordinates.calculate_bond_angles">
-<span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">calculate_bond_angles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ppdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#colav.internal_coordinates.calculate_bond_angles" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">calculate_bond_angles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ppdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#colav.internal_coordinates.calculate_bond_angles" title="Link to this definition"></a></dt>
 <dd><p>Calculates the bond angles between consecutive residues.</p>
 <p>Returns the bond angles in order between <cite>resnum_bounds</cite>.</p>
 <section id="id1">
-<h2>Parameters:<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<h2>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>ppdb<span class="classifier">PandasPdb</span></dt><dd><p>Dataframe containing the target protein structure (preferably one chain).</p>
 </dd>
@@ -133,7 +133,7 @@ for calculating the desired dihedral angles</p>
 </dl>
 </section>
 <section id="id2">
-<h2>Returns:<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<h2>Returns:<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>bond_angles<span class="classifier">array_like</span></dt><dd><p>Desired bond angles in order between <cite>resnum_bounds</cite>.</p>
 </dd>
@@ -143,11 +143,11 @@ for calculating the desired dihedral angles</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.internal_coordinates.calculate_bond_distances">
-<span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">calculate_bond_distances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ppdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#colav.internal_coordinates.calculate_bond_distances" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">calculate_bond_distances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ppdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#colav.internal_coordinates.calculate_bond_distances" title="Link to this definition"></a></dt>
 <dd><p>Calculate the bond distances between consecutive residues.</p>
 <p>Returns the bond distances in order between <cite>resnum_bounds</cite>.</p>
 <section id="id3">
-<h2>Parameters:<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<h2>Parameters:<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>ppdb<span class="classifier">BioPandas DataFrame</span></dt><dd><p>Dataframe containing the target protein structure (preferably one chain).</p>
 </dd>
@@ -157,7 +157,7 @@ for calculating the desired bond distances.</p>
 </dl>
 </section>
 <section id="id4">
-<h2>Returns:<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<h2>Returns:<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>bond_distances<span class="classifier">array_like</span></dt><dd><p>Desired bond distances in order between <cite>resnum_bounds</cite>.</p>
 </dd>
@@ -167,11 +167,11 @@ for calculating the desired bond distances.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.internal_coordinates.calculate_dihedral">
-<span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">calculate_dihedral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#colav.internal_coordinates.calculate_dihedral" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">calculate_dihedral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#colav.internal_coordinates.calculate_dihedral" title="Link to this definition"></a></dt>
 <dd><p>Calculates the dihedral angle between four points in three dimensions.</p>
 <p>Returns the dihedral angle.</p>
 <section id="id5">
-<h2>Parameters:<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
+<h2>Parameters:<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>p0<span class="classifier">array_like</span></dt><dd><p>First coordinate defining the plane.</p>
 </dd>
@@ -184,7 +184,7 @@ for calculating the desired bond distances.</p>
 </dl>
 </section>
 <section id="id6">
-<h2>Returns:<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
+<h2>Returns:<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>dihedral_angle<span class="classifier">float</span></dt><dd><p>Computed dihedral angle (radians) between given points.</p>
 </dd>
@@ -194,7 +194,7 @@ for calculating the desired bond distances.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.internal_coordinates.nerf_reconstruction">
-<span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">nerf_reconstruction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond_angles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond_distances</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dihedral_angles</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#colav.internal_coordinates.nerf_reconstruction" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.internal_coordinates.</span></span><span class="sig-name descname"><span class="pre">nerf_reconstruction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond_angles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond_distances</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dihedral_angles</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#colav.internal_coordinates.nerf_reconstruction" title="Link to this definition"></a></dt>
 <dd><p>Computes Cartesian coordinates of a protein using internal coordinates.</p>
 <p>Computes the Cartesian coordinates of a polymer using an internal coordinate set
 of bond angles, bond distances, and dihedral angles. The algorithm is an
@@ -203,7 +203,7 @@ atom reconstruction using N, CA, and C.</p>
 <p>See Parsons et al. (2005) in the Journal of Computational Chemistry for more information.</p>
 <p>Returns Cartesian coordinates (N x 3) for the protein backbone.</p>
 <section id="id7">
-<h2>Parameters:<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h2>
+<h2>Parameters:<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>initial_coords<span class="classifier">array_like</span></dt><dd><p>Initial coordinates of the first three atoms to initiate backbone reconstruction.</p>
 </dd>
@@ -216,13 +216,13 @@ atom reconstruction using N, CA, and C.</p>
 </dl>
 </section>
 <section id="usage">
-<h2>Usage:<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
+<h2>Usage:<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
 <p>All internal coordinate arguments (e.g., <cite>bond_angles</cite>, <cite>bond_distances</cite>, and <cite>dihedral_angles</cite>)
 are required, and the size of the internal coordinate arrays must match AKA they must all
 be of size N.</p>
 </section>
 <section id="id8">
-<h2>Returns:<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h2>
+<h2>Returns:<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>mainchain_coords<span class="classifier">array_like</span></dt><dd><p>Cartesian coordinates determined by the supplied internal coordinates.</p>
 </dd>

@@ -11,11 +11,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -45,6 +45,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">extract_data</span></code> module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.calculate_coverage_matching_scores"><code class="docutils literal notranslate"><span class="pre">calculate_coverage_matching_scores()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.calculate_dh_tl"><code class="docutils literal notranslate"><span class="pre">calculate_dh_tl()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.calculate_pw_tl"><code class="docutils literal notranslate"><span class="pre">calculate_pw_tl()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.calculate_sa_tl"><code class="docutils literal notranslate"><span class="pre">calculate_sa_tl()</span></code></a></li>
@@ -86,23 +87,54 @@
            <div itemprop="articleBody">
              
   <section id="module-colav.extract_data">
-<span id="extract-data-module"></span><h1><code class="docutils literal notranslate"><span class="pre">extract_data</span></code> module<a class="headerlink" href="#module-colav.extract_data" title="Permalink to this heading"></a></h1>
+<span id="extract-data-module"></span><h1><code class="docutils literal notranslate"><span class="pre">extract_data</span></code> module<a class="headerlink" href="#module-colav.extract_data" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="colav.extract_data.calculate_coverage_matching_scores">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_coverage_matching_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference_strucs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_strucs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmsd_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_coverage_matching_scores" title="Link to this definition"></a></dt>
+<dd><p>Calculates the coverage and matching metrics for a sample set of structures/conformational ensemble compared to a reference set of structures/conformational ensemble.</p>
+<p>The coverage and matching metrics used are defined by Xu et al. (2021) ICLR. The coverage metric measures the diversity of the sample set compared to the reference set. The matching metric measures the similarity of the sample set to the reference set.</p>
+<section id="parameters">
+<h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>reference_strucs<span class="classifier">list of str</span></dt><dd><p>Array containing the file paths to reference structures.</p>
+</dd>
+<dt>sample_strucs<span class="classifier">list of str</span></dt><dd><p>Array containing the file paths to sample/generated structures.</p>
+</dd>
+<dt>resnum_bounds<span class="classifier">tuple</span></dt><dd><p>Tuple containing the minimum and maximum (inclusive) residue number values.</p>
+</dd>
+<dt>rmsd_threshold<span class="classifier">float</span></dt><dd><p>Minimum value for two structures to be considered similar.</p>
+</dd>
+<dt>verbose<span class="classifier">boolean</span></dt><dd><p>Indicator for verbose output.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h2>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>coverage<span class="classifier">float</span></dt><dd><p>Coverage score that compares the diversity of the supplied conformational ensembles.</p>
+</dd>
+<dt>matching<span class="classifier">float</span></dt><dd><p>Matching score that compares the similarity of the supplied conformational ensembles.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.extract_data.calculate_dh_tl">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_dh_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_dh_loading</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_dh_tl" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_dh_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_dh_loading</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_dh_tl" title="Link to this definition"></a></dt>
 <dd><p>Adjusts raw dihedral loading for interpretability.</p>
 <p>Calculates a transformed loading from a raw loading of dihedral angle features to account
 for the application of sine and cosine functions.</p>
 <p>Returns a transformed loading.</p>
-<section id="parameters">
-<h2>Parameters:<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
+<section id="id1">
+<h2>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>raw_dh_loading<span class="classifier">array_like, (N,)</span></dt><dd><p>Array of raw loading from PCA.</p>
 </dd>
 </dl>
 </section>
-<section id="returns">
-<h2>Returns:<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h2>
+<section id="id2">
+<h2>Returns:<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>tranformed_dh_loading<span class="classifier">array_like, (N/2,)</span></dt><dd><p>Array of transformed loading to determine relative angle influence in the given
 loading.</p>
@@ -113,13 +145,13 @@ loading.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.extract_data.calculate_pw_tl">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_pw_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_pw_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_pw_tl" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_pw_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_pw_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_pw_tl" title="Link to this definition"></a></dt>
 <dd><p>Adjusts raw pairwise distance loading for interpretability.</p>
 <p>Calculates a transformed loading from a raw loading of pairwise distance features to account
 for all pairings of residues.</p>
 <p>Returns a transformed loading.</p>
-<section id="id1">
-<h2>Parameters:<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<section id="id3">
+<h2>Parameters:<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>raw_pw_loading<span class="classifier">array_like, (N,)</span></dt><dd><p>Array of raw loading from PCA.</p>
 </dd>
@@ -127,8 +159,8 @@ for all pairings of residues.</p>
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h2>Returns:<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<section id="id4">
+<h2>Returns:<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>tranformed_pw_loading<span class="classifier">array_like, (N/2,)</span></dt><dd><p>Array of transformed loading to determine relative residue influence in the given loading.</p>
 </dd>
@@ -138,12 +170,12 @@ for all pairings of residues.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.extract_data.calculate_sa_tl">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_sa_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_sa_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_atom_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_sa_tl" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_sa_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_sa_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_atom_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_sa_tl" title="Link to this definition"></a></dt>
 <dd><p>Adjusts raw strain or shear loading for interpretability.</p>
 <p>Calculates a transformed loading from a raw loading of strain or shear tensor features.</p>
 <p>Returns a transformed loading.</p>
-<section id="id3">
-<h2>Parameters:<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<section id="id5">
+<h2>Parameters:<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>raw_sa_loading<span class="classifier">array_like</span></dt><dd><p>Array of raw loading from PCA.</p>
 </dd>
@@ -151,8 +183,8 @@ for all pairings of residues.</p>
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h2>Returns:<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<section id="id6">
+<h2>Returns:<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>tranformed_sa_loading<span class="classifier">array_like</span></dt><dd><p>Array of transformed loading to determine relative residue influence in the given loading.</p>
 </dd>
@@ -162,14 +194,14 @@ for all pairings of residues.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.extract_data.generate_dihedral_matrix">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">generate_dihedral_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_psi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_omega</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.generate_dihedral_matrix" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">generate_dihedral_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_psi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_omega</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.generate_dihedral_matrix" title="Link to this definition"></a></dt>
 <dd><p>Extracts dihedrals angles from given structures.</p>
 <p>Extracts and returns a data matrix of (observations x features) with the given structures as observations
 and the linearized dihedral angles (by applying sine and cosine functions) as features.
 Cannot handle missing coordinates and skips structures with missing backbone atoms within the
 given residue numbers.</p>
-<section id="id5">
-<h2>Parameters:<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
+<section id="id7">
+<h2>Parameters:<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>structure_list<span class="classifier">list of str</span></dt><dd><p>Array containing the file paths to PDB structures.</p>
 </dd>
@@ -189,8 +221,8 @@ given residue numbers.</p>
 </dd>
 </dl>
 </section>
-<section id="id6">
-<h2>Returns:<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
+<section id="id8">
+<h2>Returns:<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>dh_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing dihedral angles within <cite>resnum_bounds</cite> for structures in <cite>structure_list</cite>,
 excluding structures missing desired atoms.</p>
@@ -203,13 +235,13 @@ excluding structures missing desired atoms.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.extract_data.generate_pw_matrix">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">generate_pw_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.generate_pw_matrix" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">generate_pw_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.generate_pw_matrix" title="Link to this definition"></a></dt>
 <dd><p>Extracts pairwise distances from given structures.</p>
 <p>Extracts and returns a data matrix of (observations x features) with the given structures as observations
 and the pairwise distances between alpha carbon (CA) atoms as features. Cannot handle missing
 coordinates and skips structures with missing CA atoms within the given residue numbers.</p>
-<section id="id7">
-<h2>Parameters:<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h2>
+<section id="id9">
+<h2>Parameters:<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>structure_list<span class="classifier">list of str</span></dt><dd><p>Array containing the file paths to PDB structures.</p>
 </dd>
@@ -223,8 +255,8 @@ coordinates and skips structures with missing CA atoms within the given residue 
 </dd>
 </dl>
 </section>
-<section id="id8">
-<h2>Returns:<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h2>
+<section id="id10">
+<h2>Returns:<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>pw_data_matrix<span class="classifier">array_like</span></dt><dd><p>array containing pairwise distances between desired CA atoms for structures
 in <cite>structure_list</cite>, excluding structures missing desired atoms.</p>
@@ -237,14 +269,14 @@ in <cite>structure_list</cite>, excluding structures missing desired atoms.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.extract_data.generate_strain_matrix">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">generate_strain_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_pdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['N',</span> <span class="pre">'C',</span> <span class="pre">'CA',</span> <span class="pre">'CB',</span> <span class="pre">'O']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_locs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['',</span> <span class="pre">'A']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_additional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.generate_strain_matrix" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">generate_strain_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_pdb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['N',</span> <span class="pre">'C',</span> <span class="pre">'CA',</span> <span class="pre">'CB',</span> <span class="pre">'O']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_locs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['',</span> <span class="pre">'A']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_additional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.generate_strain_matrix" title="Link to this definition"></a></dt>
 <dd><p>Extracts strain tensors, shear tensors, or shear energies from given structures.</p>
 <p>Extracts and returns a data matrix of (observations x features) with the given structures as observations
 and strain tensors, shear tensors, or shear energies. For tensor features, only the off-diagonal
 elements are included. Cannot handle missing coordinates and skips structures with missing
 backbone atoms within the given residue numbers.</p>
-<section id="id9">
-<h2>Parameters:<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h2>
+<section id="id11">
+<h2>Parameters:<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>structure_list<span class="classifier">list of str</span></dt><dd><p>Array containing the file paths to PDB structures.</p>
 </dd>
@@ -268,8 +300,8 @@ backbone atoms within the given residue numbers.</p>
 </dd>
 </dl>
 </section>
-<section id="id10">
-<h2>Returns:<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h2>
+<section id="id12">
+<h2>Returns:<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>sa_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing strain or shear tensor information structures in <cite>structure_list</cite>,
 excluding structures missing desired atoms.</p>
@@ -282,19 +314,19 @@ excluding structures missing desired atoms.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.extract_data.load_dihedral_matrix">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">load_dihedral_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dh_pkl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.load_dihedral_matrix" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">load_dihedral_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dh_pkl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.load_dihedral_matrix" title="Link to this definition"></a></dt>
 <dd><p>Loads the dihedral data matrix and corresponding structures</p>
 <p>Loads a dictionary containing the dihedral data matrix as <cite>data_matrix</cite> key
 and the corresponding structures as <cite>structures</cite> key</p>
-<section id="id11">
-<h2>Parameters:<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h2>
+<section id="id13">
+<h2>Parameters:<a class="headerlink" href="#id13" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>dh_pkl<span class="classifier">str</span></dt><dd><p>File path to the dihedral dictionary pickle file.</p>
 </dd>
 </dl>
 </section>
-<section id="id12">
-<h2>Returns:<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h2>
+<section id="id14">
+<h2>Returns:<a class="headerlink" href="#id14" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>dh_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing dihedral angles as calculated by <cite>generate_dihedral_matrix</cite>.</p>
 </dd>
@@ -306,19 +338,19 @@ and the corresponding structures as <cite>structures</cite> key</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.extract_data.load_pw_matrix">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">load_pw_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pw_pkl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.load_pw_matrix" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">load_pw_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pw_pkl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.load_pw_matrix" title="Link to this definition"></a></dt>
 <dd><p>Loads the pairwise distance data matrix and corresponding structures</p>
 <p>Loads a dictionary containing the pairwise distance data matrix as <cite>data_matrix</cite> key
 and the corresponding structures as <cite>structures</cite> key</p>
-<section id="id13">
-<h2>Parameters:<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h2>
+<section id="id15">
+<h2>Parameters:<a class="headerlink" href="#id15" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>pw_pkl<span class="classifier">str</span></dt><dd><p>File path to the pairwise distance dictionary pickle file.</p>
 </dd>
 </dl>
 </section>
-<section id="id14">
-<h2>Returns:<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h2>
+<section id="id16">
+<h2>Returns:<a class="headerlink" href="#id16" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>pw_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing dihedral angles as calculated by <cite>generate_pw_matrix</cite>.</p>
 </dd>
@@ -330,19 +362,19 @@ and the corresponding structures as <cite>structures</cite> key</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.extract_data.load_strain_matrix">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">load_strain_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strain_pkl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.load_strain_matrix" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">load_strain_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strain_pkl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.load_strain_matrix" title="Link to this definition"></a></dt>
 <dd><p>Loads the strain data matrix and corresponding structures</p>
 <p>Loads a dictionary containing the strain data matrix as <cite>data_matrix</cite> key
 and the corresponding structures as <cite>structures</cite> key</p>
-<section id="id15">
-<h2>Parameters:<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h2>
+<section id="id17">
+<h2>Parameters:<a class="headerlink" href="#id17" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>strain_pkl<span class="classifier">str</span></dt><dd><p>File path to the strain dictionary pickle file.</p>
 </dd>
 </dl>
 </section>
-<section id="id16">
-<h2>Returns:<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h2>
+<section id="id18">
+<h2>Returns:<a class="headerlink" href="#id18" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>sa_data_matrix<span class="classifier">array_like</span></dt><dd><p>Array containing dihedral angles as calculated by <cite>generate_sa_matrix</cite>.</p>
 </dd>
