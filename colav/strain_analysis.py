@@ -342,7 +342,7 @@ def bfacs_from_atoms(struc_df, sorted_atom_list):
         bfacs.append(
             struc_df.loc[
                 np.logical_and(np.logical_and(
-                    struc_df.residue_number == atom[0], struc_df.atom_name == atom[1]), np.logical_or(struc_df.alt_loc == ' ', struc_df.alt_loc == 'A'),
+                    struc_df.residue_number == atom[0], struc_df.atom_name == atom[1]), np.logical_or(struc_df.alt_loc == '', struc_df.alt_loc == 'A'),
                 )
             ].b_factor.to_numpy()
         )
