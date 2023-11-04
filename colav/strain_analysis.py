@@ -300,19 +300,18 @@ def coords_from_atoms(struc_df, sorted_atom_list):
     """
 
     # initialize array for the coordinates
-    xyz_coords = list()
-
-    # enumerate through all atoms
+    use_atoms = np.zeros(struc_df.shape[0])
+    use_locs = np.zeros(struc_df.shape[0]); alt_locs = ['', 'A']
     for i, atom in enumerate(sorted_atom_list):
-        xyz_coords.append(
-            struc_df.loc[
-                np.logical_and(
-                    struc_df.residue_number == atom[0], struc_df.atom_name == atom[1]
-                )
-            ][["x_coord", "y_coord", "z_coord"]].to_numpy()
-        )
+        use_atoms = use_atoms | ((struc_df["residue_number"] == atom[0]) & (struc_df["atom_name"] == atom[1]))
+    for i, loc in enumerate(alt_locs):
+        use_locs = use_locs | (struc_df["alt_loc"] == loc)
+    xyz_coords = struc_df[
+        (use_atoms)
+        & (use_locs)
+    ][["x_coord", "y_coord", "z_coord"]].to_numpy()
 
-    return np.array(xyz_coords).reshape(-1, 3)
+    return np.array(xyz_coords).reshape(-1,3)
 
 
 def bfacs_from_atoms(struc_df, sorted_atom_list):
@@ -342,8 +341,8 @@ def bfacs_from_atoms(struc_df, sorted_atom_list):
     for i, atom in enumerate(sorted_atom_list):
         bfacs.append(
             struc_df.loc[
-                np.logical_and(
-                    struc_df.residue_number == atom[0], struc_df.atom_name == atom[1]
+                np.logical_and(np.logical_and(
+                    struc_df.residue_number == atom[0], struc_df.atom_name == atom[1]), np.logical_or(struc_df.alt_loc == ' ', struc_df.alt_loc == 'A'),
                 )
             ].b_factor.to_numpy()
         )

@@ -1,4 +1,4 @@
-import os, pickle
+import pickle
 import numpy as np
 from biopandas.pdb import PandasPdb
 from itertools import combinations
@@ -552,3 +552,85 @@ def load_strain_matrix(strain_pkl):
     sa_strucs = db["structures"]
 
     return np.array(sa_data_matrix), sa_strucs
+
+def calculate_coverage_matching_scores(reference_strucs, sample_strucs, resnum_bounds, rmsd_threshold=1., verbose=False): 
+    '''Calculates the coverage and matching metrics for a sample set of structures/conformational ensemble compared to a reference set of structures/conformational ensemble. 
+
+    The coverage and matching metrics used are defined by Xu et al. (2021) ICLR. The coverage metric measures the diversity of the sample set compared to the reference set. The matching metric measures the similarity of the sample set to the reference set. 
+    
+    Parameters: 
+    -----------
+    reference_strucs : list of str
+        Array containing the file paths to reference structures. 
+    
+    sample_strucs : list of str
+        Array containing the file paths to sample/generated structures. 
+    
+    resnum_bounds : tuple
+        Tuple containing the minimum and maximum (inclusive) residue number values.
+    
+    rmsd_threshold : float
+        Minimum value for two structures to be considered similar. 
+    
+    verbose : boolean 
+        Indicator for verbose output. 
+    
+    Returns: 
+    --------
+    coverage : float
+        Coverage score that compares the diversity of the supplied conformational ensembles. 
+
+    matching : float 
+        Matching score that compares the similarity of the supplied conformational ensembles. 
+    '''
+
+    # create sorted atom list 
+    sorted_atom_list = [(res, at) for res in np.arange(resnum_bounds[0], resnum_bounds[1]+1) for at in ['N', 'CA', 'C']]
+
+    # initialize coverage and matching score 
+    coverage = 0 
+    matching = 0
+
+    # iterate through the reference structures 
+    for ref in reference_strucs: 
+
+        # load the reference structure coordinates 
+        ref_ppdb = PandasPdb().read_pdb(ref)
+        ref_coords = coords_from_atoms(ref_ppdb.df['ATOM'], sorted_atom_list)
+
+        # initialize 
+        skip_cov = False
+        min_rmsd = np.inf
+
+        # iterate through the sample structures 
+        for sample in sample_strucs: 
+
+            # load the sample structure coordinates
+            sample_ppdb = PandasPdb().read_pdb(sample)
+            sample_coords = coords_from_atoms(sample_ppdb.df['ATOM'], sorted_atom_list)
+            assert(ref_coords.shape == sample_coords.shape)
+
+            # calculate RMSD between coordinates 
+            rmsd = np.sqrt(np.mean(np.square(ref_coords - sample_coords)))
+            # check to update coverage metric 
+            if not skip_cov and rmsd < rmsd_threshold: 
+                skip_cov = True
+
+            # check to update matching metric 
+            min_rmsd = rmsd if rmsd < min_rmsd else min_rmsd
+        
+        # update coverage and matching metrics 
+        coverage += int(skip_cov)
+        matching += min_rmsd
+    
+    # calculate final metrics 
+    coverage /= len(reference_strucs)
+    matching /= len(reference_strucs)
+
+    # print coverage and matching metrics 
+    if verbose: 
+
+        print(f'Coverage metric: {np.round(coverage*100, decimals=2)}%')
+        print(f'Matching metric: {np.round(matching, decimals=3)}')
+
+    return coverage, matching

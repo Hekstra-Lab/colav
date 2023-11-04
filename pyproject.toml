@@ -32,7 +32,7 @@ dependencies = [
     "jupyter", 
     "numpy",
     "scipy",
-    "scikit-learn",
+    "biopandas",
 ]
 
 # extras
