@@ -4,7 +4,7 @@ from biopandas.pdb import PandasPdb
 from itertools import combinations
 from colav.strain_analysis import *
 from colav.internal_coordinates import *
-from scipy.spatial.distance import pdist
+from scipy.spatial.distance import pdist 
 
 
 def calculate_dh_tl(raw_dh_loading):
