@@ -1,13 +1,15 @@
 import pickle
 import numpy as np
 from biopandas.pdb import PandasPdb
-from itertools import combinations
+from itertools import combinations, product
 from colav.strain_analysis import *
 from colav.internal_coordinates import *
 from scipy.spatial.distance import pdist 
+from scipy.stats import pearsonr
+from multiprocessing import Pool
 
 
-def calculate_dh_tl(raw_dh_loading):
+def calculate_dh_rc(raw_dh_loading):
     """Adjusts raw dihedral loading for interpretability.
 
     Calculates a transformed loading from a raw loading of dihedral angle features to account
@@ -183,7 +185,7 @@ def load_dihedral_matrix(dh_pkl):
     return dh_data_matrix, dh_strucs
 
 
-def calculate_pw_tl(raw_pw_loading, resnum_bounds):
+def calculate_pw_rc(raw_pw_loading, resnum_bounds):
     """Adjusts raw pairwise distance loading for interpretability.
 
     Calculates a transformed loading from a raw loading of pairwise distance features to account
@@ -348,7 +350,7 @@ def load_pw_matrix(pw_pkl):
     return pw_data_matrix, pw_strucs
 
 
-def calculate_sa_tl(raw_sa_loading, shared_atom_list):
+def calculate_sa_rc(raw_sa_loading, shared_atom_list):
     """Adjusts raw strain or shear loading for interpretability.
 
     Calculates a transformed loading from a raw loading of strain or shear tensor features.
@@ -592,40 +594,28 @@ def calculate_coverage_matching_scores(reference_strucs, sample_strucs, resnum_b
     matching = 0
 
     # iterate through the reference structures 
+    ref_coords = list() 
     for ref in reference_strucs: 
 
         # load the reference structure coordinates 
         ref_ppdb = PandasPdb().read_pdb(ref)
-        ref_coords = coords_from_atoms(ref_ppdb.df['ATOM'], sorted_atom_list)
+        ref_coords.append(coords_from_atoms(ref_ppdb.df['ATOM'], sorted_atom_list))
 
-        # initialize 
-        skip_cov = False
-        min_rmsd = np.inf
+    # iterate through the sample structures 
+    sample_coords = list()
+    for sample in sample_strucs: 
 
-        # iterate through the sample structures 
-        for sample in sample_strucs: 
+        # load the sample structure coordinates 
+        sample_ppdb = PandasPdb().read_pdb(sample)
+        sample_coords.append(coords_from_atoms(sample_ppdb.df['ATOM'], sorted_atom_list))
 
-            # load the sample structure coordinates
-            sample_ppdb = PandasPdb().read_pdb(sample)
-            sample_coords = coords_from_atoms(sample_ppdb.df['ATOM'], sorted_atom_list)
-            assert(ref_coords.shape == sample_coords.shape)
+    # generate the comparisons and calculate the RMSDs 
+    comparisons = np.array(list(product(ref_coords, sample_coords))).reshape(len(ref_coords), len(sample_coords), 2, -1, 3)
+    rmsds = np.sqrt(np.sum(np.sum(np.square(comparisons[:,:,0,:,:] - comparisons[:,:,1,:,:]), axis=2), axis=2) / len(sorted_atom_list))
 
-            # calculate RMSD between coordinates 
-            rmsd = np.sqrt(np.mean(np.square(ref_coords - sample_coords)))
-            # check to update coverage metric 
-            if not skip_cov and rmsd < rmsd_threshold: 
-                skip_cov = True
-
-            # check to update matching metric 
-            min_rmsd = rmsd if rmsd < min_rmsd else min_rmsd
-        
-        # update coverage and matching metrics 
-        coverage += int(skip_cov)
-        matching += min_rmsd
-    
-    # calculate final metrics 
-    coverage /= len(reference_strucs)
-    matching /= len(reference_strucs)
+    # calculate coverage and matching scores 
+    coverage = np.sum(np.any(rmsds < rmsd_threshold, axis=1).astype('int')) / len(reference_strucs)
+    matching = np.sum(np.min(rmsds, axis=1)) / len(reference_strucs)
 
     # print coverage and matching metrics 
     if verbose: 
@@ -633,4 +623,113 @@ def calculate_coverage_matching_scores(reference_strucs, sample_strucs, resnum_b
         print(f'Coverage metric: {np.round(coverage*100, decimals=2)}%')
         print(f'Matching metric: {np.round(matching, decimals=3)}')
 
-    return coverage, matching
+    return coverage, matching 
+
+    # # iterate through the reference structures 
+    # for ref in reference_strucs: 
+
+    #     # load the reference structure coordinates 
+    #     ref_ppdb = PandasPdb().read_pdb(ref)
+    #     ref_coords = coords_from_atoms(ref_ppdb.df['ATOM'], sorted_atom_list)
+
+    #     # initialize 
+    #     skip_cov = False
+    #     min_rmsd = np.inf
+
+    #     # iterate through the sample structures 
+    #     for sample in sample_strucs: 
+
+    #         # load the sample structure coordinates
+    #         sample_ppdb = PandasPdb().read_pdb(sample)
+    #         sample_coords = coords_from_atoms(sample_ppdb.df['ATOM'], sorted_atom_list)
+    #         assert(ref_coords.shape == sample_coords.shape)
+
+    #         # calculate RMSD between coordinates 
+    #         rmsd = np.sqrt(np.mean(np.square(ref_coords - sample_coords)))
+    #         # check to update coverage metric 
+    #         if not skip_cov and rmsd < rmsd_threshold: 
+    #             skip_cov = True
+
+    #         # check to update matching metric 
+    #         min_rmsd = rmsd if rmsd < min_rmsd else min_rmsd
+        
+    #     # update coverage and matching metrics 
+    #     coverage += int(skip_cov)
+    #     matching += min_rmsd
+    
+    # # calculate final metrics 
+    # coverage /= len(reference_strucs)
+    # matching /= len(reference_strucs)
+
+    # # print coverage and matching metrics 
+    # if verbose: 
+
+    #     print(f'Coverage metric: {np.round(coverage*100, decimals=2)}%')
+    #     print(f'Matching metric: {np.round(matching, decimals=3)}')
+
+    # return coverage, matching
+
+# def calculate_rmsd(ref_sample):
+#     ref, sample, sorted_atom_list, rmsd_threshold = ref_sample
+#     ref_ppdb = PandasPdb().read_pdb(ref)
+#     ref_coords = coords_from_atoms(ref_ppdb.df['ATOM'], sorted_atom_list)
+
+#     sample_ppdb = PandasPdb().read_pdb(sample)
+#     sample_coords = coords_from_atoms(sample_ppdb.df['ATOM'], sorted_atom_list)
+#     assert(ref_coords.shape == sample_coords.shape)
+
+#     rmsd = np.sqrt(np.mean(np.square(ref_coords - sample_coords)))
+
+#     return rmsd
+
+# def calculate_coverage_matching_scores_parallel(reference_strucs, sample_strucs, resnum_bounds, rmsd_threshold=1., verbose=False):
+#     sorted_atom_list = [(res, at) for res in np.arange(resnum_bounds[0], resnum_bounds[1]+1) for at in ['N', 'CA', 'C']]
+#     coverage = 0
+#     matching = 0
+
+#     pool = Pool()
+#     results = pool.map(calculate_rmsd, [(ref, sample, sorted_atom_list, rmsd_threshold) for ref in reference_strucs for sample in sample_strucs])
+#     results = np.array(results).reshape(len(reference_strucs), len(sample_strucs))
+
+#     for i in np.arange(len(reference_strucs)):  
+        
+#         # update coverage
+#         coverage += 1 if np.any(results[i,:] < rmsd_threshold) else 0 
+
+#         # update matching 
+#         matching += np.min(results[i,:])
+
+#     # calculate final metrics 
+#     coverage /= len(reference_strucs)
+#     matching /= len(reference_strucs)
+
+#     # close the pool
+#     pool.close()
+
+#     if verbose:
+#         print(f'Coverage metric: {np.round(coverage * 100, decimals=2)}%')
+#         print(f'Matching metric: {np.round(matching, decimals=3)}')
+
+#     return coverage, matching
+
+def calculate_dh_pw(i, j, u_pca, pw_pca, resnum_bounds, psi_idx, phi_idx, omg_idx):
+    return pearsonr(
+        calculate_dh_rc(u_pca.components_[i, :])[psi_idx]
+        + calculate_dh_rc(u_pca.components_[i, :])[phi_idx]
+        + calculate_dh_rc(u_pca.components_[i, :])[omg_idx],
+        calculate_pw_rc(pw_pca.components_[j, :], resnum_bounds)[1:],
+    )[0]
+
+def calculate_dh_sa(i, j, u_pca, sa_pca, shared_atom_set, psi_idx, phi_idx, omg_idx):
+    return pearsonr(
+        calculate_dh_rc(u_pca.components_[i, :])[psi_idx]
+        + calculate_dh_rc(u_pca.components_[i, :])[phi_idx]
+        + calculate_dh_rc(u_pca.components_[i, :])[omg_idx],
+        calculate_sa_rc(sa_pca.components_[j, :], sorted(shared_atom_set))[1:],
+    )[0]
+
+def calculate_pw_sa(i, j, pw_pca, sa_pca, resnum_bounds, shared_atom_set):
+    return pearsonr(
+        calculate_pw_rc(pw_pca.components_[i, :], resnum_bounds),
+        calculate_sa_rc(sa_pca.components_[j, :], sorted(shared_atom_set)),
+    )[0]

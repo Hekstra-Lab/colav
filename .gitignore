@@ -106,8 +106,10 @@ ENV/
 
 # custom
 colav/_version.py
-*.pkl
+results/mpro_data/mpro_theseus_data/
+results/ptp1b_data/ptp1b_theseus_data/
 *.fcz
+*.tar.gz
 scripts/old_testing/
 scripts/least_squares_data/
 scripts/theseus_data/
