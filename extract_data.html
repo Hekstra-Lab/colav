@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>extract_data module &mdash; colav 0.0.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -46,9 +48,12 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">extract_data</span></code> module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.calculate_coverage_matching_scores"><code class="docutils literal notranslate"><span class="pre">calculate_coverage_matching_scores()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.calculate_dh_tl"><code class="docutils literal notranslate"><span class="pre">calculate_dh_tl()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.calculate_pw_tl"><code class="docutils literal notranslate"><span class="pre">calculate_pw_tl()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.calculate_sa_tl"><code class="docutils literal notranslate"><span class="pre">calculate_sa_tl()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.calculate_dh_pw"><code class="docutils literal notranslate"><span class="pre">calculate_dh_pw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.calculate_dh_rc"><code class="docutils literal notranslate"><span class="pre">calculate_dh_rc()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.calculate_dh_sa"><code class="docutils literal notranslate"><span class="pre">calculate_dh_sa()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.calculate_pw_rc"><code class="docutils literal notranslate"><span class="pre">calculate_pw_rc()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.calculate_pw_sa"><code class="docutils literal notranslate"><span class="pre">calculate_pw_sa()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.calculate_sa_rc"><code class="docutils literal notranslate"><span class="pre">calculate_sa_rc()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.generate_dihedral_matrix"><code class="docutils literal notranslate"><span class="pre">generate_dihedral_matrix()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.generate_pw_matrix"><code class="docutils literal notranslate"><span class="pre">generate_pw_matrix()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#colav.extract_data.generate_strain_matrix"><code class="docutils literal notranslate"><span class="pre">generate_strain_matrix()</span></code></a></li>
@@ -120,8 +125,13 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="colav.extract_data.calculate_dh_tl">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_dh_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_dh_loading</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_dh_tl" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="colav.extract_data.calculate_dh_pw">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_dh_pw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_pca</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pw_pca</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omg_idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_dh_pw" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colav.extract_data.calculate_dh_rc">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_dh_rc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_dh_loading</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_dh_rc" title="Link to this definition"></a></dt>
 <dd><p>Adjusts raw dihedral loading for interpretability.</p>
 <p>Calculates a transformed loading from a raw loading of dihedral angle features to account
 for the application of sine and cosine functions.</p>
@@ -144,8 +154,13 @@ loading.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="colav.extract_data.calculate_pw_tl">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_pw_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_pw_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_pw_tl" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="colav.extract_data.calculate_dh_sa">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_dh_sa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_pca</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sa_pca</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_atom_set</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omg_idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_dh_sa" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colav.extract_data.calculate_pw_rc">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_pw_rc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_pw_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_pw_rc" title="Link to this definition"></a></dt>
 <dd><p>Adjusts raw pairwise distance loading for interpretability.</p>
 <p>Calculates a transformed loading from a raw loading of pairwise distance features to account
 for all pairings of residues.</p>
@@ -169,8 +184,13 @@ for all pairings of residues.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="colav.extract_data.calculate_sa_tl">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_sa_tl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_sa_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_atom_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_sa_tl" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="colav.extract_data.calculate_pw_sa">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_pw_sa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pw_pca</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sa_pca</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_atom_set</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_pw_sa" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colav.extract_data.calculate_sa_rc">
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_sa_rc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_sa_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_atom_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_sa_rc" title="Link to this definition"></a></dt>
 <dd><p>Adjusts raw strain or shear loading for interpretability.</p>
 <p>Calculates a transformed loading from a raw loading of strain or shear tensor features.</p>
 <p>Returns a transformed loading.</p>
