@@ -95,7 +95,7 @@
 <span id="extract-data-module"></span><h1><code class="docutils literal notranslate"><span class="pre">extract_data</span></code> module<a class="headerlink" href="#module-colav.extract_data" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.extract_data.calculate_coverage_matching_scores">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_coverage_matching_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference_strucs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_strucs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmsd_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_coverage_matching_scores" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_coverage_matching_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference_strucs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_strucs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmsd_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simultaneous</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_coverage_matching_scores" title="Link to this definition"></a></dt>
 <dd><p>Calculates the coverage and matching metrics for a sample set of structures/conformational ensemble compared to a reference set of structures/conformational ensemble.</p>
 <p>The coverage and matching metrics used are defined by Xu et al. (2021) ICLR. The coverage metric measures the diversity of the sample set compared to the reference set. The matching metric measures the similarity of the sample set to the reference set.</p>
 <section id="parameters">
@@ -109,7 +109,9 @@
 </dd>
 <dt>rmsd_threshold<span class="classifier">float</span></dt><dd><p>Minimum value for two structures to be considered similar.</p>
 </dd>
-<dt>verbose<span class="classifier">boolean</span></dt><dd><p>Indicator for verbose output.</p>
+<dt>simultaneous<span class="classifier">bool</span></dt><dd><p>Indicator for simultaneous calculation of RMSD; otherwise, calculations are sequential.</p>
+</dd>
+<dt>verbose<span class="classifier">bool</span></dt><dd><p>Indicator for verbose output.</p>
 </dd>
 </dl>
 </section>
@@ -131,22 +133,24 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="colav.extract_data.calculate_dh_rc">
-<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_dh_rc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_dh_loading</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_dh_rc" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_dh_rc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_dh_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quadrature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_dh_rc" title="Link to this definition"></a></dt>
 <dd><p>Adjusts raw dihedral loading for interpretability.</p>
-<p>Calculates a transformed loading from a raw loading of dihedral angle features to account
+<p>Calculates a residue contribution from a raw loading of dihedral angle features to account
 for the application of sine and cosine functions.</p>
-<p>Returns a transformed loading.</p>
+<p>Returns a residue contribution.</p>
 <section id="id1">
 <h2>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>raw_dh_loading<span class="classifier">array_like, (N,)</span></dt><dd><p>Array of raw loading from PCA.</p>
+</dd>
+<dt>quadrature<span class="classifier">bool, optional</span></dt><dd><p>Indicator to calculate residue contributions in quadrature.</p>
 </dd>
 </dl>
 </section>
 <section id="id2">
 <h2>Returns:<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <dl class="simple">
-<dt>tranformed_dh_loading<span class="classifier">array_like, (N/2,)</span></dt><dd><p>Array of transformed loading to determine relative angle influence in the given
+<dt>tranformed_dh_loading<span class="classifier">array_like, (N/2,)</span></dt><dd><p>Array of residue contribution to determine relative angle influence in the given
 loading.</p>
 </dd>
 </dl>
@@ -162,9 +166,9 @@ loading.</p>
 <dt class="sig sig-object py" id="colav.extract_data.calculate_pw_rc">
 <span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_pw_rc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_pw_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resnum_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_pw_rc" title="Link to this definition"></a></dt>
 <dd><p>Adjusts raw pairwise distance loading for interpretability.</p>
-<p>Calculates a transformed loading from a raw loading of pairwise distance features to account
+<p>Calculates a residue contribution from a raw loading of pairwise distance features to account
 for all pairings of residues.</p>
-<p>Returns a transformed loading.</p>
+<p>Returns a residue contribution.</p>
 <section id="id3">
 <h2>Parameters:<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <dl class="simple">
@@ -177,7 +181,7 @@ for all pairings of residues.</p>
 <section id="id4">
 <h2>Returns:<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <dl class="simple">
-<dt>tranformed_pw_loading<span class="classifier">array_like, (N/2,)</span></dt><dd><p>Array of transformed loading to determine relative residue influence in the given loading.</p>
+<dt>tranformed_pw_loading<span class="classifier">array_like, (N/2,)</span></dt><dd><p>Array of residue contribution to determine relative residue influence in the given loading.</p>
 </dd>
 </dl>
 </section>
@@ -192,8 +196,8 @@ for all pairings of residues.</p>
 <dt class="sig sig-object py" id="colav.extract_data.calculate_sa_rc">
 <span class="sig-prename descclassname"><span class="pre">colav.extract_data.</span></span><span class="sig-name descname"><span class="pre">calculate_sa_rc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_sa_loading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_atom_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colav.extract_data.calculate_sa_rc" title="Link to this definition"></a></dt>
 <dd><p>Adjusts raw strain or shear loading for interpretability.</p>
-<p>Calculates a transformed loading from a raw loading of strain or shear tensor features.</p>
-<p>Returns a transformed loading.</p>
+<p>Calculates a residue contribution from a raw loading of strain or shear tensor features.</p>
+<p>Returns a residue contribution.</p>
 <section id="id5">
 <h2>Parameters:<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
 <dl class="simple">
@@ -206,7 +210,7 @@ for all pairings of residues.</p>
 <section id="id6">
 <h2>Returns:<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
 <dl class="simple">
-<dt>tranformed_sa_loading<span class="classifier">array_like</span></dt><dd><p>Array of transformed loading to determine relative residue influence in the given loading.</p>
+<dt>tranformed_sa_loading<span class="classifier">array_like</span></dt><dd><p>Array of residue contribution to determine relative residue influence in the given loading.</p>
 </dd>
 </dl>
 </section>
