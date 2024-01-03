@@ -307,13 +307,13 @@ def test_calculate_strain_dict():
 def test_calculate_tl():
     # calculate mock transformed loadings using arbitrary raw loadings
     assert_array_equal(
-        calculate_dh_tl([1.0, 0.5, -1.0, -0.5, -1.2, -0.8]), [1.5, 1.7, 1.8]
+        calculate_dh_rc([1.0, 0.5, -1.0, -0.5, -1.2, -0.8]), [1.5, 1.7, 1.8]
     )
     assert_array_equal(
-        calculate_pw_tl([1.0, 0.5, -1.0, -0.5, -1.2, -0.8], (1, 4)), [2.5, 2.7, 1.8, 3]
+        calculate_pw_rc([1.0, 0.5, -1.0, -0.5, -1.2, -0.8], (1, 4)), [2.5, 2.7, 1.8, 3]
     )
     assert_array_equal(
-        calculate_sa_tl(
+        calculate_sa_rc(
             [1.0, 0.5, -1.0, -0.5, -1.2, -0.8, 1.0, 0.5, -1.0, -0.5, -1.2, -0.8],
             [(1, "N"), (1, "CA"), (1, "C"), (2, "N")],
         ),
