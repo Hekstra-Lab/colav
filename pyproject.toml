@@ -29,6 +29,8 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
+    "jupyter",
+    "matplotlib",
     "numpy",
     "scipy",
     "biopandas",
@@ -36,9 +38,6 @@ dependencies = [
 
 # extras
 [project.optional-dependencies]
-notebook = [
-    "jupyter", 
-    "matplotlib",
 test = [
     "pytest>=6.0", 
     "pytest-cov", 
