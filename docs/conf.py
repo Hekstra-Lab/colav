@@ -30,7 +30,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx_rtd_theme",
-    "nbsphinx"
+    "nbsphinx",
 ]
 source_suffix = [".rst", ".md"]
 templates_path = ["_templates"]
