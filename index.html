@@ -18,6 +18,7 @@
         <script src="_static/documentation_options.js?v=d45e8c67"></script>
         <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -46,9 +47,8 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="extract_data.html"><code class="docutils literal notranslate"><span class="pre">extract_data</span></code> module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="internal_coordinates.html"><code class="docutils literal notranslate"><span class="pre">internal_coordinates</span></code> module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="strain_analysis.html"><code class="docutils literal notranslate"><span class="pre">strain_analysis</span></code> module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html"><code class="docutils literal notranslate"><span class="pre">colav</span></code> quickstart guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html"><code class="docutils literal notranslate"><span class="pre">extract_data</span></code> module</a></li>
 </ul>
 
         </div>
@@ -83,7 +83,7 @@
 -->
 <section id="welcome-to-colav-s-documentation">
 <h1>Welcome to <code class="docutils literal notranslate"><span class="pre">colav</span></code>’s documentation!<a class="headerlink" href="#welcome-to-colav-s-documentation" title="Link to this heading"></a></h1>
-<p>Welcome to <code class="docutils literal notranslate"><span class="pre">colav</span></code>, an open-source Python package that implements three feature extraction methods (dihedral angles, C$\alpha$ pairwise distances, and strain analysis) for representing protein structures in the PDB format. This package was primarily built to analyze medium to large (&gt;100 &amp; &lt;10,000) datasets composed of individual protein structures. In particular, <code class="docutils literal notranslate"><span class="pre">colav</span></code> may be useful to analyze datasets from a crystallographic drug fragment screen (stay tuned for our forthcoming paper!).</p>
+<p>Welcome to <code class="docutils literal notranslate"><span class="pre">colav</span></code>, an open-source Python package that implements three feature extraction methods (dihedral angles, $C_\alpha$ pairwise distances, and strain analysis) for representing protein structures in the PDB format. This package was primarily built to analyze medium to large (&gt;100 &amp; &lt;10,000) datasets composed of individual protein structures. In particular, <code class="docutils literal notranslate"><span class="pre">colav</span></code> may be useful to analyze datasets from a crystallographic drug fragment screen (stay tuned for our forthcoming paper!).</p>
 <p>The <a class="reference internal" href="quickstart.html"><span class="std std-doc">quickstart</span></a> provides installation instructions and introduces the feature extraction methods in more detail with examples using protein tyrosine phosphatase 1B (PTP-1B).</p>
 <p>We are adding command-line options for ease of use! Check back soon for more information.</p>
 <div class="toctree-wrapper compound">
@@ -105,24 +105,11 @@
 <li class="toctree-l2"><a class="reference internal" href="extract_data.html#colav.extract_data.load_strain_matrix"><code class="docutils literal notranslate"><span class="pre">load_strain_matrix()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="internal_coordinates.html"><code class="docutils literal notranslate"><span class="pre">internal_coordinates</span></code> module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="internal_coordinates.html#colav.internal_coordinates.calculate_backbone_dihedrals"><code class="docutils literal notranslate"><span class="pre">calculate_backbone_dihedrals()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="internal_coordinates.html#colav.internal_coordinates.calculate_bond_angles"><code class="docutils literal notranslate"><span class="pre">calculate_bond_angles()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="internal_coordinates.html#colav.internal_coordinates.calculate_bond_distances"><code class="docutils literal notranslate"><span class="pre">calculate_bond_distances()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="internal_coordinates.html#colav.internal_coordinates.calculate_dihedral"><code class="docutils literal notranslate"><span class="pre">calculate_dihedral()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="internal_coordinates.html#colav.internal_coordinates.nerf_reconstruction"><code class="docutils literal notranslate"><span class="pre">nerf_reconstruction()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="strain_analysis.html"><code class="docutils literal notranslate"><span class="pre">strain_analysis</span></code> module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="strain_analysis.html#colav.strain_analysis.bfacs_from_atoms"><code class="docutils literal notranslate"><span class="pre">bfacs_from_atoms()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="strain_analysis.html#colav.strain_analysis.calculate_strain"><code class="docutils literal notranslate"><span class="pre">calculate_strain()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="strain_analysis.html#colav.strain_analysis.calculate_strain_dict"><code class="docutils literal notranslate"><span class="pre">calculate_strain_dict()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="strain_analysis.html#colav.strain_analysis.coords_from_atoms"><code class="docutils literal notranslate"><span class="pre">coords_from_atoms()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="strain_analysis.html#colav.strain_analysis.determine_shared_atoms"><code class="docutils literal notranslate"><span class="pre">determine_shared_atoms()</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html"><code class="docutils literal notranslate"><span class="pre">colav</span></code> quickstart guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#installation">Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example.html"><code class="docutils literal notranslate"><span class="pre">extract_data</span></code> module</a><ul class="simple">
 </ul>
 </li>
 </ul>
