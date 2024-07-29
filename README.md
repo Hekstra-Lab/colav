@@ -1,9 +1,9 @@
 # colav
 
-[![License](https://img.shields.io/pypi/l/colav.svg?color=green)](https://github.com/ammsa23/colav/raw/main/LICENSE)
+[![License](https://img.shields.io/pypi/l/colav.svg?color=green)](https://github.com/Hekstra-Lab/colav/raw/main/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/colav.svg?color=green)](https://pypi.org/project/colav)
 [![Python Version](https://img.shields.io/pypi/pyversions/colav.svg?color=green)](https://python.org)
-[![CI](https://github.com/ammsa23/colav/actions/workflows/ci.yml/badge.svg)](https://github.com/ammsa23/colav/actions/workflows/ci.yml)
+[![CI](https://github.com/Hekstra-Lab/colav/actions/workflows/ci.yml/badge.svg)](https://github.com/Hekstra-Lab/colav/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/ammsa23/colav/branch/main/graph/badge.svg?token=J69QAK9A20)](https://codecov.io/gh/ammsa23/colav)
 
 `colav` (Conformational Landscape Visualization) provides tools for representing protein structures and mapping conformational landscapes. 
@@ -20,7 +20,7 @@ pip install colav
 
 ## Documentation 
 
-Documentation can be found [here](https://rs-station.github.io/colav). 
+Documentation can be found [here](https://hekstra-lab.github.io/colav/). 
 
 ## Examples 
 
@@ -28,7 +28,7 @@ Examples of how to use the software can be found in `scripts/`.
 
 ## Support 
 
-If you are having issues, please let us know. You can contact us [here](aasaeed@college.harvard.edu). 
+If you are having issues, please email Ammaar at aasaeed@college.harvard.edu or file an [issue](https://github.com/Hekstra-Lab/colav/issues). 
 
 ## License 
 
