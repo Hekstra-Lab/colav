@@ -60,6 +60,6 @@ docs = [
 ]
 
 [project.urls]
-homepage = "https://rs-station.github.io/colav/"
-repository = "https://github.com/rs-station/colav"
+homepage = "https://hekstra-lab.github.io/colav/"
+repository = "https://github.com/Hekstra-Lab/colav/"
 
