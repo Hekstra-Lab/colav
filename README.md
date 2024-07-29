@@ -28,7 +28,7 @@ Examples of how to use the software can be found in `scripts/`.
 
 ## Support 
 
-If you are having issues, please email Ammaar at aasaeed@college.harvard.edu or file an [issue](https://github.com/Hekstra-Lab/colav/issues)). 
+If you are having issues, please email Ammaar at aasaeed@college.harvard.edu or file an [issue](https://github.com/Hekstra-Lab/colav/issues). 
 
 ## License 
 
