@@ -1,6 +1,7 @@
 import pickle
 import numpy as np
 from biopandas.pdb import PandasPdb
+from biopandas.mmcif import PandasMmcif
 from scipy.spatial.distance import cdist
 
 
@@ -139,7 +140,7 @@ def calculate_strain(
 
 def determine_shared_atoms(
     structure_list,
-    reference_ppdb,
+    reference_pstructure,
     resnum_bounds,
     atoms=["N", "C", "CA", "CB", "O"],
     alt_locs=["", "A"],
@@ -160,9 +161,9 @@ def determine_shared_atoms(
     structure_list : list of str
         Array containing the file paths to PDB structures.
 
-    reference_ppdb : PandasPdb (ATOM header only)
+    reference_pstructure : PandasPdb or PandasMmcif (ATOM header only)
         Dataframe containing ATOM information of protein structure;
-        e.g., ppdb.df['ATOM']; this structure can be contained in `structure_list`.
+        e.g., pstructure.df['ATOM']; this structure can be contained in `structure_list`.
 
     resnum_bounds : tuple
         Tuple containing the minimum and maximum (inclusive) residue number values.
@@ -186,7 +187,7 @@ def determine_shared_atoms(
     --------
     ref_atom_set : set
         Set containing shared atoms for all structures in `structure_list`
-        and `reference_ppdb`.
+        and `reference_pstructure`.
 
     filtered_strucs : list
         Array containing the file paths to PDB structures that contain all shared
@@ -202,7 +203,7 @@ def determine_shared_atoms(
     atom_set = set(
         [
             tuple(x)
-            for x in reference_ppdb[["residue_number", "atom_name"]].values.tolist()
+            for x in reference_pstructure[["residue_number", "atom_name"]].values.tolist()
         ]
     )
 
@@ -214,19 +215,19 @@ def determine_shared_atoms(
     for i, struc in enumerate(structure_list):
         if verbose:
             print(f"Working through structure {struc}")
-        # parse and filter the structural data
-        ppdb = PandasPdb().read_pdb(struc)
-        use_atoms = np.zeros(ppdb.df["ATOM"].shape[0])
-        use_locs = np.zeros(ppdb.df["ATOM"].shape[0])
+        # parse and filter the structure file, either pdb or mmcif
+        pstructure = PandasPdb().read_pdb(struc) if struc.endswith('.pdb') else PandasMmcif().read_mmcif(struc)
+        use_atoms = np.zeros(pstructure.df["ATOM"].shape[0])
+        use_locs = np.zeros(pstructure.df["ATOM"].shape[0])
         for i, atom in enumerate(atoms):
-            use_atoms = use_atoms | (ppdb.df["ATOM"]["atom_name"] == atom)
+            use_atoms = use_atoms | (pstructure.df["ATOM"]["atom_name"] == atom)
         for i, loc in enumerate(alt_locs):
-            use_locs = use_locs | (ppdb.df["ATOM"]["alt_loc"] == loc)
-        df = ppdb.df["ATOM"][
+            use_locs = use_locs | (pstructure.df["ATOM"]["alt_loc"] == loc)
+        df = pstructure.df["ATOM"][
             (use_atoms)
             & (use_locs)
-            & (ppdb.df["ATOM"]["residue_number"] >= resnum_bounds[0])
-            & (ppdb.df["ATOM"]["residue_number"] <= resnum_bounds[1])
+            & (pstructure.df["ATOM"]["residue_number"] >= resnum_bounds[0])
+            & (pstructure.df["ATOM"]["residue_number"] <= resnum_bounds[1])
         ]
 
         # compare the atom set to the current model
@@ -271,7 +272,7 @@ def determine_shared_atoms(
         set(
             [
                 tuple(x)
-                for x in reference_ppdb[["residue_number", "atom_name"]].values.tolist()
+                for x in reference_pstructure[["residue_number", "atom_name"]].values.tolist()
             ]
         )
     )
@@ -285,9 +286,9 @@ def coords_from_atoms(struc_df, sorted_atom_list):
 
     Parameters:
     -----------
-    struc_df : PandasPdb (ATOM header only)
+    struc_df : PandasPdb or PandasMmcif (ATOM header only)
         Dataframe containing ATOM information of protein structure;
-        e.g., ppdb.df['ATOM'].
+        e.g., pstructure.df['ATOM'].
 
     sorted_atom_list : array_like
         Sorted list containing atoms (residue number and atom name) for which
@@ -320,9 +321,9 @@ def bfacs_from_atoms(struc_df, sorted_atom_list):
 
     Parameters:
     -----------
-    struc_df : PandasPdb (ATOM header only)
+    struc_df : PandasPdb or PandasMmcif (ATOM header only)
         Dataframe containing ATOM information of protein structure;
-        e.g., ppdb.df['ATOM'].
+        e.g., pstructure.df['ATOM'].
 
     sorted_atom_list : array_like
         Sorted list containing atoms (residue number and atom name) for which
@@ -406,26 +407,29 @@ def calculate_strain_dict(
         Set of shared atoms (determined by `determine_shared_atoms`).
     """
 
+    # check file format
+
+
     # load the reference structure
     if verbose:
         print("Loading the reference structure...")
-    ppdb = PandasPdb().read_pdb(reference)
-    use_atoms = np.zeros(ppdb.df["ATOM"].shape[0])
-    use_locs = np.zeros(ppdb.df["ATOM"].shape[0])
+    pstructure = PandasPdb().read_pdb(reference) if reference.endswith('.pdb') else PandasMmcif().read_mmcif(reference)
+    use_atoms = np.zeros(pstructure.df["ATOM"].shape[0])
+    use_locs = np.zeros(pstructure.df["ATOM"].shape[0])
     for i, atom in enumerate(atoms):
-        use_atoms = use_atoms | (ppdb.df["ATOM"]["atom_name"] == atom)
+        use_atoms = use_atoms | (pstructure.df["ATOM"]["atom_name"] == atom)
     for i, loc in enumerate(alt_locs):
-        use_locs = use_locs | (ppdb.df["ATOM"]["alt_loc"] == loc)
-    ref_ppdb = ppdb.df["ATOM"][
+        use_locs = use_locs | (pstructure.df["ATOM"]["alt_loc"] == loc)
+    ref_pstructure = pstructure.df["ATOM"][
         (use_atoms)
         & (use_locs)
-        & (ppdb.df["ATOM"]["residue_number"] >= resnum_bounds[0])
-        & (ppdb.df["ATOM"]["residue_number"] <= resnum_bounds[1])
+        & (pstructure.df["ATOM"]["residue_number"] >= resnum_bounds[0])
+        & (pstructure.df["ATOM"]["residue_number"] <= resnum_bounds[1])
     ]
 
     shared_atom_set, filtered_strucs = determine_shared_atoms(
         structure_list=structure_list,
-        reference_ppdb=ref_ppdb,
+        reference_pstructure=ref_pstructure,
         resnum_bounds=resnum_bounds,
         atoms=atoms,
         alt_locs=alt_locs,
@@ -435,7 +439,7 @@ def calculate_strain_dict(
     )
 
     # determine the relevant coordinates for the reference structure
-    ref_strain_coords = coords_from_atoms(ref_ppdb, sorted(shared_atom_set))
+    ref_strain_coords = coords_from_atoms(ref_pstructure, sorted(shared_atom_set))
 
     # create a dictionary to store the strain analysis data
     strain_dict = dict()
@@ -452,18 +456,18 @@ def calculate_strain_dict(
             print(f"Working through {struc} for strain calculations")
 
         # parse and then clean up the data
-        ppdb = PandasPdb().read_pdb(struc)
-        use_atoms = np.zeros(ppdb.df["ATOM"].shape[0])
-        use_locs = np.zeros(ppdb.df["ATOM"].shape[0])
+        pstructure = PandasPdb().read_pdb(struc) if struc.endswith('.pdb') else PandasMmcif().read_mmcif(struc)
+        use_atoms = np.zeros(pstructure.df["ATOM"].shape[0])
+        use_locs = np.zeros(pstructure.df["ATOM"].shape[0])
         for i, atom in enumerate(atoms):
-            use_atoms = use_atoms | (ppdb.df["ATOM"]["atom_name"] == atom)
+            use_atoms = use_atoms | (pstructure.df["ATOM"]["atom_name"] == atom)
         for i, loc in enumerate(alt_locs):
-            use_locs = use_locs | (ppdb.df["ATOM"]["alt_loc"] == loc)
-        df = ppdb.df["ATOM"][
+            use_locs = use_locs | (pstructure.df["ATOM"]["alt_loc"] == loc)
+        df = pstructure.df["ATOM"][
             (use_atoms)
             & (use_locs)
-            & (ppdb.df["ATOM"]["residue_number"] >= resnum_bounds[0])
-            & (ppdb.df["ATOM"]["residue_number"] <= resnum_bounds[1])
+            & (pstructure.df["ATOM"]["residue_number"] >= resnum_bounds[0])
+            & (pstructure.df["ATOM"]["residue_number"] <= resnum_bounds[1])
         ]
 
         # determine coordinates for strain calculations

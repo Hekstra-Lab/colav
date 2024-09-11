@@ -51,7 +51,7 @@ def calculate_dihedral(p0, p1, p2, p3) -> float:
 
 
 def calculate_backbone_dihedrals(
-    ppdb, resnum_bounds, no_psi=False, no_omega=False, no_phi=False, verbose=False
+    pstructure, resnum_bounds, no_psi=False, no_omega=False, no_phi=False, verbose=False
 ) -> np.array:
     """Calculates backbone dihedral angles psi, omega, and phi (returned in that
     order) of consecutive residues.
@@ -61,7 +61,7 @@ def calculate_backbone_dihedrals(
 
     Parameters:
     -----------
-    ppdb : PandasPdb
+    pstructure : PandasPdb or PandasMmcif
         Dataframe containing the target protein structure (preferably one chain).
 
     resnum_bounds : tuple
@@ -91,10 +91,10 @@ def calculate_backbone_dihedrals(
     dihedrals = list()
 
     # get only atoms that are relevant for the calculation
-    mainchain = ppdb.df["ATOM"].loc[
-        (ppdb.df["ATOM"]["atom_name"] == "N")
-        | (ppdb.df["ATOM"]["atom_name"] == "CA")  # choose the correct atoms
-        | (ppdb.df["ATOM"]["atom_name"] == "C")
+    mainchain = pstructure.df["ATOM"].loc[
+        (pstructure.df["ATOM"]["atom_name"] == "N")
+        | (pstructure.df["ATOM"]["atom_name"] == "CA")  # choose the correct atoms
+        | (pstructure.df["ATOM"]["atom_name"] == "C")
     ]
     mainchain = mainchain.loc[
         (mainchain["residue_number"] >= resnum_bounds[0])
@@ -143,14 +143,14 @@ def calculate_backbone_dihedrals(
     return np.array(dihedrals).astype("float64")
 
 
-def calculate_bond_angles(ppdb, resnum_bounds) -> np.array:
+def calculate_bond_angles(pstructure, resnum_bounds) -> np.array:
     """Calculates the bond angles between consecutive residues.
 
     Returns the bond angles in order between `resnum_bounds`.
 
     Parameters:
     -----------
-    ppdb : PandasPdb
+    pstructure : PandasPdb or PandasMmcif
         Dataframe containing the target protein structure (preferably one chain).
 
     resnum_bounds : tuple
@@ -165,10 +165,10 @@ def calculate_bond_angles(ppdb, resnum_bounds) -> np.array:
     """
 
     # get the desired coordinates for the current structure
-    mainchain = ppdb.df["ATOM"].loc[
-        (ppdb.df["ATOM"]["atom_name"] == "N")
-        | (ppdb.df["ATOM"]["atom_name"] == "CA")  # choose the correct atoms
-        | (ppdb.df["ATOM"]["atom_name"] == "C")
+    mainchain = pstructure.df["ATOM"].loc[
+        (pstructure.df["ATOM"]["atom_name"] == "N")
+        | (pstructure.df["ATOM"]["atom_name"] == "CA")  # choose the correct atoms
+        | (pstructure.df["ATOM"]["atom_name"] == "C")
     ]
     mainchain = mainchain.loc[
         (mainchain["residue_number"] >= resnum_bounds[0])
@@ -223,14 +223,14 @@ def calculate_bond_angles(ppdb, resnum_bounds) -> np.array:
     return np.array(bond_angles).astype("float64")
 
 
-def calculate_bond_distances(ppdb, resnum_bounds) -> np.array:
+def calculate_bond_distances(pstructure, resnum_bounds) -> np.array:
     """Calculate the bond distances between consecutive residues.
 
     Returns the bond distances in order between `resnum_bounds`.
 
     Parameters:
     -----------
-    ppdb : BioPandas DataFrame
+    pstructure : BioPandas DataFrame
         Dataframe containing the target protein structure (preferably one chain).
 
     resnum_bounds : tuple
@@ -245,10 +245,10 @@ def calculate_bond_distances(ppdb, resnum_bounds) -> np.array:
     """
 
     # get the desired coordinates for the current structure
-    mainchain = ppdb.df["ATOM"].loc[
-        (ppdb.df["ATOM"]["atom_name"] == "N")
-        | (ppdb.df["ATOM"]["atom_name"] == "CA")  # choose the correct atoms
-        | (ppdb.df["ATOM"]["atom_name"] == "C")
+    mainchain = pstructure.df["ATOM"].loc[
+        (pstructure.df["ATOM"]["atom_name"] == "N")
+        | (pstructure.df["ATOM"]["atom_name"] == "CA")  # choose the correct atoms
+        | (pstructure.df["ATOM"]["atom_name"] == "C")
     ]
     mainchain = mainchain.loc[
         (mainchain["residue_number"] >= resnum_bounds[0])

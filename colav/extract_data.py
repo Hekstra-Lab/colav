@@ -1,10 +1,11 @@
 import pickle
 import numpy as np
 from biopandas.pdb import PandasPdb
+from biopandas.mmcif import PandasMmcif
 from itertools import combinations, product
 from colav.strain_analysis import *
 from colav.internal_coordinates import *
-from scipy.spatial.distance import pdist 
+from scipy.spatial.distance import pdist
 from scipy.stats import pearsonr
 from multiprocessing import Pool
 
@@ -21,9 +22,9 @@ def calculate_dh_rc(raw_dh_loading, quadrature=False):
     -----------
     raw_dh_loading : array_like, (N,)
         Array of raw loading from PCA.
-    
-    quadrature : bool, optional 
-        Indicator to calculate residue contributions in quadrature. 
+
+    quadrature : bool, optional
+        Indicator to calculate residue contributions in quadrature.
 
     Returns:
     --------
@@ -101,14 +102,14 @@ def generate_dihedral_matrix(
         print("Calculating the dihedral angles...")
 
     for i, struc in enumerate(structure_list):
-        # parse the pdb files
+        # parse the structure files, either pdb or mmcif
         if verbose:
             print(f"Attempting to calculate for {struc}")
-        ppdb = PandasPdb().read_pdb(struc)
-        mainchain = ppdb.df["ATOM"].loc[
-            (ppdb.df["ATOM"]["atom_name"] == "N")
-            | (ppdb.df["ATOM"]["atom_name"] == "CA")  # choose the correct atoms
-            | (ppdb.df["ATOM"]["atom_name"] == "C")
+        pstructure = PandasPdb().read_pdb(struc) if struc.endswith(".pdb") else PandasMmcif().read_mmcif(struc)
+        mainchain = pstructure.df["ATOM"].loc[
+            (pstructure.df["ATOM"]["atom_name"] == "N")
+            | (pstructure.df["ATOM"]["atom_name"] == "CA")  # choose the correct atoms
+            | (pstructure.df["ATOM"]["atom_name"] == "C")
         ]
         mainchain = mainchain.loc[
             (mainchain["residue_number"] >= resnum_bounds[0])
@@ -128,7 +129,7 @@ def generate_dihedral_matrix(
             continue
 
         dihedrals = calculate_backbone_dihedrals(
-            ppdb=ppdb,
+            pstructure=pstructure,
             resnum_bounds=resnum_bounds,
             no_psi=no_psi,
             no_omega=no_omega,
@@ -272,23 +273,23 @@ def generate_pw_matrix(
     if verbose:
         print("Generating the coordinate set...")
     for i, struc in enumerate(structure_list):
-        # parse the pdb files
+        # parse the structure files, either pdb or mmcif
         if verbose:
             print(f"Attempting to calculate for {struc}")
-        ppdb = PandasPdb().read_pdb(struc)
-        cas = ppdb.df["ATOM"][
-            (ppdb.df["ATOM"]["atom_name"] == "CA")
+        pstructure = PandasPdb().read_pdb(struc) if struc.endswith('.pdb') else PandasMmcif().read_mmcif(struc)
+        cas = pstructure.df["ATOM"][
+            (pstructure.df["ATOM"]["atom_name"] == "CA")
         ]  # choose the correct atoms
         cas = cas.loc[
-            (ppdb.df["ATOM"]["residue_number"] >= resnum_bounds[0])
+            (pstructure.df["ATOM"]["residue_number"] >= resnum_bounds[0])
             & (  # choose the correct residue numbers
-                ppdb.df["ATOM"]["residue_number"] <= resnum_bounds[1]
+                pstructure.df["ATOM"]["residue_number"] <= resnum_bounds[1]
             )
         ]
         cas = cas.loc[
-            (ppdb.df["ATOM"]["alt_loc"] == "")
+            (pstructure.df["ATOM"]["alt_loc"] == "")
             | (  # choose the A alt_loc if there are any
-                ppdb.df["ATOM"]["alt_loc"] == "A"
+                pstructure.df["ATOM"]["alt_loc"] == "A"
             )
         ]
         cas = cas.reset_index()
@@ -558,94 +559,94 @@ def load_strain_matrix(strain_pkl):
 
     return np.array(sa_data_matrix), sa_strucs
 
-def calculate_coverage_matching_scores(reference_strucs, sample_strucs, resnum_bounds, rmsd_threshold=1., simultaneous=True, verbose=False): 
-    '''Calculates the coverage and matching metrics for a sample set of structures/conformational ensemble compared to a reference set of structures/conformational ensemble. 
+def calculate_coverage_matching_scores(reference_strucs, sample_strucs, resnum_bounds, rmsd_threshold=1., simultaneous=True, verbose=False):
+    '''Calculates the coverage and matching metrics for a sample set of structures/conformational ensemble compared to a reference set of structures/conformational ensemble.
 
-    The coverage and matching metrics used are defined by Xu et al. (2021) ICLR. The coverage metric measures the diversity of the sample set compared to the reference set. The matching metric measures the similarity of the sample set to the reference set. 
-    
-    Parameters: 
+    The coverage and matching metrics used are defined by Xu et al. (2021) ICLR. The coverage metric measures the diversity of the sample set compared to the reference set. The matching metric measures the similarity of the sample set to the reference set.
+
+    Parameters:
     -----------
     reference_strucs : list of str
-        Array containing the file paths to reference structures. 
-    
+        Array containing the file paths to reference structures.
+
     sample_strucs : list of str
-        Array containing the file paths to sample/generated structures. 
-    
+        Array containing the file paths to sample/generated structures.
+
     resnum_bounds : tuple
         Tuple containing the minimum and maximum (inclusive) residue number values.
-    
+
     rmsd_threshold : float
-        Minimum value for two structures to be considered similar. 
-    
+        Minimum value for two structures to be considered similar.
+
     simultaneous : bool
-        Indicator for simultaneous calculation of RMSD; otherwise, calculations are sequential. 
+        Indicator for simultaneous calculation of RMSD; otherwise, calculations are sequential.
 
     verbose : bool
-        Indicator for verbose output. 
-    
-    Returns: 
+        Indicator for verbose output.
+
+    Returns:
     --------
     coverage : float
-        Coverage score that compares the diversity of the supplied conformational ensembles. 
+        Coverage score that compares the diversity of the supplied conformational ensembles.
 
-    matching : float 
-        Matching score that compares the similarity of the supplied conformational ensembles. 
+    matching : float
+        Matching score that compares the similarity of the supplied conformational ensembles.
     '''
 
-    # create sorted atom list 
+    # create sorted atom list
     sorted_atom_list = [(res, at) for res in np.arange(resnum_bounds[0], resnum_bounds[1]+1) for at in ['N', 'CA', 'C']]
 
-    # initialize coverage and matching score 
-    coverage = 0 
+    # initialize coverage and matching score
+    coverage = 0
     matching = 0
 
-    # iterate through the reference structures 
-    ref_coords = list() 
-    for ref in reference_strucs: 
+    # iterate through the reference structures
+    ref_coords = list()
+    for ref in reference_strucs:
 
-        # load the reference structure coordinates 
-        ref_ppdb = PandasPdb().read_pdb(ref)
-        ref_coords.append(coords_from_atoms(ref_ppdb.df['ATOM'], sorted_atom_list))
+        # load the reference structure coordinates
+        ref_pstructure = PandasPdb().read_pdb(ref) if ref.endswith('.pdb') else PandasMmcif().read_mmcif(ref)
+        ref_coords.append(coords_from_atoms(ref_pstructure.df['ATOM'], sorted_atom_list))
 
-    if verbose: 
+    if verbose:
         print("Loaded reference structure data!")
 
-    # iterate through the sample structures 
+    # iterate through the sample structures
     sample_coords = list()
-    for sample in sample_strucs: 
+    for sample in sample_strucs:
 
-        # load the sample structure coordinates 
-        sample_ppdb = PandasPdb().read_pdb(sample)
-        sample_coords.append(coords_from_atoms(sample_ppdb.df['ATOM'], sorted_atom_list))
+        # load the sample structure coordinates
+        sample_pstructure = PandasPdb().read_pdb(sample) if sample.endswith('.pdb') else PandasMmcif().read_mmcif(sample)
+        sample_coords.append(coords_from_atoms(sample_pstructure.df['ATOM'], sorted_atom_list))
 
-    if verbose: 
+    if verbose:
         print("Loaded sample structure data!")
 
-    # generate the comparisons 
+    # generate the comparisons
     comparisons = np.array(list(product(ref_coords, sample_coords))).reshape(len(ref_coords), len(sample_coords), 2, -1, 3)
-    
+
     # calculate RMSDs
-    if simultaneous: 
+    if simultaneous:
         rmsds = np.sqrt(np.sum(np.sum(np.square(comparisons[:,:,0,:,:] - comparisons[:,:,1,:,:]), axis=2), axis=2) / len(sorted_atom_list))
-    else: 
+    else:
         rmsds = np.zeros((len(ref_coords), len(sample_coords)))
 
         # iterate through the coordinate pairs
-        for i in np.arange(len(ref_coords)): 
-            for j in np.arange(len(sample_coords)): 
+        for i in np.arange(len(ref_coords)):
+            for j in np.arange(len(sample_coords)):
                 rmsds[i,j] = np.sqrt(np.sum(np.square(comparisons[i,j,0,:,:] - comparisons[i,j,1,:,:])) / len(sorted_atom_list))
 
-    # calculate coverage and matching scores 
+    # calculate coverage and matching scores
     coverage = np.sum(np.any(rmsds < rmsd_threshold, axis=1).astype('int')) / len(reference_strucs)
     matching = np.sum(np.min(rmsds, axis=1)) / len(reference_strucs)
 
-    # print coverage and matching metrics 
-    if verbose: 
+    # print coverage and matching metrics
+    if verbose:
 
         print(f'Coverage metric: {np.round(coverage*100, decimals=2)}%')
         print(f'Matching metric: {np.round(matching, decimals=3)}')
 
-    return coverage, matching 
+    return coverage, matching
 
 def calculate_dh_pw(i, j, u_pca, pw_pca, resnum_bounds, psi_idx, phi_idx, omg_idx):
     return pearsonr(
